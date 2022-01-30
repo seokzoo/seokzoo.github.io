@@ -12,12 +12,17 @@
             </style>
         </head>
         <body>
+            <select id="langselect" onchange="loadlang()">
+                <option value="en" selected>English</option>
+                <option value="kr">한국어</option>
+            </select>
             <center>
                 <div class="about">
                     <strong><font size="6">seokzoo's sitemap</font></strong>
                     <div>
                         <br>
-                        <caption>작품명 : 회색 면티와 나 (grey t-shirts and me)</caption>
+                        <span class="kr"><caption>작품명 : 회색 면티와 나</caption></span>
+                        <span class="en"><caption>Title : grey t-shirts and me</caption></span>
                         <table border="1">
                             <tr>
                                 <th>
@@ -33,10 +38,15 @@
                         </table>
                     <div>
                     <font size="5">
-                        <p>
+                        <p class="en">
                         Hello! my name is seokju Jo and I'm a undergraduate student at Kyungpook National University who is interested in computer science, biology. <br><br>
                         ▽ you can reach my pages through links below ▽
-                        </p> <br><hr>
+                        </p> 
+                        <p class="kr">
+                        안녕하세요! 제 이름은 조석주이고 컴퓨터와 생물학에 관심이 있습니다~ <br><br>
+                        ▽  다양한 링크들 ▽
+                        </p> 
+                        <br><hr>
                         <a href="https://seokzoo.blogspot.com/" target="_blank">blog</a>
                         <a href="https://facebook.com/seokju.jo" target="_blank">fb</a>
                         <a href="https://www.instagram.com/seokzoo_/" target="_blank">ig</a>
@@ -49,5 +59,29 @@
                     </font>
                 <div>
             </center>
+            <script>
+                function loadlang()
+                {
+                    var lang = document.getElementById("langselect").value;
+                    kr = document.getElementsByClassName("kr");
+                    en = document.getElementsByClassName("en");
+                    switch (lang)
+                    {
+                        case "en":
+                            for(var i=0;i<kr.length;i++) {
+                                kr[i].style.display = "none";
+                                en[i].style.display = "block";
+                            }
+                            break;
+                        case "kr":
+                            for(var i=0;i<kr.length;i++) {
+                                en[i].style.display = "none";
+                                kr[i].style.display = "block";
+                            }
+                            break;
+                    }
+                }
+                loadlang();
+            </script>
         </body>
 </html>
