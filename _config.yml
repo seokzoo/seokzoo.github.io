@@ -1,7 +1,7 @@
 title: blog # The title of the blog
 author: about me
 email: seokzoo_@kakao.com # your email shown in the footer
-url: https://seokzoo.github.io/blog # this is your site's root address.
+url: https://seokzoo.github.io/ # this is your site's root address.
 description: > # this means to ignore newlines until "show_excerpts:"
   항상 건강하고 행복하세요
 favicon: "./favicon.png" # set the favicon of the site
