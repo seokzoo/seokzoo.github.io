@@ -16,7 +16,7 @@ permalink: /categories/
     <ul class="{{ page.title }}">
   {% for category in site.categories %}
     <li>
-    <a href="{{ page.url }}{{ category[0] }}">{{ category[0] | capitalize }}</a>
+    <a class="post-link-layout" href="{{ page.url }}{{ category[0] }}">{{ category[0] | capitalize }}</a>
     </li>
   {% endfor %}
     </ul>

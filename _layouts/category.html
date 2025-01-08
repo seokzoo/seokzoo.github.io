@@ -2,12 +2,23 @@
 layout: default
 ---
 
-<h1>Archive of posts with {{ page.type }} '{{ page.title }}'</h1>
-<ul class="posts-list">
-  {% for post in page.posts %}
-    <li>
-      <span class="post-date">{{ post.date | date: "%b %-d, %Y" }}</span>
-      <a class="post-link" href="{{ post.url | relative_url }}">{{ post.title }}</a>
-    </li>
-  {% endfor %}
-</ul>  
+<div>
+  <head>
+    <title>{{ page.title }}</title>
+  </head>
+  <div class="post-back">
+    <a class="black-link" href="{{ site.url | relative_url }}"> ← {{ site.moving.back_to }} </a>
+  </div>
+  <div>
+    <h1>Archive of posts with {{ page.type }} '{{ page.title }}'</h1>
+    <ul class="posts">
+      {% assign category = page.category | default: page.title %}
+      {% for post in site.categories[category] %}
+      <li>
+          <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
+          <a class="black-link post-link-layout" href="{{ post.url | relative_url }}">{{ post.title | escape }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>

@@ -42,18 +42,8 @@ moving:
     # - username:
     #   instance:
 
-jekyll-archives:
-  enabled:
-    - categories
-  layout: default
-  layouts:
-    category: category-archive
-  permalinks:
-    category: '/categories/:name/'
-
 # Build settings
 remote_theme: huangyz0918/moving
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
-  - jekyll-archives
