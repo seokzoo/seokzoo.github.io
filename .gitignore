@@ -4,5 +4,5 @@
 .sass-cache
 Gemfile.lock
 .obsidian
-
+_posts/.obsidian/
 .DS_Store
