@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" /><!-- Begin Jekyll SEO tag v2.8.0 -->
+<meta name="generator" content="Jekyll v4.0.1" />
+<meta property="og:title" content="독서정리 - 딥러닝을 위한 수학 (공사중)" />
+<meta name="author" content="about me" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Ch1. 도구 소개 Numpy" />
+<meta property="og:description" content="Ch1. 도구 소개 Numpy" />
+<link rel="canonical" href="http://localhost:4000/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC/2024/01/17/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC-%EB%94%A5%EB%9F%AC%EB%8B%9D%EC%9D%84-%EC%9C%84%ED%95%9C-%EC%88%98%ED%95%99.html" />
+<meta property="og:url" content="http://localhost:4000/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC/2024/01/17/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC-%EB%94%A5%EB%9F%AC%EB%8B%9D%EC%9D%84-%EC%9C%84%ED%95%9C-%EC%88%98%ED%95%99.html" />
+<meta property="og:site_name" content="blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-01-17T00:00:00+09:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="독서정리 - 딥러닝을 위한 수학 (공사중)" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"about me"},"dateModified":"2024-01-17T00:00:00+09:00","datePublished":"2024-01-17T00:00:00+09:00","description":"Ch1. 도구 소개 Numpy","headline":"독서정리 - 딥러닝을 위한 수학 (공사중)","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC/2024/01/17/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC-%EB%94%A5%EB%9F%AC%EB%8B%9D%EC%9D%84-%EC%9C%84%ED%95%9C-%EC%88%98%ED%95%99.html"},"url":"http://localhost:4000/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC/2024/01/17/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC-%EB%94%A5%EB%9F%AC%EB%8B%9D%EC%9D%84-%EC%9C%84%ED%95%9C-%EC%88%98%ED%95%99.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.css" />
+  <link rel="shortcut icon" type="image/x-icon" href="/./favicon.png?" />
+  <link rel="stylesheet" href="http://localhost:4000/assets/css/agate.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad();
+  </script><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="blog" /></head><body>
+    <main class="page-content" aria-label="Content">
+        <div class="wrapper">
+            <article
+  class="post h-entry"
+  itemscope
+  itemtype="http://schema.org/BlogPosting"
+>
+  <head>
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+    <title>독서정리 - 딥러닝을 위한 수학 (공사중)</title>
+  </head>
+  <header class="post-header">
+    <div class="post-back">
+      <a class="black-link" href="http://localhost:4000">
+        ← Home
+      </a>
+    </div>
+
+    <h1 class="post-title p-name" itemprop="name headline">
+      독서정리 - 딥러닝을 위한 수학 (공사중)
+    </h1>
+    <p class="post-meta">
+      <time
+        class="dt-published"
+        datetime="2024-01-17T00:00:00+09:00"
+        itemprop="datePublished"
+      >Jan 17, 2024
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h2 id="ch1-도구-소개">Ch1. 도구 소개</h2>
+<ul>
+  <li>Numpy</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># data type 명시 가능
+</span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s">"uint8"</span><span class="p">)</span>
+<span class="n">a</span><span class="p">.</span><span class="n">dtype</span> <span class="c1"># uint8
+</span>
+<span class="c1"># array filled with zeros, ones
+</span><span class="n">np</span><span class="p">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)).</span><span class="n">shape</span> <span class="c1"># (3,4)
+</span><span class="n">np</span><span class="p">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)).</span><span class="n">size</span> <span class="c1"># 12
+</span>
+<span class="c1"># arange and indexing
+</span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">).</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="s">'''
+array([[ 0,  1,  2,  3],
+       [ 4,  5,  6,  7],
+       [ 8,  9, 10, 11]])
+'''</span>
+<span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># a[1,:]와 동일하며 array([4, 5, 6, 7])
+</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">44</span><span class="p">,</span><span class="mi">55</span><span class="p">,</span><span class="mi">66</span><span class="p">,</span><span class="mi">77</span><span class="p">]</span>
+<span class="n">a</span>
+<span class="s">'''
+array([[ 0,  1,  2,  3],
+       [ 44,  55,  66,  77],
+       [ 8,  9, 10, 11]])
+'''</span>
+<span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">,::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># array([77, 66, 55, 44])
+</span>
+<span class="c1"># these are the same (abbreviation for :)
+</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">,:,:,:]</span>
+<span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">,...]</span>
+
+<span class="c1"># sampling
+</span><span class="n">n</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">)</span> <span class="c1"># avg, std, n
+</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">random</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="c1"># [0,1)에서 난수 n개 샘플링
+</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randint</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="c1"># [a, b) 범위에서 정수 n개 샘플링
+</span>
+<span class="c1">#misc
+</span><span class="n">np</span><span class="p">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span> <span class="c1"># 정렬되었을 때 indices를 반환
+</span><span class="n">np</span><span class="p">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">minlength</span><span class="o">=</span><span class="n">n</span><span class="p">)</span> <span class="c1"># arr의 원소 개수 반환, minlength는 반환 리스트의 최소 크기
+</span>
+<span class="c1"># save and load
+</span><span class="n">np</span><span class="p">.</span><span class="n">save</span><span class="p">(</span><span class="s">"arr.npy"</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="s">"arr.npy"</span><span class="p">)</span>
+</code></pre></div></div>
+<ul>
+  <li>SciPy</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.8</span><span class="p">,</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">scipy</span><span class="p">.</span><span class="n">stats</span><span class="p">.</span><span class="n">ttest_ind</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="c1"># TtestResult(statistic=np.float64(-0.22508693369270907), pvalue=np.float64(0.8219346636644121), df=np.float64(1998.0))
+</span></code></pre></div></div>
+
+<h2 id="ch2-확률">Ch2. 확률</h2>
+<ul>
+  <li>sample space : 한 event의 모든 가능한 결과의 집합</li>
+  <li>mutually exclusive : 두 event가 동시에 발생하지 않는 경우</li>
+  <li>independent : 두 event의 발생 확률이 서로 무관한 경우
+어떤 event의 결과는 random variable(e.g. X)로 나타낼 수 있고 sample space의 하나의 값을 특정한 확률로 취한다 \(P(X=s)=p\)</li>
+  <li>sum rule : mutually exclusive한 사건들에 대해</li>
+</ul>
+
+\[P(A_0\cup A_1\cdots \cup A_n ) = \sum_{i=0}^nP(A_i)\]
+
+<p>disjoint는 교집합이 없다는 의미이다. sample space는 서로 disjoint인 부분집합들로 나눌 수 있는데 그런 식으로 나눈 각 부분집합들을 집합의 partition이라고 한다.</p>
+<ul>
+  <li>partition $B_i$에 대한 A의 total probability</li>
+</ul>
+
+\[P(A)=\sum_i P(A|B_i)P(B_i)\]
+
+<ul>
+  <li>joint probability : 여러 random variable에 대해서 동시에 여러 condition을 만족할 때의 확률 $P(X_i, Y_j, Z_k)$</li>
+  <li>marginal probability : 하나의 random variable에 대해 나머지 random variable가 가질 수 있는 값을 모두 더한 확률 $P(X_i)=\sum^n_{j=0} (X_i, Y_j)$</li>
+  <li>chain rule for probability</li>
+</ul>
+
+\[P(X_n,X_{n-1},\dots,X_1)=\prod_{i=1}^nP(X_i|\bigcap^{i-1}_{j=1} X_j)\]
+
+<p>예를 들어, $P(X,Y,Z)=P(X\vert Y,Z)P(Y,Z)=P(X\vert Y,Z)P(Y\vert Z)P(Z)$ 라는 뜻이다.</p>
+
+<ul>
+  <li>Probability distribution
+    <ul>
+      <li>Discrete distribution
+        <ul>
+          <li>Binomial distribution
+            <ul>
+              <li>Bernoulli distribution</li>
+            </ul>
+          </li>
+          <li>Poisson distribution</li>
+        </ul>
+      </li>
+      <li>Continuous distribution
+        <ul>
+          <li>Normal distribution</li>
+          <li>Beta distribution</li>
+          <li>Gamma distribution</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>Central limit theorem</p>
+
+<p>Law of large numbers</p>
+
+<ul>
+  <li>Bayes’ theorem</li>
+  <li>Naive bayes classifier</li>
+</ul>
+
+  </div>
+
+  <a class="u-url" href="/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC/2024/01/17/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC-%EB%94%A5%EB%9F%AC%EB%8B%9D%EC%9D%84-%EC%9C%84%ED%95%9C-%EC%88%98%ED%95%99.html" hidden></a>
+</article>
+
+        </div>
+    </main><footer class="site-footer h-card">
+    <data class="u-url" href="/"></data>
+    <div class="wrapper">
+      <div class="footer-col-wrapper">
+        <div class="footer-col">
+          <ul class="contact-list">
+            <li class="p-name">
+              <table><tbody> 
+                <tr style="border-style: hidden;"><td style="border-style: hidden;"><a class="black-link" href="http://localhost:4000/about.html">
+                    about me 
+                  </a></td><td style="border-style: hidden;"><a class="black-link" href="http://localhost:4000/categories">
+                    category
+                      </a></td>
+                  <td style="border-style: hidden;"><a class="black-link" href="http://localhost:4000/gallery">
+                    gallery
+                      </a></td>
+                </tr>
+              </tbody></table>
+            </li><li><a class="u-email black-link" href="mailto:seokzoo_@kakao.com">seokzoo_@kakao.com</a></li></ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
