@@ -209,12 +209,18 @@ array([[ 0,  1,  2,  3],
   <li>Bayes’ theorem : posterior probability $P(A\vert B)$는 likelihood $P(B\vert A)$에 prior probability $P(A)$를 곱한 다음 evidence $P(B)$로 정규화한 것이다</li>
 </ul>
 
-\[P(A\vert B)=\frac{P(B\vert A)P(A)}{P(B)}\]
+\[P(A\vert B)=\frac{P(B\vert A)P(A)}{P(B)}=\frac{P(B\vert A)P(A)}{P(B\vert A)P(A)+P(B\vert A^{C})P(A^{C})}\]
+
+<p>$P(A)$에 $P(A\vert B)$를 대입해서 연쇄적으로 베이즈 정리를 적용할 수 있다. 이때 $P(B)$는 marginal probability이므로 새로 계산해서 적용하면 된다.</p>
 
 <ul>
-  <li>Naive bayes classifier</li>
+  <li>Naive bayes classifier<br />
+label $y$와 feature vector $x=(x_0,x_1,\dots,x_{n-1})$가 있다고 할 때 $x$의 각 원소가 나올 확률이 서로 독립 $P(x)=P(x_0)P(x_1)\cdots P(x_{n-1})$ 이라고 가정하면 (보통 실제로는 아님)</li>
 </ul>
 
+\[P(y\vert x)=\frac{P(x\vert y)P(y)}{P(x)}\]
+
+<p>이때 $P(x\vert y)$는 각 label 일때 $x$가 나왔던 비율이고 분모의 $P(x)$는 $x$를 분류할 때는 모두 동일하기 때문에 계산을 생략해도 됨</p>
 <h2 id="ch3-통계">Ch3. 통계</h2>
 <h2 id="ch4-선형대수">Ch4. 선형대수</h2>
 <h2 id="ch5-미분과-행렬-미분">Ch5. 미분과 행렬 미분</h2>
