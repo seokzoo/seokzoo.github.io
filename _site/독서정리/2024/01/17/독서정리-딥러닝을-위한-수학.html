@@ -83,7 +83,10 @@
   <li>Numpy</li>
 </ul>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># data type 명시 가능
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># seed 초기화
+</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># data type 명시 가능
 </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s">"uint8"</span><span class="p">)</span>
 <span class="n">a</span><span class="p">.</span><span class="n">dtype</span> <span class="c1"># uint8
 </span>
@@ -220,8 +223,101 @@ label $y$와 feature vector $x=(x_0,x_1,\dots,x_{n-1})$가 있다고 할 때 $x$
 
 \[P(y\vert x)=\frac{P(x\vert y)P(y)}{P(x)}\]
 
-<p>이때 $P(x\vert y)$는 각 label 일때 $x$가 나왔던 비율이고 분모의 $P(x)$는 $x$를 분류할 때는 모두 동일하기 때문에 계산을 생략해도 됨</p>
+<p>이때 $P(x\vert y)$는 각 label 일때 $x$가 나왔던 비율이고 분모의 $P(x)$는 $x$를 분류할 때는 모두 동일하기 때문에 계산을 생략해도 된다</p>
+
 <h2 id="ch3-통계">Ch3. 통계</h2>
+<ul>
+  <li>data
+    <ul>
+      <li>categorical data(nominal data) : 순서 없는 데이터</li>
+      <li>ordinal data : 순서는 있는데 차이의 의미가 없는 데이터</li>
+      <li>interval data : 순서도 있고 차이의 의미도 있지만 영점이 없는 데이터</li>
+      <li>ratio data : 순서도 있고 차이의 의미랑 영점도 있는 데이터</li>
+    </ul>
+  </li>
+  <li>mean
+    <ul>
+      <li>unweighted arithmetic mean</li>
+      <li>weighted arithmetic mean ($\sum_i w_i=1$ 일때) : $\bar{x}=\sum_i^{n-1}w_i x_i$</li>
+      <li>geometric mean : $^n\sqrt{\prod_i^{n-1} x_i}$</li>
+      <li>harmonic mean : $(\frac{1}{n}\sum_i^{n-1} \frac{1}{x_i})^{-1}$</li>
+    </ul>
+  </li>
+  <li>variation
+    <ul>
+      <li>range : $max(x) - min(x)$</li>
+      <li>mean deviation : $MD=\frac{1}{n}\sum_i^{n-1} \vert \bar{x}-x_i\vert$</li>
+      <li>biased sample variance : $s_n^2=\frac{1}{n}\sum_i^{n-1}(\bar{x}-x_i)^2$</li>
+      <li>unbiased sample variance : $s^2=\frac{1}{n-1}\sum_i^{n-1}(\bar{x}-x_i)^2$</li>
+      <li>standard deviation : $s$</li>
+      <li>median absolute deviation : $MAD=median(\vert median(x)-x_i\vert)$</li>
+    </ul>
+  </li>
+  <li>
+    <p>standard error(SE) : sample들의 평균값 집합의 표준편차이고 표본 평균이 얼마나 모집단 평균을 잘 추정했는지를 뜻한다 $SE=\frac{s}{\sqrt{n}}$</p>
+  </li>
+  <li>2-quantile = 50th percentile = Q2</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">q</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">50</span> <span class="p">,</span><span class="mi">75</span><span class="p">,</span> <span class="mi">100</span><span class="p">])</span>
+</code></pre></div></div>
+
+<ul>
+  <li>box plot
+    <ul>
+      <li>IQR : Q3-Q1 사이 부분</li>
+      <li>whisker(flier) : Q3 or Q1 $\pm$ 1.5 IQR</li>
+    </ul>
+  </li>
+</ul>
+
+<p>missing data 채울 때는 mean보다는 median이 더 나은 경우가 많다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span>
+<span class="n">np</span><span class="p">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</code></pre></div></div>
+
+<ul>
+  <li>correlation
+    <ul>
+      <li>pearson correlation coefficient(r) : linear한 연관 관계를 확인할 수 있고 non-linear 한 상관 관계는 0일 때가 있다.</li>
+      <li>spearman correlation coefficient($\rho$) : monotonic한 연관 관계를 확인할 수 있고 feature 값을 rank 값으로 바꿔서 사용한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span>
+<span class="n">np</span><span class="p">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="c1"># PCC matrix를 반환
+</span></code></pre></div></div>
+
+<ul>
+  <li>귀무가설(null hypothesis, $H_0$) : 차이가 없다는 가설</li>
+  <li>대안가설(alternative hypothesis, $H_a$) : 차이가 있다는 가설 (grater, less, two-sided)</li>
+  <li>hypothesis testing
+    <ul>
+      <li>t-test : parametric</li>
+      <li>Mann-Whitney U test : non-parametric, 데이터 값 자체가 아니라 rank 값을 사용한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>parametric은 데이터의 분포가 정규분포를 따르는 것을 가정한다.<br />
+p-value는 $H_0$이 참이라고 할 때 관측된 통계치가 나타날 확률을 뜻하고 검정값을 기준으로 각 검정법의 확률 분포 함수를 적분해서 얻는다.<br />
+p-value가 특정 threshold($\alpha$)보다 작으면 $H_0$를 reject 하고 $H_a$를 accept 할 증거가 된다. 이를 결과가 statistically significant 하다고 말한다. 검정법으로는 $H_0$가 참인지 거짓인지 결정적으로 알 수는 없다.  <br />
+일반적으로 Mann-whitney U test가 $H_0$를 reject 하고 t-test에서는 reject 못 했으면 Mann-whitney U test의 결과를 받아들이는게 좋다.</p>
+
+<ul>
+  <li>confidence interval (CI) : 예를 들어 95%의 CI라고 하면 동일한 방식으로 100번 표본을 뽑아서 신뢰 구간을 구하면 그 중 95개가 실제 모평균을 포함하게 된다는 뜻이다. 그냥 모평균이 CI에 있을 확률이 95%라고 이해해도 된다. p-value가 $\alpha$보다 작으면 $H_0$를 포함하지 않는 $CI_\alpha$가 존재한다.</li>
+  <li>size effect : 두 데이터 간의 평균 차이를 표준 편차로 나눈 값으로 두 데이터의 평균 차이가 얼마나 의미있는 차이인지 나타낸다. 그냥 평균 차이를 표준화한 지표라고 보면 된다.
+    <ul>
+      <li>e.g. cohen’s d : 해석하는 사람마다 차이가 있는데 대략 0.2 정도면 effect가 낮고 0.8 정도면 effect가 높다고 보면 됨</li>
+    </ul>
+  </li>
+</ul>
+
+<p>effect size와 p-value : 두 모집단의 평균 차이가 얼마 되지 않는 경우에 각 모집단에서 표본을 뽑아서 두 표본 간의 평균이 같은지 다른지 검정한다고 할때, 표본의 크기가 크면 p-value는 충분히 낮게 나올 수 있지만(i.e. statistically significant) 두 표본 간의 effect size는 낮게 나온다(i.e. 실질적으로 의미있는 정도의 차이가 아닐 수 있다).</p>
+
 <h2 id="ch4-선형대수">Ch4. 선형대수</h2>
 <h2 id="ch5-미분과-행렬-미분">Ch5. 미분과 행렬 미분</h2>
 <h2 id="ch6-신경망의-데이터-흐름">Ch6. 신경망의 데이터 흐름</h2>
