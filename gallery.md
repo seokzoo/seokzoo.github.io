@@ -4,6 +4,8 @@ title: gallery
 images:
   #- image_path: /photos/
   #  title: 
+  - image_path: /photos/jaws.jpg
+    title: 아가리(Jaws)
   - image_path: /photos/mosquitouse2.jpeg
     title: 모기쥐 완성판
   - image_path: /photos/mosquitouse.jpeg
