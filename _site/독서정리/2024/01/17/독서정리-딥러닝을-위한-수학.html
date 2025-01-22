@@ -320,14 +320,70 @@ p-value가 특정 threshold($\alpha$)보다 작으면 $H_0$를 reject 하고 $H_
 
 <h2 id="ch4-선형대수">Ch4. 선형대수</h2>
 <ul>
-  <li>
-    <h2 id="ch5-미분과-행렬-미분">Ch5. 미분과 행렬 미분</h2>
-    <h2 id="ch6-신경망의-데이터-흐름">Ch6. 신경망의 데이터 흐름</h2>
-    <h2 id="ch7-역전파">Ch7. 역전파</h2>
-    <h2 id="ch8-경사하강법">Ch8. 경사하강법</h2>
-    <h2 id="ch9-부록">Ch9. 부록</h2>
+  <li>feature space : 가능한 모든 입력의 집합</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">])</span> 
+<span class="c1"># array([4, 3, 7]) ; shape = (3, )
+</span><span class="n">x</span><span class="p">[</span><span class="n">np</span><span class="p">.</span><span class="n">newaxis</span><span class="p">,:]</span>
+<span class="c1"># array([[4, 3, 7]]) ; shape = (1, 3)
+</span></code></pre></div></div>
+
+<ul>
+  <li>block matrix : 더 작은 matrix 들로 구성된 matrix</li>
+</ul>
+
+\[A = \begin{bmatrix}1&amp;2\\3&amp;4\end{bmatrix},\ B = \begin{bmatrix}1&amp;1\\1&amp;1\end{bmatrix}\]
+
+\[B = \begin{bmatrix}A&amp;B\\B&amp;A\end{bmatrix}=\begin{bmatrix}1&amp;2&amp;1&amp;1\\3&amp;4&amp;1&amp;1\\1&amp;1&amp;1&amp;2\\1&amp;1&amp;3&amp;4\end{bmatrix}\]
+
+<ul>
+  <li>operation
+    <ul>
+      <li>element-wise
+        <ul>
+          <li>hadamard product : $c_{ij}=a_{ij} b_{ij}$</li>
+        </ul>
+      </li>
+      <li>transpose : numpy에서 1차원 tensor인 array는 transpose 안 먹힌다</li>
+      <li>vector
+        <ul>
+          <li>inner product(dot product) : $a\cdot b=\langle a,b\rangle=a^{\top}b=\vert a\vert\vert b\vert cos\theta$</li>
+          <li>outer product : $a\otimes b=ab^{\top}$
+            <ul>
+              <li>cf. cartesian product : $A\times B={(a, b)\ \vert\ a\in A, b\in B}$</li>
+            </ul>
+          </li>
+          <li>cross product : $a\times b=\vert a\vert \vert b\vert sin\theta\ \hat{n}$</li>
+        </ul>
+      </li>
+      <li>matrix
+        <ul>
+          <li>matrix multiplication</li>
+          <li>kronecker product(matrix direct product) :</li>
+        </ul>
+      </li>
+    </ul>
   </li>
 </ul>
+
+\[A\otimes B = \begin{bmatrix}a_{0,0}B&amp;a_{0,1}B&amp;\cdots&amp;a_{0,{n-1}}B\\ a_{1, 0}B&amp;a_{1, 1}B&amp; &amp; \\ \vdots&amp; &amp;\ddots&amp;\vdots\\ a_{n-1,0}B&amp; &amp;\cdots&amp;a_{n-1,n-1}B\end{bmatrix}\]
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">np</span><span class="p">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="n">np</span><span class="p">.</span><span class="n">outer</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="n">np</span><span class="p">.</span><span class="n">cross</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="n">np</span><span class="p">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="c1"># 스칼라 값 가능
+</span><span class="n">np</span><span class="p">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="c1"># 스칼라 값 불가능
+</span><span class="n">np</span><span class="p">.</span><span class="n">kron</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>dot이나 matmul 연산에서 1차 tensor(그냥 array)끼리 연산하면 스칼라가 나오고 1차 tensor랑 2차 tensor끼리 연산하면 1차 tensor가 나오고 2차 이상끼리 하면 2차 이상끼리 나온다</p>
+
+<h2 id="ch5-미분과-행렬-미분">Ch5. 미분과 행렬 미분</h2>
+<h2 id="ch6-신경망의-데이터-흐름">Ch6. 신경망의 데이터 흐름</h2>
+<h2 id="ch7-역전파">Ch7. 역전파</h2>
+<h2 id="ch8-경사하강법">Ch8. 경사하강법</h2>
+<h2 id="ch9-부록">Ch9. 부록</h2>
 
   </div>
 

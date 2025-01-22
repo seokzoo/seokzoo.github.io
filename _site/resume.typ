@@ -43,12 +43,13 @@
 #edu(
   institution: "Korea University",
   location: "Seoul, South Korea",
-  dates: dates-helper(start-date: "Aug 2023", end-date: "May 2027"),
+  dates: dates-helper(start-date: "Mar 2023", end-date: "current"),
   degree: "Bachelor's of Science, Biosystems and Biomedical Science & Computer Science (double major)",
 )
+- Transferred in junior year
 - Cumulative GPA: 4.25\/4.5 | Merit Scholarship, Boseong County Scholarship Foundation
 
-== Work Experience
+/*== Work Experience
 
 #work(
   title: "Subatomic Shepherd and Caffeine Connoisseur",
@@ -58,10 +59,11 @@
 )
 - Played God with tiny molecules, making them dance to uncover the secrets of the universe
 - Convinced high-performance computers to work overtime without unions, reducing simulation time by 50%
-- Wowed a room full of nerds with pretty pictures of invisible things and imaginary findings
+- Wowed a room full of nerds with pretty pictures of invisible things and imaginary findings */
 
 == Projects
 
+=== 
 #project(
   name: "Hyperschedule",
   // Role is optional
@@ -98,6 +100,7 @@
 //   // url: "",
 //   date: "Oct 2024",
 // )
+
 == Skills
-- *Programming Languages*: C/C++, Python
-- *Technologies*: React, Astro, Svelte, Tailwind CSS, Git, UNIX, Docker, Caddy, NGINX, Google Cloud Platform
+- *Programming Languages*: C/C++, Python, Shell Script
+- *Technologies*: Git

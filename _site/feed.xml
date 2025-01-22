@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-01-20T23:47:24+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">blog</title><subtitle>항상 건강하고 행복하세요
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-01-22T16:13:32+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">blog</title><subtitle>항상 건강하고 행복하세요
 </subtitle><author><name>about me</name></author><entry><title type="html">독서정리 - 딥러닝을 위한 수학 (공사중)</title><link href="http://localhost:4000/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC/2024/01/17/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC-%EB%94%A5%EB%9F%AC%EB%8B%9D%EC%9D%84-%EC%9C%84%ED%95%9C-%EC%88%98%ED%95%99.html" rel="alternate" type="text/html" title="독서정리 - 딥러닝을 위한 수학 (공사중)" /><published>2024-01-17T00:00:00+09:00</published><updated>2024-01-17T00:00:00+09:00</updated><id>http://localhost:4000/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC/2024/01/17/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC-%EB%94%A5%EB%9F%AC%EB%8B%9D%EC%9D%84-%EC%9C%84%ED%95%9C-%EC%88%98%ED%95%99</id><content type="html" xml:base="http://localhost:4000/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC/2024/01/17/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC-%EB%94%A5%EB%9F%AC%EB%8B%9D%EC%9D%84-%EC%9C%84%ED%95%9C-%EC%88%98%ED%95%99.html"><![CDATA[<h1 id="contents">Contents</h1>
 <ul id="markdown-toc">
   <li><a href="#contents" id="markdown-toc-contents">Contents</a>    <ul>
@@ -257,14 +257,70 @@ p-value가 특정 threshold($\alpha$)보다 작으면 $H_0$를 reject 하고 $H_
 
 <h2 id="ch4-선형대수">Ch4. 선형대수</h2>
 <ul>
-  <li>
-    <h2 id="ch5-미분과-행렬-미분">Ch5. 미분과 행렬 미분</h2>
-    <h2 id="ch6-신경망의-데이터-흐름">Ch6. 신경망의 데이터 흐름</h2>
-    <h2 id="ch7-역전파">Ch7. 역전파</h2>
-    <h2 id="ch8-경사하강법">Ch8. 경사하강법</h2>
-    <h2 id="ch9-부록">Ch9. 부록</h2>
+  <li>feature space : 가능한 모든 입력의 집합</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">])</span> 
+<span class="c1"># array([4, 3, 7]) ; shape = (3, )
+</span><span class="n">x</span><span class="p">[</span><span class="n">np</span><span class="p">.</span><span class="n">newaxis</span><span class="p">,:]</span>
+<span class="c1"># array([[4, 3, 7]]) ; shape = (1, 3)
+</span></code></pre></div></div>
+
+<ul>
+  <li>block matrix : 더 작은 matrix 들로 구성된 matrix</li>
+</ul>
+
+\[A = \begin{bmatrix}1&amp;2\\3&amp;4\end{bmatrix},\ B = \begin{bmatrix}1&amp;1\\1&amp;1\end{bmatrix}\]
+
+\[B = \begin{bmatrix}A&amp;B\\B&amp;A\end{bmatrix}=\begin{bmatrix}1&amp;2&amp;1&amp;1\\3&amp;4&amp;1&amp;1\\1&amp;1&amp;1&amp;2\\1&amp;1&amp;3&amp;4\end{bmatrix}\]
+
+<ul>
+  <li>operation
+    <ul>
+      <li>element-wise
+        <ul>
+          <li>hadamard product : $c_{ij}=a_{ij} b_{ij}$</li>
+        </ul>
+      </li>
+      <li>transpose : numpy에서 1차원 tensor인 array는 transpose 안 먹힌다</li>
+      <li>vector
+        <ul>
+          <li>inner product(dot product) : $a\cdot b=\langle a,b\rangle=a^{\top}b=\vert a\vert\vert b\vert cos\theta$</li>
+          <li>outer product : $a\otimes b=ab^{\top}$
+            <ul>
+              <li>cf. cartesian product : $A\times B={(a, b)\ \vert\ a\in A, b\in B}$</li>
+            </ul>
+          </li>
+          <li>cross product : $a\times b=\vert a\vert \vert b\vert sin\theta\ \hat{n}$</li>
+        </ul>
+      </li>
+      <li>matrix
+        <ul>
+          <li>matrix multiplication</li>
+          <li>kronecker product(matrix direct product) :</li>
+        </ul>
+      </li>
+    </ul>
   </li>
-</ul>]]></content><author><name>about me</name></author><category term="독서정리" /><summary type="html"><![CDATA[Contents Contents]]></summary></entry><entry><title type="html">영화리뷰 - 나쁜 종자(1956)</title><link href="http://localhost:4000/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0/2024/01/14/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0-%EB%82%98%EC%81%9C-%EC%A2%85%EC%9E%90.html" rel="alternate" type="text/html" title="영화리뷰 - 나쁜 종자(1956)" /><published>2024-01-14T00:00:00+09:00</published><updated>2024-01-14T00:00:00+09:00</updated><id>http://localhost:4000/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0/2024/01/14/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0-%EB%82%98%EC%81%9C-%EC%A2%85%EC%9E%90</id><content type="html" xml:base="http://localhost:4000/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0/2024/01/14/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0-%EB%82%98%EC%81%9C-%EC%A2%85%EC%9E%90.html"><![CDATA[<p>※ 리뷰에는 스포가 포함되어 있음을 알린다.</p>
+</ul>
+
+\[A\otimes B = \begin{bmatrix}a_{0,0}B&amp;a_{0,1}B&amp;\cdots&amp;a_{0,{n-1}}B\\ a_{1, 0}B&amp;a_{1, 1}B&amp; &amp; \\ \vdots&amp; &amp;\ddots&amp;\vdots\\ a_{n-1,0}B&amp; &amp;\cdots&amp;a_{n-1,n-1}B\end{bmatrix}\]
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">np</span><span class="p">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="n">np</span><span class="p">.</span><span class="n">outer</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="n">np</span><span class="p">.</span><span class="n">cross</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="n">np</span><span class="p">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="c1"># 스칼라 값 가능
+</span><span class="n">np</span><span class="p">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="c1"># 스칼라 값 불가능
+</span><span class="n">np</span><span class="p">.</span><span class="n">kron</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>dot이나 matmul 연산에서 1차 tensor(그냥 array)끼리 연산하면 스칼라가 나오고 1차 tensor랑 2차 tensor끼리 연산하면 1차 tensor가 나오고 2차 이상끼리 하면 2차 이상끼리 나온다</p>
+
+<h2 id="ch5-미분과-행렬-미분">Ch5. 미분과 행렬 미분</h2>
+<h2 id="ch6-신경망의-데이터-흐름">Ch6. 신경망의 데이터 흐름</h2>
+<h2 id="ch7-역전파">Ch7. 역전파</h2>
+<h2 id="ch8-경사하강법">Ch8. 경사하강법</h2>
+<h2 id="ch9-부록">Ch9. 부록</h2>]]></content><author><name>about me</name></author><category term="독서정리" /><summary type="html"><![CDATA[Contents Contents]]></summary></entry><entry><title type="html">영화리뷰 - 나쁜 종자(1956)</title><link href="http://localhost:4000/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0/2024/01/14/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0-%EB%82%98%EC%81%9C-%EC%A2%85%EC%9E%90.html" rel="alternate" type="text/html" title="영화리뷰 - 나쁜 종자(1956)" /><published>2024-01-14T00:00:00+09:00</published><updated>2024-01-14T00:00:00+09:00</updated><id>http://localhost:4000/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0/2024/01/14/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0-%EB%82%98%EC%81%9C-%EC%A2%85%EC%9E%90</id><content type="html" xml:base="http://localhost:4000/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0/2024/01/14/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0-%EB%82%98%EC%81%9C-%EC%A2%85%EC%9E%90.html"><![CDATA[<p>※ 리뷰에는 스포가 포함되어 있음을 알린다.</p>
 
 <p>해당 영화는 저작권이 만료되어 유튜브를 통해 무료로 관람할 수 있다.</p>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/-WsdcSwlIAo?si=kYqsObhhXFHEp_1q" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
