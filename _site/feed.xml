@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-01-24T14:09:57+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">blog</title><subtitle>항상 건강하고 행복하세요
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-01-25T00:22:26+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">blog</title><subtitle>항상 건강하고 행복하세요
 </subtitle><author><name>about me</name></author><entry><title type="html">독서정리 - 딥러닝을 위한 수학 (공사중)</title><link href="http://localhost:4000/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC/2024/01/17/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC-%EB%94%A5%EB%9F%AC%EB%8B%9D%EC%9D%84-%EC%9C%84%ED%95%9C-%EC%88%98%ED%95%99.html" rel="alternate" type="text/html" title="독서정리 - 딥러닝을 위한 수학 (공사중)" /><published>2024-01-17T00:00:00+09:00</published><updated>2024-01-17T00:00:00+09:00</updated><id>http://localhost:4000/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC/2024/01/17/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC-%EB%94%A5%EB%9F%AC%EB%8B%9D%EC%9D%84-%EC%9C%84%ED%95%9C-%EC%88%98%ED%95%99</id><content type="html" xml:base="http://localhost:4000/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC/2024/01/17/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC-%EB%94%A5%EB%9F%AC%EB%8B%9D%EC%9D%84-%EC%9C%84%ED%95%9C-%EC%88%98%ED%95%99.html"><![CDATA[<h1 id="contents">Contents</h1>
 <ul id="markdown-toc">
   <li><a href="#contents" id="markdown-toc-contents">Contents</a>    <ul>
@@ -182,7 +182,7 @@ label $y$와 feature vector $x=(x_0,x_1,\dots,x_{n-1})$가 있다고 할 때 $x$
   </li>
   <li>variation
     <ul>
-      <li>range : $max(x) - min(x)$</li>
+      <li>range : $\max(x) - \min(x)$</li>
       <li>mean deviation : $MD=\frac{1}{n}\sum_i^{n-1} \vert \bar{x}-x_i\vert$</li>
       <li>biased sample variance : $s_n^2=\frac{1}{n}\sum_i^{n-1}(\bar{x}-x_i)^2$</li>
       <li>unbiased sample variance : $s^2=\frac{1}{n-1}\sum_i^{n-1}(\bar{x}-x_i)^2$</li>
@@ -248,7 +248,7 @@ p-value가 특정 threshold($\alpha$)보다 작으면 $H_0$를 reject 하고 $H_
   <li>confidence interval (CI) : 예를 들어 95%의 CI라고 하면 동일한 방식으로 100번 표본을 뽑아서 신뢰 구간을 구하면 그 중 95개가 실제 모평균을 포함하게 된다는 뜻이다. 그냥 모평균이 CI에 있을 확률이 95%라고 이해해도 된다. p-value가 $\alpha$보다 작으면 $H_0$를 포함하지 않는 $CI_\alpha$가 존재한다.</li>
   <li>size effect : 두 데이터 간의 평균 차이를 표준 편차로 나눈 값으로 두 데이터의 평균 차이가 얼마나 의미있는 차이인지 나타낸다. 그냥 평균 차이를 표준화한 지표라고 보면 된다.
     <ul>
-      <li>e.g. cohen’s d : 해석하는 사람마다 차이가 있는데 대략 0.2 정도면 effect가 낮고 0.8 정도면 effect가 높다고 보면 됨</li>
+      <li>e.g. cohen’s d : 해석하는 사람마다 차이가 있는데 대략 0.2 정도면 effect가 낮고 0.8 정도면 effect가 높다고 보면 된다.</li>
     </ul>
   </li>
 </ul>
@@ -314,6 +314,8 @@ p-value가 특정 threshold($\alpha$)보다 작으면 $H_0$를 reject 하고 $H_
 </span><span class="n">np</span><span class="p">.</span><span class="n">kron</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 </code></pre></div></div>
 
+<hr />
+
 <p>dot이나 matmul 연산에서 1차 tensor(그냥 array)끼리 연산하면 스칼라가 나오고 1차 tensor랑 2차 tensor끼리 연산하면 1차 tensor가 나오고 2차 이상끼리 하면 2차 이상끼리 나온다.</p>
 
 \[\begin{bmatrix}x^{\prime} \\y^{\prime}\\1\end{bmatrix}=\begin{bmatrix}a&amp;b&amp;l\\c&amp;d&amp;m\\0&amp;0&amp;1\end{bmatrix}\begin{bmatrix}x\\y\\1\end{bmatrix}\]
@@ -354,9 +356,94 @@ p-value가 특정 threshold($\alpha$)보다 작으면 $H_0$를 reject 하고 $H_
 
 \[det(A)=\sum_{j=0}^{n-1}a_{0j}C_{0j}=\sum_{j=0}^{n-1}a_{j0}C_{j0}\]
 
+<p>inverse matrix가 존재하면 invertible matrix(nonsingular matrix, nondegenerate matrix)라고 부르고 없으면 singular matrix라고 한다.</p>
+
+\[AA^{-1}=A^{-1}A=I,\ (AB)^{-1}=B^{-1}A^{-1}\]
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">inv</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>symmetric matrix의 inverse matrix가 존재한다고 할 때, 그 inverse matrix는 symmetric matrix다. symmetric matrix 끼리의 연산에서는 교환법칙 $AB=BA$이 성립한다.</p>
+
 <ul>
-  <li>inverse matrix</li>
+  <li>orthogonal matrix : $AA^{\top}=A^{\top}A=I,\ A^{\top}=A^{-1}$</li>
 </ul>
+
+<p>복소수 행렬 $U$가 $U^{\ast}U=UU^{\ast}=I$를 충족할 때 $U$를 unitary matrix, $U^{\ast}$를 conjugate transpose(hermitian adjoint)라고 부른다. conjugate transpose는 matrix를 transpose 한 후에 각 성분들에 conjugate 연산(복소켤레)을 한 것이다.</p>
+
+<ul>
+  <li>hermitian matrix : 자신의 conjugate transpose와 동일한 matrix</li>
+</ul>
+
+<hr />
+
+\[\begin{align} Av=\lambda v\ (v\ne \vec{0})\\(A-I\lambda)v=0\\ det(A-I\lambda)=0 \end{align}\]
+
+<p>행렬식을 전개해서 나온 다항식을 characteristic polynomial이라고 하고 characteristic polynomial을 0으로 둬서 만든 방정식을 characteristic equation이라고 한다. triangular matrix나 diagonal matrix는 determinant가 대각성분 성분들 곱한거니까 main diagonal이 eigenvalue들이다.</p>
+
+\[k=x^{\top}Ax, \forall x\ne \vec{0}\]
+
+<ul>
+  <li>symmetric matrix의 definiteness
+    <ul>
+      <li>$k &gt; 0$이면 positive definite $\longrightarrow$ 모든 eigenvalue가 양수</li>
+      <li>$k&lt;0$이면 negative definite $\longrightarrow$ 모든 eigenvalue가 음수</li>
+      <li>해당 안되면 indefinite</li>
+    </ul>
+  </li>
+</ul>
+
+<p>0을 포함시켜서 positive 또는 negative semidefinite도 가능하다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">eigenvalues</span><span class="p">,</span> <span class="n">eigenvectors</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">eig</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="c1"># 반환되는 eigenvector는 unit vector
+</span><span class="n">eigenvalues</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">eigvals</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</code></pre></div></div>
+
+<hr />
+
+<ul>
+  <li>$p$-norm ($L_p$ norm)
+    <ul>
+      <li>L1 norm(manhattan distance)</li>
+      <li>L2 norm(euclidean distance)</li>
+    </ul>
+  </li>
+</ul>
+
+\[\Vert x\Vert_p=(\sum_i\vert x_i\vert^p)^{\frac{1}{p}}\]
+
+<ul>
+  <li>$L_{\infty}$ norm (chebyshev distance)</li>
+</ul>
+
+\[L_{\infty}=\max \vert x_i\vert\]
+
+<p>distance는 두 벡터 차에 대해서 norm 계산하는 것이다.</p>
+
+<ul>
+  <li>covariance matrix</li>
+</ul>
+
+\[\Sigma_{ij}=\frac{1}{n-1}\sum_{k=0}^{n-1}(x_{ki}-\bar{x}_i)(x_{kj}-\bar{x}_j)\]
+
+<ul>
+  <li>mahalanobis distance : 데이터의 분산을 고려한 distance</li>
+</ul>
+
+\[D_M=\sqrt{(x-\mu)^{\top}\Sigma^{-1}(x-\mu)}\]
+
+<p>$\mu$는 벡터의 각 feature 값의 평균값으로 구성된 벡터지만 $\mu$ 대신 공간 상의 임의 벡터를 사용해서 distance를 구할 수 있다. 각 label에 속한 벡터들의 평균 벡터인 centroid vector를 계산해서 임의 벡터가 어떤 label의 centroid vector와 가까운지 계산하는 식으로 nearest centroid classifier를 만들 수 있다. 이상치 검출하는데 mahalanobis distance가 사용될 수 있다.</p>
+
+<ul>
+  <li>KL-divergence(Kullback-Leibler divergence, relative entropy) : 두 확률 분포 사이의 distance를 측정</li>
+</ul>
+
+\[D_{KL}(P\Vert Q)=\sum_x P(x)log_2(\frac{P(x)}{Q(x)})\]
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">np</span><span class="p">.</span><span class="n">cov</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">rowvar</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span> <span class="c1"># covariance matrix 반환하고 unbiased estimator 이용(n-1)
+</span><span class="n">np</span><span class="p">.</span><span class="n">std</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># 표준편차 반환하고 ddof가 1이면 unbiased estimator 이용
+</span><span class="n">scipy</span><span class="p">.</span><span class="n">spatial</span><span class="p">.</span><span class="n">distance</span><span class="p">.</span><span class="n">mahalanobis</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">SI</span><span class="p">)</span> <span class="c1"># SI는 inverse covariance matrix
+</span></code></pre></div></div>
 
 <h2 id="ch5-미분과-행렬-미분">Ch5. 미분과 행렬 미분</h2>
 <h2 id="ch6-신경망의-데이터-흐름">Ch6. 신경망의 데이터 흐름</h2>
