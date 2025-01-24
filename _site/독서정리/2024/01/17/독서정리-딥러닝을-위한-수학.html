@@ -503,16 +503,30 @@ p-value가 특정 threshold($\alpha$)보다 작으면 $H_0$를 reject 하고 $H_
 
 \[D_{KL}(P\Vert Q)=\sum_x P(x)log_2(\frac{P(x)}{Q(x)})\]
 
+<p>KL-divergence의 단위는 bit이고 자연로그 사용하면 nat($1$ nat = $log_2{e}$ bit)가 된다. $D_{KL}$은 대칭적이지 않아서 수학적 의미에서는 distance function은 아니지만 distance 측정에 사용할 수는 있다.</p>
+
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">np</span><span class="p">.</span><span class="n">cov</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">rowvar</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span> <span class="c1"># covariance matrix 반환하고 unbiased estimator 이용(n-1)
 </span><span class="n">np</span><span class="p">.</span><span class="n">std</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># 표준편차 반환하고 ddof가 1이면 unbiased estimator 이용
 </span><span class="n">scipy</span><span class="p">.</span><span class="n">spatial</span><span class="p">.</span><span class="n">distance</span><span class="p">.</span><span class="n">mahalanobis</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">SI</span><span class="p">)</span> <span class="c1"># SI는 inverse covariance matrix
+</span><span class="n">scipy</span><span class="p">.</span><span class="n">special</span><span class="p">.</span><span class="n">rel_entr</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">).</span><span class="nb">sum</span><span class="p">()</span> <span class="c1"># p, q는 이산확률분포 1차 텐서
 </span></code></pre></div></div>
 
-<h2 id="ch5-미분과-행렬-미분">Ch5. 미분과 행렬 미분</h2>
-<h2 id="ch6-신경망의-데이터-흐름">Ch6. 신경망의 데이터 흐름</h2>
-<h2 id="ch7-역전파">Ch7. 역전파</h2>
-<h2 id="ch8-경사하강법">Ch8. 경사하강법</h2>
-<h2 id="ch9-부록">Ch9. 부록</h2>
+<hr />
+
+<ul>
+  <li>PCA(principal component analysis)
+    <ul>
+      <li>principal component</li>
+    </ul>
+  </li>
+  <li>SVD(singular value decomposition)
+    <h2 id="ch5-미분과-행렬-미분">Ch5. 미분과 행렬 미분</h2>
+    <h2 id="ch6-신경망의-데이터-흐름">Ch6. 신경망의 데이터 흐름</h2>
+    <h2 id="ch7-역전파">Ch7. 역전파</h2>
+    <h2 id="ch8-경사하강법">Ch8. 경사하강법</h2>
+    <h2 id="ch9-부록">Ch9. 부록</h2>
+  </li>
+</ul>
 
   </div>
 
