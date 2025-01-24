@@ -377,7 +377,49 @@ p-value가 특정 threshold($\alpha$)보다 작으면 $H_0$를 reject 하고 $H_
 </span><span class="n">np</span><span class="p">.</span><span class="n">kron</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p>dot이나 matmul 연산에서 1차 tensor(그냥 array)끼리 연산하면 스칼라가 나오고 1차 tensor랑 2차 tensor끼리 연산하면 1차 tensor가 나오고 2차 이상끼리 하면 2차 이상끼리 나온다</p>
+<p>dot이나 matmul 연산에서 1차 tensor(그냥 array)끼리 연산하면 스칼라가 나오고 1차 tensor랑 2차 tensor끼리 연산하면 1차 tensor가 나오고 2차 이상끼리 하면 2차 이상끼리 나온다.</p>
+
+\[\begin{bmatrix}x^{\prime} \\y^{\prime}\\1\end{bmatrix}=\begin{bmatrix}a&amp;b&amp;l\\c&amp;d&amp;m\\0&amp;0&amp;1\end{bmatrix}\begin{bmatrix}x\\y\\1\end{bmatrix}\]
+
+<p>affine transformation에서 bias를 matrix 안에 포함시킬 수도 있다.</p>
+
+<ul>
+  <li>trace</li>
+</ul>
+
+\[trA=\sum^{n-1}_{i=0}a_{ii}\]
+
+\[tr(AB)=tr(BA)\]
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">np</span><span class="p">.</span><span class="n">diag</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="c1"># 1차 tensor 반환
+</span><span class="n">np</span><span class="p">.</span><span class="n">trace</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">matrix_power</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="c1"># A**n 반환
+</span><span class="n">np</span><span class="p">.</span><span class="n">identity</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="c1"># np.eye(n)랑 동일
+</span><span class="n">np</span><span class="p">.</span><span class="n">triu</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="c1"># upper triangular matrix 반환
+</span><span class="n">np</span><span class="p">.</span><span class="n">tril</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="c1"># lower triangular matrix 반환
+</span></code></pre></div></div>
+
+<ul>
+  <li>$A$의 $(1,1)$-minor matrix ($A_{11}$)</li>
+</ul>
+
+\[A=\begin{bmatrix}1&amp;2&amp;3\\4&amp;5&amp;6\\7&amp;8&amp;9 \end{bmatrix},\ A_{11}=\begin{bmatrix}1&amp;3\\7&amp;9\end{bmatrix}\]
+
+<ul>
+  <li>cofactor $C_{ij}$</li>
+</ul>
+
+\[C_{ij}=(-1)^{i+j+2} det(A_{ij})\]
+
+<ul>
+  <li>determinant $A$</li>
+</ul>
+
+\[det(A)=\sum_{j=0}^{n-1}a_{0j}C_{0j}=\sum_{j=0}^{n-1}a_{j0}C_{j0}\]
+
+<ul>
+  <li>inverse matrix</li>
+</ul>
 
 <h2 id="ch5-미분과-행렬-미분">Ch5. 미분과 행렬 미분</h2>
 <h2 id="ch6-신경망의-데이터-흐름">Ch6. 신경망의 데이터 흐름</h2>
