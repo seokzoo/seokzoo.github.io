@@ -514,19 +514,44 @@ p-value가 특정 threshold($\alpha$)보다 작으면 $H_0$를 reject 하고 $H_
 <hr />
 
 <ul>
-  <li>PCA(principal component analysis)
+  <li>PCA(principal component analysis) : principal component는 data point가 가장 길게 흩어져 있는 방향을 나타내고 이후에 구하는 성분들은 이전에 구한 모든 성분과 수직이다.
     <ul>
-      <li>principal component</li>
+      <li>구하는 절차
+        <ol>
+          <li>관측값에서 평균을 빼는 mean centering 진행</li>
+          <li>$\Sigma$(covariance matrix) 구하기</li>
+          <li>$\Sigma$의 eigenvalue와 eigenvector를 구하고 eigenvalue를 정렬한 다음 큰 값들을 적절히 선택</li>
+          <li>선택한 eigenvalue에 대응되는 eigenvector로 변환 행렬 $W$를 만든다</li>
+          <li>$W$에 기존 데이터를 곱해서 derived variable를 구한다</li>
+        </ol>
+      </li>
     </ul>
   </li>
-  <li>SVD(singular value decomposition)
-    <h2 id="ch5-미분과-행렬-미분">Ch5. 미분과 행렬 미분</h2>
-    <h2 id="ch6-신경망의-데이터-흐름">Ch6. 신경망의 데이터 흐름</h2>
-    <h2 id="ch7-역전파">Ch7. 역전파</h2>
-    <h2 id="ch8-경사하강법">Ch8. 경사하강법</h2>
-    <h2 id="ch9-부록">Ch9. 부록</h2>
-  </li>
+  <li>SVD(singular value decomposition)</li>
 </ul>
+
+\[A=U\Sigma V^{\top}\]
+
+<ul>
+  <li>SVD로 PCA 구하기</li>
+  <li>SVD로 Moore-Penrose pseudoinverse 구하기</li>
+</ul>
+
+<p>이때 $U, V$는 orthogonal matrix고 $\Sigma$는 대각 성분이 $A^{\top}A$의 positive eigenvalue의 제곱근인 rectangular diagonal matrix다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># PCA
+</span><span class="n">pca</span> <span class="o">=</span> <span class="n">sklearn</span><span class="p">.</span><span class="n">decomposition</span><span class="p">.</span><span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+<span class="n">pca</span><span class="p">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="c1"># 변환 행렬 형성
+</span><span class="n">d</span> <span class="o">=</span> <span class="n">pca</span><span class="p">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="c1"># 데이터 변환
+# SVD
+</span><span class="n">u</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">vt</span> <span class="o">=</span> <span class="n">scipy</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">svd</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="c1"># 반환된 s는 행렬이 아니고 대각 성분을 담은 1차 tensor
+</span></code></pre></div></div>
+
+<h2 id="ch5-미분과-행렬-미분">Ch5. 미분과 행렬 미분</h2>
+<h2 id="ch6-신경망의-데이터-흐름">Ch6. 신경망의 데이터 흐름</h2>
+<h2 id="ch7-역전파">Ch7. 역전파</h2>
+<h2 id="ch8-경사하강법">Ch8. 경사하강법</h2>
+<h2 id="ch9-부록">Ch9. 부록</h2>
 
   </div>
 
