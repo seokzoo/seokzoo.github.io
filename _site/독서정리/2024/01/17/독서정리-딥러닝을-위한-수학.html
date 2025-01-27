@@ -328,6 +328,11 @@ p-value가 특정 threshold($\alpha$)보다 작으면 $H_0$를 reject 하고 $H_
 </span><span class="n">x</span><span class="p">[</span><span class="n">np</span><span class="p">.</span><span class="n">newaxis</span><span class="p">,:]</span>
 <span class="c1"># array([[4, 3, 7]]) ; shape = (1, 3)
 </span></code></pre></div></div>
+<ul>
+  <li>vector를 이용한 diagonal matrix의 표기법</li>
+</ul>
+
+\[\vec{x}=\begin{bmatrix}x_0\\x_1\\\vdots\\x_n\end{bmatrix},\ \text{diag}(\vec{x})=\begin{bmatrix}x_0&amp;0&amp;\cdots&amp;0\\0&amp;x_1&amp;\cdots&amp;0\\\vdots&amp;\vdots&amp; &amp;\vdots\\0&amp;0&amp;\cdots&amp;x_n\end{bmatrix}\]
 
 <ul>
   <li>block matrix : 더 작은 matrix 들로 구성된 matrix</li>
@@ -580,7 +585,18 @@ p-value가 특정 threshold($\alpha$)보다 작으면 $H_0$를 reject 하고 $H_
   <li>closed form function : 유한한 종류와 개수의 연산으로 이루어진 함수</li>
   <li>scalar field : 벡터를 스칼라로 대응시키는 함수 ($f:\mathbb{R}^n\rightarrow\mathbb{R}$)</li>
   <li>vector field : 벡터를 벡터로 대응시키는 함수 ($f:\mathbb{R}^n\rightarrow\mathbb{R}^n$)</li>
-  <li>gradient</li>
+  <li>행렬 미분 표기 방법
+    <ul>
+      <li>numerator layout : 미분 행렬이 원래 출력이랑 shape이 같게 표현</li>
+      <li>denominator layout : 미분 행렬이 입력이랑 shape이 같게 표현</li>
+    </ul>
+  </li>
+</ul>
+
+<p>하나의 표기 방법에 transpose를 취하면 다른 표현법이 된다.</p>
+
+<ul>
+  <li>gradient (denominator layout으로 표현)</li>
 </ul>
 
 \[\nabla f(\begin{bmatrix}x_0\\x_1\\\vdots\\x_n\end{bmatrix})=\nabla f(x_0,x_1,\dots,x_n)=\begin{bmatrix}\frac{\partial f}{\partial x_0}\\\frac{\partial f}{\partial x_1}\\\vdots\\\frac{\partial f}{\partial x_n}\end{bmatrix}\]
@@ -591,6 +607,24 @@ p-value가 특정 threshold($\alpha$)보다 작으면 $H_0$를 reject 하고 $H_
 </ul>
 
 \[D_u f(\vec{x})=u\cdot \nabla f(\vec{x})=u^{\top}\nabla f(\vec{x})=\Vert u\Vert \Vert\nabla f(\vec{x})\Vert \cos\theta\]
+
+<p>스칼라를 argument로 받고 벡터나 행렬을 반환하는 함수의 derivative를 tangent vector, tangent matrix라고 한다.</p>
+
+<p>numerator layout에서 행렬 $X$를 argument로 받고 스칼라를 반환하는 함수의 derivative의 형태는 $X^{\top}$이다.</p>
+
+<ul>
+  <li>Jacobian matrix : 벡터값 함수 $f$의 벡터 $x$에 대한 derivative</li>
+</ul>
+
+\[J_x=\frac{\partial f}{\partial x}=\begin{bmatrix}\nabla f_0(x)^{\top}\\\nabla f_1(x)^{\top}\\\vdots\\\nabla f_{n-1}(x)^{\top}\end{bmatrix}=\begin{bmatrix}\frac{\partial f_0}{\partial x_0}&amp;\frac{\partial f_0}{\partial x_1}&amp;\cdots&amp;\frac{\partial f_0}{\partial x_{m-1}}\\\frac{\partial f_1}{\partial x_0}&amp;\frac{\partial f_1}{\partial x_1}&amp;\cdots&amp;\frac{\partial f_1}{\partial x_{m-1}}\\\vdots&amp;\vdots&amp; &amp;\vdots\\\frac{\partial f_{n-1}}{\partial x_0}&amp;\frac{\partial f_{n-1}}{\partial x_1}&amp;\cdots&amp;\frac{\partial f_{n-1}}{\partial x_{m-1}}\end{bmatrix}\]
+
+<p>Jacobian matrix는 점 $x_p$ 부근에서 벡터값 함수가 어떻게 변화하는지 나타낸다. Jacobian matrix의 eigenvalue가 모두 양수이면 주변 벡터의 방향성 형태가 unstable node로 봉우리(source)같은 형태고 모두 음수이면 stable node로 구덩이(sink)같은 형태다. 만약 부호가 서로 다르면 saddle point이다. 마지막으로 eigenvalue가 복소수 일때 실수부가 양수면 unstable spiral이고 음수면 stable spiral이다.</p>
+
+<ul>
+  <li>Newton’s method로 벡터를 argument로 받는 벡터 함수의 해 구하기</li>
+</ul>
+
+\[\]
 
 <h2 id="ch6-신경망의-데이터-흐름">Ch6. 신경망의 데이터 흐름</h2>
 <h2 id="ch7-역전파">Ch7. 역전파</h2>
