@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-01-27T20:04:17+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">blog</title><subtitle>항상 건강하고 행복하세요
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-01-27T21:11:16+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">blog</title><subtitle>항상 건강하고 행복하세요
 </subtitle><author><name>about me</name></author><entry><title type="html">독서정리 - 딥러닝을 위한 수학 (공사중)</title><link href="http://localhost:4000/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC/2024/01/17/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC-%EB%94%A5%EB%9F%AC%EB%8B%9D%EC%9D%84-%EC%9C%84%ED%95%9C-%EC%88%98%ED%95%99.html" rel="alternate" type="text/html" title="독서정리 - 딥러닝을 위한 수학 (공사중)" /><published>2024-01-17T00:00:00+09:00</published><updated>2024-01-17T00:00:00+09:00</updated><id>http://localhost:4000/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC/2024/01/17/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC-%EB%94%A5%EB%9F%AC%EB%8B%9D%EC%9D%84-%EC%9C%84%ED%95%9C-%EC%88%98%ED%95%99</id><content type="html" xml:base="http://localhost:4000/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC/2024/01/17/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC-%EB%94%A5%EB%9F%AC%EB%8B%9D%EC%9D%84-%EC%9C%84%ED%95%9C-%EC%88%98%ED%95%99.html"><![CDATA[<h1 id="contents">Contents</h1>
 <ul id="markdown-toc">
   <li><a href="#contents" id="markdown-toc-contents">Contents</a>    <ul>
@@ -561,7 +561,45 @@ p-value가 특정 threshold($\alpha$)보다 작으면 $H_0$를 reject 하고 $H_
   <li>Newton’s method로 벡터를 argument로 받는 벡터 함수의 해 구하기</li>
 </ul>
 
-\[\]
+\[x_{n+1}=x_n-\frac{f(x_n)}{f^{\prime}(x_n)}\]
+
+\[x_{n+1}=x_n-J^{-1}\vert_{x=x_n} f(x_n)\]
+
+<ul>
+  <li>Hessian matrix : scalar field의 second derivative인데 vector field로도 확장할 수 있다</li>
+</ul>
+
+\[H_f=J(\nabla f)=\begin{bmatrix}\frac{\partial^2 f}{\partial x_0^2}&amp;\frac{\partial^2 f}{\partial x_0\partial x_1}&amp;\cdots&amp;\frac{\partial^2 f}{\partial x_0\partial x_{n-1}}\\\frac{\partial^2 f}{\partial x_1\partial x_0}&amp;\frac{\partial^2 f}{\partial x_1^2}&amp;\cdots&amp;\frac{\partial^2 f}{\partial x_1\partial x_{n-1}}\\\vdots&amp;\vdots&amp; &amp;\vdots\\\frac{\partial^2 f}{\partial x_{n-1}\partial x_0}&amp;\frac{\partial^2 f}{\partial x_{n-1}\partial x_1}&amp;\cdots&amp;\frac{\partial^2 f}{\partial x_{n-1}^2}\end{bmatrix}\]
+
+<p>Hessian matrix로 stationary point의 극값 판단에 사용할 수 있다. Hessian matrix의 eigenvalue가 모두 양수면 local minimum point이고 모두 음수이면 local maximum point이고 부호가 다르면 saddle point이다.</p>
+
+<ul>
+  <li>vector field에서 Hessian matrix는 3차 tensor다</li>
+</ul>
+
+\[H_f=\begin{bmatrix}H_{f_0}\\H_{f_1}\\\vdots\\H_{f_{m-1}} \end{bmatrix}\]
+
+<ul>
+  <li>optimization
+    <ul>
+      <li>first-order optimization method : first derivative에만 의존하는 방법</li>
+      <li>second-order optimization method : second derivative도 사용하는 방법</li>
+    </ul>
+  </li>
+  <li>gradient decent</li>
+</ul>
+
+\[x_{n+1}=x_{n}-\eta f^{\prime}(x_n)\]
+
+\[x_{n+1}=x_{n}-\eta \nabla f(x_n)\]
+
+<ul>
+  <li>Taylor series approximation을 고려한 Newton’s method</li>
+</ul>
+
+\[\begin{align}f(x)\approx f(a)+f^{\prime}(a)(x-a)+\frac{1}{2}f^{\prime\prime}(a)(x-a)^2\\f(x+\Delta x)\approx f(x)+f^{\prime}(x)\Delta x+\frac{1}{2}f^{\prime\prime}(x)(\Delta x)^2\\\frac{d}{d(\Delta x)}f(x+\Delta x)\approx f^{\prime}(x)+f^{\prime\prime}(x)\Delta x\\f^{\prime}(x+\Delta x)=0,\ \Delta x=-\frac{f^{\prime}(x)}{f^{\prime\prime}(x)} \\x_{n+1}=x_n-\frac{f^{\prime}(x_n)}{f^{\prime\prime}(x_n)}\\x_{n+1}=x_n-H_f^{-1}\vert_{x=x_n}\nabla f(x_n) \end{align}\]
+
+<p>inverse Hessian matrix를 구해야되는데 시간 복잡도가 대략 $\mathcal{O}(k^3)$라서 실제로 사용하기 어렵다.</p>
 
 <h2 id="ch6-신경망의-데이터-흐름">Ch6. 신경망의 데이터 흐름</h2>
 <h2 id="ch7-역전파">Ch7. 역전파</h2>
