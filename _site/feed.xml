@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-01-28T22:08:30+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">blog</title><subtitle>항상 건강하고 행복하세요
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-01-29T17:00:06+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">blog</title><subtitle>항상 건강하고 행복하세요
 </subtitle><author><name>about me</name></author><entry><title type="html">독서정리 - 영어회화 핵심패턴 233</title><link href="http://localhost:4000/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC/2024/01/27/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC-%EC%98%81%EC%96%B4%ED%9A%8C%ED%99%94-%ED%95%B5%EC%8B%AC%ED%8C%A8%ED%84%B4-233.html" rel="alternate" type="text/html" title="독서정리 - 영어회화 핵심패턴 233" /><published>2024-01-27T00:00:00+09:00</published><updated>2024-01-27T00:00:00+09:00</updated><id>http://localhost:4000/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC/2024/01/27/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC-%EC%98%81%EC%96%B4%ED%9A%8C%ED%99%94-%ED%95%B5%EC%8B%AC%ED%8C%A8%ED%84%B4-233</id><content type="html" xml:base="http://localhost:4000/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC/2024/01/27/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC-%EC%98%81%EC%96%B4%ED%9A%8C%ED%99%94-%ED%95%B5%EC%8B%AC%ED%8C%A8%ED%84%B4-233.html"><![CDATA[<ul>
   <li>가려던 참이에요 : I’m about to get going</li>
   <li>나가려던 참이에요 : I’m about to head out</li>
@@ -825,7 +825,7 @@ p-value가 특정 threshold($\alpha$)보다 작으면 $H_0$를 reject 하고 $H_
     <ul>
       <li>element-wise
         <ul>
-          <li>hadamard product : $c_{ij}=a_{ij} b_{ij}$</li>
+          <li>hadamard product : $C=A\odot B,\ c_{ij}=a_{ij} b_{ij}$</li>
         </ul>
       </li>
       <li>transpose : numpy에서 1차원 tensor인 array는 transpose 안 먹힌다</li>
@@ -1175,7 +1175,48 @@ p-value가 특정 threshold($\alpha$)보다 작으면 $H_0$를 reject 하고 $H_
 </ul>
 
 <h2 id="ch7-역전파">Ch7. 역전파</h2>
+<ul>
+  <li>Loss function</li>
+</ul>
+
+\[\begin{align} L(\theta;x,y)=L(w_1,w_2,\dots,w_n,b_1,b_2,\dots,b_m;x,y)\\\nabla L(\theta;x,y)\end{align}\]
+
+<ul>
+  <li>MSE(mean squared error)</li>
+</ul>
+
+\[\text{MSE}=\frac{1}{n}\sum(y-y_{\text{pred}})^2\]
+
+<ul>
+  <li>backpropagation</li>
+</ul>
+
+\[\frac{\partial L}{\partial w}=\frac{\partial L}{\partial y}\frac{\partial y}{\partial w}\]
+
+<ul>
+  <li>confusion matrix(contingency table) : 한 축은 실제 label로 하고 한 축은 모델이 예측한 label로 나타낸 matrix
+    <ul>
+      <li>true positive</li>
+      <li>false positive : positive로 예상했으나 실제론 negative인 경우</li>
+      <li>true negative</li>
+      <li>false negative : negative로 예상했으나 실제론 positive인 경우</li>
+    </ul>
+  </li>
+</ul>
+
+\[\begin{align} \frac{\partial}{\partial x}(Wx+b)=W^{\top}\\\frac{\partial }{\partial W}(Wx+b)=x^{\top}\\\frac{\partial }{\partial b}(Wx+b)=1 \end{align}\]
+
+<ul>
+  <li>computation graph : 데이터 의존 관계와 필요한 연산자를 포함하여 forward pass랑 backward pass의 데이터 흐름을 나타낸 그래프
+    <ul>
+      <li>symbol-to-number : 데이터가 준비될 때 동적으로 그래프를 생성 e.g. pytorch</li>
+      <li>symbol-to-symbol : 그래프를 미리 정적으로 생성 e.g. tensorflow</li>
+    </ul>
+  </li>
+</ul>
+
 <h2 id="ch8-경사하강법">Ch8. 경사하강법</h2>
+
 <h2 id="ch9-부록">Ch9. 부록</h2>]]></content><author><name>about me</name></author><category term="독서정리" /><summary type="html"><![CDATA[Contents Contents]]></summary></entry><entry><title type="html">영화리뷰 - 나쁜 종자(1956)</title><link href="http://localhost:4000/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0/2024/01/14/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0-%EB%82%98%EC%81%9C-%EC%A2%85%EC%9E%90.html" rel="alternate" type="text/html" title="영화리뷰 - 나쁜 종자(1956)" /><published>2024-01-14T00:00:00+09:00</published><updated>2024-01-14T00:00:00+09:00</updated><id>http://localhost:4000/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0/2024/01/14/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0-%EB%82%98%EC%81%9C-%EC%A2%85%EC%9E%90</id><content type="html" xml:base="http://localhost:4000/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0/2024/01/14/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0-%EB%82%98%EC%81%9C-%EC%A2%85%EC%9E%90.html"><![CDATA[<p>※ 리뷰에는 스포가 포함되어 있음을 알린다.</p>
 
 <p>해당 영화는 저작권이 만료되어 유튜브를 통해 무료로 관람할 수 있다.</p>
