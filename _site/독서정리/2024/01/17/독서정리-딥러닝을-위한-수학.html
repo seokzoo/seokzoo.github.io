@@ -185,6 +185,7 @@ array([[ 0,  1,  2,  3],
         <ul>
           <li>Uniform distribution</li>
           <li>Normal distribution(bell curve, gaussian curve)</li>
+          <li>Bimodal distribution : 쌍봉낙타처럼 peak가 2개인 분포</li>
           <li>Beta distribution</li>
           <li>Gamma distribution</li>
         </ul>
@@ -729,7 +730,7 @@ p-value가 특정 threshold($\alpha$)보다 작으면 $H_0$를 reject 하고 $H_
 \[\begin{align} \frac{\partial}{\partial x}(Wx+b)=W^{\top}\\\frac{\partial }{\partial W}(Wx+b)=x^{\top}\\\frac{\partial }{\partial b}(Wx+b)=1 \end{align}\]
 
 <ul>
-  <li>computation graph : 데이터 의존 관계와 필요한 연산자를 포함하여 forward pass랑 backward pass의 데이터 흐름을 나타낸 그래프
+  <li>computational graph : 데이터 의존 관계와 필요한 연산자를 포함하여 forward pass랑 backward pass의 데이터 흐름을 나타낸 그래프
     <ul>
       <li>symbol-to-number : 데이터가 준비될 때 동적으로 그래프를 생성 e.g. pytorch</li>
       <li>symbol-to-symbol : 그래프를 미리 정적으로 생성 e.g. tensorflow</li>
@@ -738,6 +739,57 @@ p-value가 특정 threshold($\alpha$)보다 작으면 $H_0$를 reject 하고 $H_
 </ul>
 
 <h2 id="ch8-경사하강법">Ch8. 경사하강법</h2>
+<ul>
+  <li>Vanilla gradient descent</li>
+</ul>
+
+\[\begin{align}W\leftarrow W-\eta \nabla W\\x\leftarrow x-\eta\frac{\partial f}{\partial x} \end{align}\]
+
+<ul>
+  <li>batch training : 모든 training data를 한번에 사용해서 학습하는 방법</li>
+  <li>SGD(stochastic gradient training) : minibatch 단위로 가중치 갱신하는 방법으로 학습 시간도 줄어들고 기울기가 noisy해서 성능이 더 좋아질 수 있다</li>
+  <li>
+    <p>online learning : sample 하나하나에 gradient descent를 적용하여 학습하는 방법</p>
+  </li>
+  <li>momentum</li>
+</ul>
+
+\[\begin{align}v\leftarrow\mu v_{old}-\eta \frac{\partial f}{\partial w}\\w\leftarrow w+v \end{align}\]
+
+<ul>
+  <li>Nesterov momentum : 수렴이 좀 더 빠를 수도 있다</li>
+</ul>
+
+\[\begin{align}v\leftarrow \mu v_{old}-\eta \nabla f(w+\mu v_{old})\\ w\leftarrow w+v\end{align}\]
+
+<ul>
+  <li>RMSprop : decay term $\gamma$를 이용해서 gradient의 running average($m$)을 구한다. nonstationary한 process에서 robust한 알고리즘이어서 reinforcement learning에서 많이 사용된다.
+    <ul>
+      <li>nonstationary process : 시간에 따라 통계량이 변하는 process</li>
+      <li>stationary process</li>
+    </ul>
+  </li>
+</ul>
+
+\[\begin{align}m\leftarrow \gamma m_{old}+(1-\gamma)(\frac{\partial f}{\partial w})^2\\ v \leftarrow - \frac{\eta}{\sqrt{m}} \frac{\partial f}{\partial w}\\ x\leftarrow x+v \end{align}\]
+
+<ul>
+  <li>RMSprop with Nesterov momentum</li>
+</ul>
+
+\[\begin{align}m\leftarrow \gamma m_{old}+(1-\gamma)(\nabla f(w+\mu v))^2\\ v \leftarrow \mu v_{old} -\frac{\eta}{\sqrt{m}} \nabla f(w+\mu v)\\ w\leftarrow w+v \end{align}\]
+
+<ul>
+  <li>AdaGrad : $w_i$는 $w$의 각 성분에 모두 적용한다는 의미이고 $\tau$는 이전까지의 모든 step이다</li>
+</ul>
+
+\[\begin{align} v_i\leftarrow \frac{-\eta}{\sqrt{\sum_{\tau} (\frac{\partial f}{\partial w_i})^2}}\frac{\partial f}{\partial w_i}\\ w\leftarrow w+v\end{align}\]
+
+<ul>
+  <li>Adam : $m$은 first moment이고 $v$는 second moment이다. hat 붙은 항들은 bias correction terms으로 각 moment 값을 조정한다. $t$는 현재 timestep이다. $\epsilon$은 0으로 나누는 것을 막기 위해서 넣은 상수다.</li>
+</ul>
+
+\[\begin{align}m\leftarrow \beta_1m+(1-\beta_1)\frac{\partial f}{\partial w}\\ v\leftarrow \beta_2v+(1-\beta_2)(\frac{\partial f}{\partial w})^2\\ \hat{m}\leftarrow \frac{m}{1-\beta_1^t}\\\hat{v}\leftarrow\frac{v}{1-\beta_2^t}\\ w\leftarrow w-\frac{\eta}{\sqrt{\hat{v}}+\epsilon}\hat{m} \end{align}\]
 
 <h2 id="ch9-부록">Ch9. 부록</h2>
 
