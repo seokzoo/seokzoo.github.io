@@ -29,6 +29,8 @@ images:
 <div>
   <head>
     <title>{{ page.title }}</title>
+    <script src="{{ site.url }}/assets/js/medium-zoom.min.js"></script>
+    <script>window.addEventListener('load', function() { mediumZoom('[zoomable]', { margin: 24 }); });</script>
   </head>
   <div class="post-back">
     <a class="black-link" href="{{ site.url | relative_url }}"> ← {{ site.moving.back_to }} </a>
@@ -39,7 +41,7 @@ images:
       <table border="1" style="margin: auto; text-align: center;">
         <tbody>
           {% for image in page.images %}
-            <tr><td><img src="{{ image.image_path }}" alt="{{ image.title }}"/></td></tr>
+            <tr><td><img zoomable loading="lazy" src="{{ image.image_path }}" alt="{{ image.title }}"/></td></tr>
             <tr><td>{{ image.title }}</td></tr>
           {% endfor %}
         </tbody>
