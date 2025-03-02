@@ -507,9 +507,15 @@ p-value가 특정 threshold($\alpha$)보다 작으면 $H_0$를 reject 하고 $H_
   <li>KL-divergence(Kullback-Leibler divergence, relative entropy) : 두 확률 분포 사이의 distance를 측정</li>
 </ul>
 
-\[D_{KL}(P\Vert Q)=\sum_x P(x)log_2(\frac{P(x)}{Q(x)})\]
+\[D_{KL}(P\Vert Q)=E[\Delta I_i]=E[\log p_i-\log q_i]\]
 
-<p>KL-divergence의 단위는 bit이고 자연로그 사용하면 nat($1$ nat = $log_2{e}$ bit)가 된다. $D_{KL}$은 대칭적이지 않아서 수학적 의미에서는 distance function은 아니지만 distance 측정에 사용할 수는 있다.</p>
+\[=\sum_x p_i\log_2(\frac{p_i}{q_i})\]
+
+<p>KL-divergence는 두 확률 분포의 정보량 차이의 기댓값이다. 정보량은 $I_i=-\log{p_i}$이므로 원본 확률 분포 $p$와 비교 대상 확률 분포 $q$에 대해서 KL-divergence는 위 식처럼 정의할 수 있다.<br />
+KL-divergence의 단위는 bit이고 자연로그 사용하면 nat($1$ nat = $log_2{e}$ bit) 이다. $D_{KL}$은 symmetric하지 않아서 수학적 의미에서는 distance function은 아니지만 distance 측정에 사용할 수는 있다.<br />
+KL-divergence를 symmetric하게 개량한 Jensen-Shannon Divergence라는 것도 있다.</p>
+
+\[\text{JSD}(P,Q)=\frac{1}{2}D_{KL}(P\Vert\frac{P+Q}{2})+\frac{1}{2}D_{KL}(Q\Vert\frac{P+Q}{2})\]
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">np</span><span class="p">.</span><span class="n">cov</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">rowvar</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span> <span class="c1"># covariance matrix 반환하고 unbiased estimator 이용(n-1)
 </span><span class="n">np</span><span class="p">.</span><span class="n">std</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># 표준편차 반환하고 ddof가 1이면 unbiased estimator 이용

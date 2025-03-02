@@ -15,7 +15,7 @@ images:
   - image_path: /photos/hippocampus.jpeg
     title: 해마
   - image_path: /photos/caught_bigfoot.jpeg
-    title: 붙잡힌 빅풋
+    title: 붙잡힌 빅풋 완성판
   - image_path: /photos/bigfoot.png
     title: 빅풋
   - image_path: /photos/flowerpot.png
