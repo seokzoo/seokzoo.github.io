@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-03-04T16:25:20+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">blog</title><subtitle>항상 건강하고 행복하세요
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-03-05T17:35:45+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">blog</title><subtitle>항상 건강하고 행복하세요
 </subtitle><author><name>about me</name></author><entry><title type="html">독서정리 - 밑바닥부터 시작하는 딥러닝 5</title><link href="http://localhost:4000/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC/2025/03/04/%EB%B0%91%EB%B0%94%EB%8B%A5%EB%B6%80%ED%84%B0-%EC%8B%9C%EC%9E%91%ED%95%98%EB%8A%94-%EB%94%A5%EB%9F%AC%EB%8B%9D-5.html" rel="alternate" type="text/html" title="독서정리 - 밑바닥부터 시작하는 딥러닝 5" /><published>2025-03-04T00:00:00+09:00</published><updated>2025-03-04T00:00:00+09:00</updated><id>http://localhost:4000/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC/2025/03/04/%20%EB%B0%91%EB%B0%94%EB%8B%A5%EB%B6%80%ED%84%B0-%EC%8B%9C%EC%9E%91%ED%95%98%EB%8A%94-%EB%94%A5%EB%9F%AC%EB%8B%9D-5</id><content type="html" xml:base="http://localhost:4000/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC/2025/03/04/%EB%B0%91%EB%B0%94%EB%8B%A5%EB%B6%80%ED%84%B0-%EC%8B%9C%EC%9E%91%ED%95%98%EB%8A%94-%EB%94%A5%EB%9F%AC%EB%8B%9D-5.html"><![CDATA[<h1 id="contents">Contents</h1>
 <ul id="markdown-toc">
   <li><a href="#contents" id="markdown-toc-contents">Contents</a>    <ul>
@@ -33,6 +33,37 @@
 \[\int_{-\infty}^{\infty} p(\bar{x})(N\bar{x})d\bar{x}=N\int_{-\infty}^{\infty} p(\bar{x})\bar{x}d\bar{x}=N\mu\]
 
 \[\int_{-\infty}^{\infty}\mathbb{E}[(N\bar{x}-N\mu)^2]d\bar{x}=N^2\int_{-\infty}^{\infty}\mathbb{E}[(\bar{x}-\mu)^2]d\bar{x}=N^2\frac{\sigma^2}{N}=N\sigma^2\]
+
+<ul>
+  <li>생성 모델을 만드는 순서
+    <ol>
+      <li>Modeling : 어떤 분포를 따를 것이다라는 것을 가정하는 과정</li>
+      <li>Inference(parameter estimation) : 샘플 데이터에 맞도록 파라메터를 조정하는 과정</li>
+    </ol>
+  </li>
+  <li>Likelihood function : parameter 샘플 $\mathcal{D}={e_1,e_2,\dots,e_k}$가 뽑힐 확률 밀도 함수</li>
+</ul>
+
+\[L(\theta)=p(\mathcal{D};\theta)=\prod_{i=1}^k{p(e_i;\theta)}\]
+
+<ul>
+  <li>
+    <p>Maximum Likelihood Estimation(MLE) : Likelihood가 최대가 될 때 샘플 데이터가 뽑힐 확률이 최대이다.</p>
+  </li>
+  <li>
+    <p>정규분포의 MLE</p>
+  </li>
+</ul>
+
+\[p(\mathcal{D})=\prod_{i=1}^k{\mathcal{N}(e_i;\hat \mu ,\hat \sigma)}=(\frac{1}{\sqrt{2\pi}\hat \sigma})^{k}\exp(-\frac{1}{2\hat \sigma ^2}\sum_{i=1}^k{(e_i-\hat \mu)^2})\]
+
+\[\frac{\partial}{\partial \hat \sigma} p(\mathcal{D})=0,\ \hat\sigma =\sqrt{\frac{1}{k}\sum_{i=1}^{k}(e_i-\hat\mu)^2}\]
+
+\[\frac{\partial}{\partial \hat\mu}p(\mathcal{D})=0,\ \hat \mu=\frac{1}{k}\sum_{i=1}^{k}{e_i}\]
+
+<ul>
+  <li>다변수 정규분포</li>
+</ul>
 
 <h2 id="ch2-gmm과-em-알고리즘">Ch2. GMM과 EM 알고리즘</h2>
 
