@@ -104,17 +104,17 @@
       <li>Inference(parameter estimation) : 샘플 데이터에 맞도록 파라메터를 조정하는 과정</li>
     </ol>
   </li>
-  <li>Likelihood function : parameter 샘플 $\mathcal{D}={e_1,e_2,\dots,e_k}$가 뽑힐 확률 밀도 함수</li>
+  <li>Likelihood function : parameter 샘플 $\mathcal{D}=\lbrace e_1,e_2,\dots,e_k\rbrace$가 뽑힐 확률 밀도 함수에 log를 씌운 함수</li>
 </ul>
 
-\[L(\theta)=p(\mathcal{D};\theta)=\prod_{i=1}^k{p(e_i;\theta)}\]
+\[L(\theta)=\log p(\mathcal{D};\theta)=\log \prod_{i=1}^k{p(e_i;\theta)}\]
 
 <ul>
   <li>
     <p>Maximum Likelihood Estimation(MLE) : Likelihood가 최대가 될 때 샘플 데이터가 뽑힐 확률이 최대이다.</p>
   </li>
   <li>
-    <p>정규분포의 MLE</p>
+    <p>정규분포의 MLE : 정규분포는 MLE를 해석적(analytic, closed form solution)으로 구할 수가 있다</p>
   </li>
 </ul>
 
@@ -128,7 +128,35 @@
   <li>다변수 정규분포</li>
 </ul>
 
+\[\mathcal{N}(x;\Sigma,\mu)=\frac{1}{\sqrt{2\pi \vert\Sigma\vert}}\exp(\frac{1}{2}(x-\mu)^{\top}\Sigma^{-1}(x-\mu))\]
+
+<p>단일 변수일때와 마찬가지로 MLE를 해석적으로 구할 수 있다.</p>
+
+\[p(\mathcal{D})=\prod_{i=1}^{k}\mathcal{N}(e_i;\hat\Sigma,\hat\mu)\]
+
+\[\frac{\partial}{\partial \hat\mu}p(\mathcal{D})=0,\hat\mu=\frac{1}{k}\sum_{i=1}^k{e_i}\]
+
+\[\frac{\partial}{\partial\hat\Sigma}p(\mathcal{D})=0,\hat\Sigma=\frac{1}{k}\sum_{i=1}^k{(e_i-\hat\mu)(e_i-\hat\mu)^{\top}}\]
+
 <h2 id="ch2-gmm과-em-알고리즘">Ch2. GMM과 EM 알고리즘</h2>
+
+<p>GMM (Gaussian mixture model) : peak가 여러 개 있도록 개량한 확률 분포 함수</p>
+
+\[\phi=\lbrace\phi_1,\phi_2,\dots,\phi_k\rbrace,\ \sum_{i=1}^k{\phi_i}=1,\ p(z=n)=\phi_n\]
+
+<p>이라고 할 때</p>
+
+\[p(x,z=n)=p(x\mid z=n)p(z=n)\]
+
+<p>※ $p(a, b)$는 joint probability고 $p(a\mid b)$는 conditional probability</p>
+
+\[p(x)=\sum_{i=1}^k{p(x,z=i)}=\sum_{i=1}^k{p(x\mid z=i)p(z=i)}\]
+
+<p>따라서</p>
+
+\[p(x;\phi,\Sigma,\mu)=\sum_{i=1}^k\phi_i\mathcal{N}(x;\Sigma_i,\mu_i)\]
+
+<p>MLE를 구하기 위해서 log를 씌운 다음에 편미분을 해보면 log-sum 꼴 이라서 해석적으로 해를 못 구하는 것을 알 수 있다. 그래서 GMM에서는 EM 알고리즘을 통해 parameter estimation을 한다.</p>
 
 <h2 id="ch3-vae">Ch3. VAE</h2>
 
