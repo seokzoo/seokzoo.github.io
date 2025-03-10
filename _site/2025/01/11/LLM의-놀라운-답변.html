@@ -33,12 +33,25 @@
   itemscope
   itemtype="http://schema.org/BlogPosting"
 >
-  <head>
-    <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+<head>
+    <script type="text/javascript">
+        window.MathJax = {
+            tex: {
+                packages: ['base', 'ams'],
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            },
+            loader: {
+                load: ['[tex]/ams']
+            },
+            chtml: {
+                scale: 1
+            }
+        };
     </script>
     <script type="text/javascript" async
-      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
     </script>
     <title>경유 차에 휘발유 넣으면 연비가 좋아진다던데 사실인가요?</title>
   </head>
