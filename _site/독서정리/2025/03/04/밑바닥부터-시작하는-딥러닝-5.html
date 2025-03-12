@@ -221,17 +221,29 @@
 
 \[p(x;\phi,\Sigma,\mu)=\sum_{i=1}^k\phi_i\mathcal{N}(x;\Sigma_i,\mu_i)\]
 
-<p>E-step</p>
+<ul>
+  <li>E-step 적용</li>
+</ul>
 
 \[\begin{flalign}q(z)&amp;=p_{\theta_{old}}(z\mid x)\\&amp;=\frac{p_{\theta_{old}}(z,x)}{p_{\theta_{old}}(x)}\\&amp;=\frac{\phi_z \mathcal{N}(x;\Sigma_z,\mu_z)}{\sum_{i=1}^k\phi_i\mathcal{N}(x;\Sigma_i,\mu_i)}\end{flalign}\]
 
-<p>M-step</p>
+<ul>
+  <li>M-step 적용</li>
+</ul>
 
-<p>$\phi$는 합이 1이 되어야 한다는 조건이 있어서 Lagrange multiplier method(라그랑주 승수법)로 구하면 된다.</p>
+\[\begin{flalign}\theta&amp;=\operatorname*{arg\,max}_\theta\sum_{i=1}^k{ELBO(x_i;q,\theta)}\end{flalign}\]
 
-\[\begin{flalign}\frac{\partial }{\partial \phi_s}\end{flalign}\]
+<p>먼저 $\phi_s$에 대해서 최적화를 적용한다. $\phi$는 합이 1이 되어야 한다는 조건이 있어서 Lagrange multiplier method(라그랑주 승수법)로 구하면 된다.</p>
 
-\[\begin{flalign}\theta&amp;=\operatorname*{arg\,max}_\theta\sum_{i=1}^k{ELBO(x_i;q,\theta)}\\&amp;= \end{flalign}\]
+\[\begin{align}f(\phi_s)={\sum_{i=1}^k\sum_{j=1}^n q_i(z_j)\log\frac{\phi_j \mathcal{N}(x_i;\mu_j,\Sigma_j)}{q_i(z_j)} }\\ g(\phi_s)=\sum_{j=1}^n{\phi_j}-1 \end{align}\]
+
+\[\begin{align} J(\phi_s)=f(\phi_s)+\beta g(\phi_s)\\ \frac{\partial J}{\partial \phi_s}=0,\ \frac{\partial J}{\partial \beta}=0\end{align}\]
+
+<p>해를 풀면 다음과 같다.</p>
+
+\[\begin{align}\frac{\partial J}{\partial \beta}=\sum_{j=1}^n{\phi_j}-1=0\\ \therefore \sum_{j=1}^n{\phi_j}=1 \end{align}\]
+
+\[\begin{align}\frac{\partial J}{\partial \phi_s}= \end{align}\]
 
 <h2 id="ch3-vae">Ch3. VAE</h2>
 
