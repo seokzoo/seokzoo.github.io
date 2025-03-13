@@ -243,7 +243,13 @@
 
 \[\begin{align}\frac{\partial J}{\partial \beta}=\sum_{j=1}^n{\phi_j}-1=0\\ \therefore \sum_{j=1}^n{\phi_j}=1 \end{align}\]
 
-\[\begin{align}\frac{\partial J}{\partial \phi_s}= \end{align}\]
+\[\begin{align}\frac{\partial J}{\partial \phi_s}=\sum_{i=1}^k{\frac{q_i(z_s)}{\phi_s}}+\beta=0\\\therefore \phi_s=-\frac{\sum_{i=1}^k{q_i(z_s)}}{\beta} \end{align}\]
+
+\[\begin{align}\sum_{i=1}^k\sum_{j=1}^n -\frac{q_i(z_j)}{\beta}=1\\ -\frac{k}{\beta}=1\\\beta=-k\\\therefore \phi_s=\frac{\sum_{i=1}^k{q_i(z_s)}}{k}\end{align}\]
+
+<p>마찬가지로 $\mu_s$와 $\Sigma_s$에 대해서도 해를 구해줄 수 있다.</p>
+
+\[\begin{align}\mu_s=\frac{\sum_{i=1}^{k}{q_i(z_s)x_i}}{\sum_{i=1}^{k}q_i(z_s)} \\\\ \Sigma_s=\frac{\sum_{i=1}^{k} q_i(z_s)(x_i-\mu_s)(x_i-\mu_s)^{\top}}{\sum_{i=1}^{k} q_i(z_s)} \end{align}\]
 
 <h2 id="ch3-vae">Ch3. VAE</h2>
 
