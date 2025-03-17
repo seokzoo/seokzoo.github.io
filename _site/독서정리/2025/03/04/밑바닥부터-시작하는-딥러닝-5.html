@@ -80,7 +80,7 @@
   <li><a href="#contents" id="markdown-toc-contents">Contents</a>    <ul>
       <li><a href="#ch1-정규분포와-mle" id="markdown-toc-ch1-정규분포와-mle">Ch1. 정규분포와 MLE</a></li>
       <li><a href="#ch2-gmm과-em-알고리즘" id="markdown-toc-ch2-gmm과-em-알고리즘">Ch2. GMM과 EM 알고리즘</a></li>
-      <li><a href="#ch3-vae" id="markdown-toc-ch3-vae">Ch3. VAE</a></li>
+      <li><a href="#ch3-vae-variational-autoencoder" id="markdown-toc-ch3-vae-variational-autoencoder">Ch3. VAE (Variational AutoEncoder)</a></li>
       <li><a href="#ch4-diffusion" id="markdown-toc-ch4-diffusion">Ch4. Diffusion</a></li>
     </ul>
   </li>
@@ -251,7 +251,45 @@
 
 \[\begin{align}\mu_s=\frac{\sum_{i=1}^{k}{q_i(z_s)x_i}}{\sum_{i=1}^{k}q_i(z_s)} \\\\ \Sigma_s=\frac{\sum_{i=1}^{k} q_i(z_s)(x_i-\mu_s)(x_i-\mu_s)^{\top}}{\sum_{i=1}^{k} q_i(z_s)} \end{align}\]
 
-<h2 id="ch3-vae">Ch3. VAE</h2>
+<h2 id="ch3-vae-variational-autoencoder">Ch3. VAE (Variational AutoEncoder)</h2>
+
+<p>VAE에서는 확률 변수 $z$가 연속 확률 변수이다.</p>
+
+\[\begin{flalign} \log P(\mathcal{D})&amp;=\sum_{i=1}^n\lbrace\int q(z)\log \frac{p(x_i,z)}{q(z)}dz+\int q(z)\log \frac{q(z)}{p(z\mid x_i)}dz\rbrace \\&amp;= \sum_{i=1}^n\lbrace\int q(z)\log \frac{p(x_i,z)}{q(z)}dz+D_{KL}(q(z)\Vert p(z\mid x_i))\rbrace \end{flalign}\]
+
+<p>E-step에서</p>
+
+\[q(z)=p(z\mid x)=\frac{p(x,y)}{p(x)}=\frac{p(x,y)}{\int p(x, z)dz}\]
+
+<p>$z$가 연속 확률 변수이기 때문에 $p(z\mid x)$를 계산하는 과정에 적분이 필요하다. 따라서 $p(z\mid x)$를 계산해서 $q(z)$로 사용하는 것이 어렵다. VAE에서는 $q(z)$를 정규 분포로 한정하여 encoder를 통해 계산한다.</p>
+
+<ul>
+  <li>Encoder : 관측 변수를 잠재 변수로 바꾸는 과정</li>
+</ul>
+
+\[\operatorname*{nn}_{\Phi}(x)=\mu,\Sigma\]
+
+<p>* nn은 neural net을 말한다.</p>
+
+\[q_{\Phi}(z\mid x)=\mathcal{N}(z;\mu,\Sigma)\]
+
+<p>위 내용을 수식에 적용하면</p>
+
+\[\log P(\mathcal{D})=\sum_{i=1}^n\lbrace\int q_{\Phi}(z\mid x_i)\log \frac{p(x_i,z)}{q_{\Phi}(z\mid x_i)}dz+D_{KL}(q_{\Phi}(z\mid x_i)\Vert p(z\mid x_i))\rbrace\]
+
+<ul>
+  <li>Decoder : 잠재 변수를 관측 변수로 바꾸는 과정</li>
+</ul>
+
+\[P(z)=\mathcal{N}(z;\vec{0},I)\]
+
+\[\operatorname*{nn}_{\theta}(z)=\hat{x}\]
+
+\[p(x\mid z)=\mathcal{N}(x;\hat{x},I)\]
+
+<ul>
+  <li>VAE의 ELBO</li>
+</ul>
 
 <h2 id="ch4-diffusion">Ch4. Diffusion</h2>
 
