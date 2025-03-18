@@ -255,13 +255,13 @@
 
 <p>VAE에서는 확률 변수 $z$가 연속 확률 변수이다.</p>
 
-\[\begin{flalign} \log P(\mathcal{D})&amp;=\sum_{i=1}^n\lbrace\int q(z)\log \frac{p(x_i,z)}{q(z)}dz+\int q(z)\log \frac{q(z)}{p(z\mid x_i)}dz\rbrace \\&amp;= \sum_{i=1}^n\lbrace\int q(z)\log \frac{p(x_i,z)}{q(z)}dz+D_{KL}(q(z)\Vert p(z\mid x_i))\rbrace \end{flalign}\]
+\[\begin{flalign} \log p_\theta(\mathcal{D})&amp;=\sum_{i=1}^n\lbrace\int q(z)\log \frac{p_\theta(x_i,z)}{q(z)}dz+\int q(z)\log \frac{q(z)}{p_\theta(z\mid x_i)}dz\rbrace \\&amp;= \sum_{i=1}^n\lbrace\int q(z)\log \frac{p_\theta(x_i,z)}{q(z)}dz+D_{KL}(q(z)\Vert p_\theta(z\mid x_i))\rbrace \\&amp;= \sum_{i=1}^n\lbrace ELBO(x_i)+D_{KL}(q(z)\Vert p_\theta(z\mid x_i))\rbrace \end{flalign}\]
 
 <p>E-step에서</p>
 
-\[q(z)=p(z\mid x)=\frac{p(x,y)}{p(x)}=\frac{p(x,y)}{\int p(x, z)dz}\]
+\[q(z)=p_\theta(z\mid x)=\frac{p_\theta(x,y)}{p_\theta(x)}=\frac{p_\theta(x,y)}{\int p_\theta(x, z)dz}\]
 
-<p>$z$가 연속 확률 변수이기 때문에 $p(z\mid x)$를 계산하는 과정에 적분이 필요하다. 따라서 $p(z\mid x)$를 계산해서 $q(z)$로 사용하는 것이 어렵다. VAE에서는 $q(z)$를 정규 분포로 한정하여 encoder를 통해 계산한다.</p>
+<p>$z$가 연속 확률 변수이기 때문에 $p_\theta(z\mid x)$를 계산하는 과정에 적분이 필요하다. 따라서 $p_\theta(z\mid x)$를 계산해서 $q(z)$로 사용하는 것이 어렵다. VAE에서는 $q(z)$를 정규 분포로 한정하여 encoder를 통해 계산한다.</p>
 
 <ul>
   <li>Encoder : 관측 변수를 잠재 변수로 바꾸는 과정</li>
@@ -269,26 +269,68 @@
 
 \[\operatorname*{nn}_{\Phi}(x)=\mu,\Sigma\]
 
-<p>* nn은 neural net을 말한다.</p>
+<p>* nn은 neural net을 말한다. $\Sigma$는 대각 행렬로 한정한다.</p>
 
 \[q_{\Phi}(z\mid x)=\mathcal{N}(z;\mu,\Sigma)\]
 
-<p>위 내용을 수식에 적용하면</p>
+<p>$P(\mathcal{D})$ 값은 $q_\Phi(z\mid x)$의 형태와 무관하기 때문에 $\Phi$에 대해서 ELBO항을 최대화시켜주면 $q_\Phi(z\mid x)$와 $p_\theta(z\mid x_i)$의 거리가 최소화된다. 근사적으로 최적값을 구하는 것이기 때문에 variational approximation이라고 한다.</p>
 
-\[\log P(\mathcal{D})=\sum_{i=1}^n\lbrace\int q_{\Phi}(z\mid x_i)\log \frac{p(x_i,z)}{q_{\Phi}(z\mid x_i)}dz+D_{KL}(q_{\Phi}(z\mid x_i)\Vert p(z\mid x_i))\rbrace\]
+<p>위 내용을 수식에 적용하면 최적화 대상이 다음과 같아진다.</p>
+
+\[\begin{flalign}\log p_\theta(\mathcal{D})&amp;=\sum_{i=1}^n\int q_{\Phi}(z\mid x_i)\log \frac{p_\theta(x_i,z)}{q_{\Phi}(z\mid x_i)}dz\\&amp;= \sum_{i=1}^n\int q_{\Phi}(z\mid x_i)\log \frac{p_\theta(x_i\mid z)p_\theta(z)}{q_{\Phi}(z\mid x_i)}dz\\&amp;=\sum_{i=1}^n\lbrace\int q_{\Phi}(z\mid x_i)\log p_\theta(x_i\mid z)dz-\int q_{\Phi}(z\mid x_i)\log \frac{q_\Phi(z\mid x_i)}{p_\theta(z)}dz\rbrace \\&amp;=\sum_{i=1}^n\lbrace \mathbb{E}_{q_{\Phi}(z\mid x_i)}[\log p_\theta(x_i\mid z)]-D_{DL}(q_{\Phi}(z\mid x_i)\Vert p_\theta(z))\rbrace \end{flalign}\]
+
+<p>VAE에서는 decoder를 사용하여 $p(x)$를 모델링한다.</p>
 
 <ul>
   <li>Decoder : 잠재 변수를 관측 변수로 바꾸는 과정</li>
 </ul>
 
-\[P(z)=\mathcal{N}(z;\vec{0},I)\]
+\[p_\theta(z)=\mathcal{N}(z;\vec{0},I)\]
 
 \[\operatorname*{nn}_{\theta}(z)=\hat{x}\]
 
-\[p(x\mid z)=\mathcal{N}(x;\hat{x},I)\]
+\[p_\theta(x\mid z)=\mathcal{N}(x;\hat{x},I)\]
+
+<p>기댓값을 구하는 과정에 Monte Carlo method를 이용하여 다음과 같이 식을 나타낼 수 있다.</p>
+
+\[\begin{flalign} \operatorname*{arg\,max}_{\theta,\Phi}\log p_\theta(D)&amp;=\operatorname*{arg\,max}_{\theta,\Phi}\sum_{i=1}^n\lbrace{\log \mathcal{N}(x;\hat{x},I)-D_{DL}(q_{\Phi}(z\mid x_i)\Vert p_\theta(z))}\rbrace\\ &amp;=\operatorname*{arg\,max}_{\theta,\Phi}\sum_{i=1}^n\lbrace\log \frac{1}{\sqrt{2\pi}}\exp(-\frac{1}{2}\vert x_i-\hat x_i\vert^2)-D_{DL}(q_{\Phi}(z\mid x_i)\Vert p_\theta(z))\rbrace\\&amp;=\operatorname*{arg\,min}_{\theta,\Phi}\sum_{i=1}^n\lbrace\vert x_i-\hat x_i\vert^2+D_{DL}(q_{\Phi}(z\mid x_i)\Vert p_\theta(z))\rbrace \end{flalign}\]
+
+<p>한편으로</p>
+
+\[p_\theta(z)=\mathcal{N}(z;\vec{0},I)\]
+
+\[q_\Phi(z\mid x_i)=\mathcal{N}(z;\mu,\Sigma)\]
+
+<p>두 정규 분포의 KL divergence는 다음과 같이 구할 수 있다.</p>
+
+\[q(z)=\mathcal{N}(z;\mu_1,\Sigma_1),\ p(z)=\mathcal{N}(z;\mu_2,\Sigma_2)\]
+
+\[D_{KL}(q\Vert p)=-\frac{1}{2}\sum_{h=1}^H(1+\log\frac{\sigma_{1,h}^2}{\sigma_{2,h}^2}-\frac{(\mu_{1,h}-\mu_{2,h})^2}{\sigma_{2,h}^2}-\frac{\sigma_{1,h}^2}{\sigma_{2,h}^2})\]
+
+<p>* $H$는 $z$의 차원수</p>
+
+<p>따라서</p>
+
+\[\begin{flalign}\operatorname*{arg\,max}_{\theta,\Phi}\log p_\theta(D)&amp;=\operatorname*{arg\,min}_{\theta,\Phi}\sum_{i=1}^n\lbrace\vert x_i-\hat x_i\vert^2-\sum_{h=1}^H (\log \sigma^2_{i,h}-\mu_{i,h}^2-\sigma_{i,h}^2)\rbrace\\&amp;=Loss(x;\theta,\Phi)\end{flalign}\]
+
+<p>신경망에서 위 함수를 loss function으로 계산하면 된다.</p>
+
+<p>encoder에서 $z$를 샘플링하는 과정은 미분이 어렵기 때문에 backpropagation할 때 기울기가 흘러갈 수가 없는 문제가 생긴다.</p>
+
+<p>이 문제를 해결하기 위해서 reparameterization trick을 사용한다.</p>
+
+\[z\sim \mathcal{N}(z;\mu,I\sigma^2)\]
+
+\[\epsilon\sim \mathcal{N}(\epsilon;\vec{0},I)\]
+
+\[z=\mu+\epsilon\odot\sigma\]
+
+<p>* $\odot$은 hadamard product</p>
+
+<p>다음과 같이 샘플링을 진행하면 기울기가 흘러갈 수 있게 된다.</p>
 
 <ul>
-  <li>VAE의 ELBO</li>
+  <li>hierarchical VAE</li>
 </ul>
 
 <h2 id="ch4-diffusion">Ch4. Diffusion</h2>
