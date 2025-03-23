@@ -387,7 +387,9 @@
   <li>2개 샘플에서 loss 계산</li>
 </ul>
 
-\[\begin{flalign} \mathbb E_{f(x)}[x]&amp;=\int xf(x)dx\\ \mathbb E_{f(x)}[kx]&amp;=\int kxf(x)dx\\ &amp;=k\int xf(x)dx\\&amp;=k\mathbb E_{f(x)}[x]\\ \mathbb E_{f(x)}[x+k]&amp;= \int (x+k)f(x)dx\\&amp;=\int xf(x)dx+\int kf(x)dx\\&amp;=\mathbb E_{f(x)}[x]+k\end{flalign}\]
+<p>다음은 기댓값과 분산에 적용되는 몇 가지 정리들이다.</p>
+
+\[\begin{flalign} \mathbb E_{f(x)}[x]&amp;=\int xf(x)dx\\ \mathbb E_{f(x)}[kx]&amp;=\int kxf(x)dx\\ &amp;=k\int xf(x)dx\\&amp;=k\mathbb E_{f(x)}[x]\\ \mathbb E_{f(x)}[x+k]&amp;= \int (x+k)f(x)dx\\&amp;=\int xf(x)dx+\int kf(x)dx\\&amp;=\mathbb E_{f(x)}[x]+k\\ \mathbb E_{f(x,y)}[x,y]&amp;=\int (x+y)f(x,y)dxdy\\&amp;=\int xf(x,y)dxdy+\int yf(x,y)dxdy\\&amp;=\int xf(x)dx+\int yf(y)dy\\&amp;=\mathbb E_{f(x)}[x]+\mathbb E_{f(y)}[y]\end{flalign}\]
 
 <p>평균($\mu$)이 0이라면</p>
 
@@ -397,7 +399,7 @@
 
 \[\begin{flalign}a\sim \mathcal{N}(a;\mu_a, \sigma_a^2I)\\b\sim \mathcal{N}(b;\mu_b, \sigma_b^2I)\\ c=a+b\\ \Longrightarrow c\sim \mathcal{N}(a;\mu_a+\mu_b, (\sigma_a^2+\sigma_b^2)I) \end{flalign}\]
 
-<p>따라서</p>
+<p>gaussian noise의 특징은 두 개의 gaussian noise를 합쳐도 하나의 gaussian noise가 된다는 것이다. 따라서 $q(x_t\mid x_0)$도 정규분포를 따르며 해석적으로 구할 수 있다.</p>
 
 \[\begin{flalign} q(x_1\mid x_0)&amp;=\mathcal{N}(x_1;\sqrt{\alpha_1}x_0,(1-\alpha_1)I)\\ \epsilon_1&amp;\sim \mathcal{N}(\epsilon_1;\vec{0},I)\\x_1&amp;=\sqrt{\alpha_1}x_0+\sqrt{(1-\alpha_1)}\epsilon_1\\q(x_2\mid x_1)&amp;=\mathcal{N}(x_2;\sqrt{\alpha_2}x_1,(1-\alpha_2)I)\\ \epsilon_2&amp;\sim \mathcal{N}(\epsilon_2;\vec{0},I) \\ x_2&amp;=\sqrt{\alpha_2}x_1+\sqrt{(1-\alpha_2)}\epsilon_2\\&amp;=\sqrt{\alpha_2}(\sqrt{\alpha_1}x_0+\sqrt{(1-\alpha_1)}\epsilon_1)+\sqrt{(1-\alpha_2)}\epsilon_2 \\ &amp;=\sqrt{\alpha_1 \alpha_2}x_0+\sqrt{\alpha_2(1-\alpha_1)}\epsilon_1+\sqrt{(1-\alpha_2)}\epsilon_2\\ q(x_2\mid x_0)&amp;=\mathcal{N}(x_2;\sqrt{\alpha_1 \alpha_2}x_0,\lbrace\alpha_2(1-\alpha_1)+(1-\alpha_2)\rbrace I )\\ &amp;=\mathcal{N}(x_2;\sqrt{\alpha_1 \alpha_2}x_0,(1-\alpha_1\alpha_2)I) \end{flalign}\]
 
@@ -405,9 +407,29 @@
 
 \[\begin{flalign} q(x_t\mid x_0)&amp;=\mathcal{N}(x_t;\sqrt{\alpha_1\alpha_2\cdots\alpha_t}x_0,(1-\alpha_1\alpha_2\cdots\alpha_t)I) \\ &amp;= \mathcal{N}(x_t;\sqrt{\bar{\alpha}_t}x_0,(1-\bar{\alpha}_t)I)\\ (\bar{\alpha}_t&amp;= \alpha_1\alpha_2\cdots\alpha_t) \end{flalign}\]
 
+<p>이를 바탕으로 유도한 ELBO식을 더 변형한다.</p>
+
+\[\begin{flalign}ELBO(x_0)&amp;=\mathbb{E}_{q(x_{1:T}\mid x_0)}[\sum_{t=1}^T \log p_\theta(x_{t-1}\mid x_t)]\\&amp;=\sum_{t=1}^T \mathbb{E}_{q(x_{1:T}\mid x_0)}[\log p_\theta(x_{t-1}\mid x_t)]\\&amp;= \sum_{t=1}^T \mathbb{E}_{q(x_{t},x_{t-1}\mid x_0)}[\log p_\theta(x_{t-1}\mid x_t)]\end{flalign}\]
+
+<p>discrete uniform distribution  $\mathcal U\lbrace 1,T\rbrace$에 대해서</p>
+
+\[\begin{flalign} \mathbb E_{\mathcal U(t)}[f(x)]&amp;=\sum_{t=1}^T \mathcal U(t)f(x)=\frac{1}{T}\sum_{t=1}^T f(x)\\ \sum_{t=1}^T f(x)&amp;=T\cdot \mathbb E_{\mathcal U(t)}[f(x)] \end{flalign}\]
+
+<p>$u(t)$를 이용하여 합을 변형하고 Monte Carlo method로 근사하면</p>
+
+\[\begin{flalign}ELBO(x_0)&amp;=T\cdot \mathbb E_{\mathcal U(t)}[\mathbb{E}_{q(x_{t},x_{t-1}\mid x_0)}[\log p_\theta(x_{t-1}\mid x_t)]]\\ &amp;= T\cdot \log p_\theta(x_{t-1}\mid x_t)\\&amp;=-\frac{T}{2}\Vert x_{t-1}-\hat x_{t-1}\Vert^2\end{flalign}\]
+
+<p>최종적인 Loss 계산은 다음과 같다.</p>
+
+\[\begin{flalign}t\sim \mathcal U\lbrace 1,T\rbrace\\ x_{t-1}\sim q(x_{t-1}\mid x_0)\\x_t\sim q(x_t\mid x_{t-1})\\ \hat x_{t-1}=\operatorname*{nn}_{\theta}(x_t) \\ Loss(x_0)=\frac{T}{2}\Vert x_{t-1}-\hat x_{t-1}\Vert^2 \end{flalign}\]
+
+<p>T개 샘플링 할 필요없이 2번만 샘플링하면 되지만 더 최적화가 가능하다.</p>
+
 <ul>
   <li>1개 샘플에서 loss 계산</li>
 </ul>
+
+\[q(x_{t-1}\mid x_t,x_0)=\]
 
   </div>
 
