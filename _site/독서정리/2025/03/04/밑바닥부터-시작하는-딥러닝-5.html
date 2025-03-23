@@ -373,17 +373,24 @@
   <li>T개 샘플에서 loss 계산</li>
 </ul>
 
-<p>T개의 $x_t$를 샘플링한 후에 Monte Carlo method로 근사해서 loss를 구하면 된다.</p>
+<p>$x_0$에서 T개의 $x_t$를 샘플링한 후에 Monte Carlo method로 근사해서 loss를 구하면 된다.</p>
 
-\[Loss(x_0)= -\sum_{t=1}^T \log p_\theta(x_{t-1}\mid x_t)\]
+\[\hat{x}_{t-1}=\operatorname*{nn}_\theta (x_{t})\]
+
+\[p_\theta(x_{t-1}\mid x_t)= \mathcal{N}(x_{t-1};\hat{x}_{t-1},I)\]
+
+\[\begin{flalign} Loss(x_0)&amp;= -\sum_{t=1}^T \log p_\theta(x_{t-1}\mid x_t) \\ &amp;=-\sum_{t=1}^T \log \mathcal{N}(x_{t-1};\hat{x}_{t-1},I) \\ &amp;= \sum_{t=1}^T \Vert x_{t-1}-\hat{x}_{t-1}\Vert^2\end{flalign}\]
+
+<p>computation cost가 커서 사용하기 어려운 방법이다.</p>
 
 <ul>
-  <li>
-    <p>2개 샘플에서 loss 계산</p>
-  </li>
-  <li>
-    <p>1개 샘플에서 loss 계산</p>
-  </li>
+  <li>2개 샘플에서 loss 계산</li>
+</ul>
+
+\[q(x_t\mid x_0)=\]
+
+<ul>
+  <li>1개 샘플에서 loss 계산</li>
 </ul>
 
   </div>
