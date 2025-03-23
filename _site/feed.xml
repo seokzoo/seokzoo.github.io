@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-03-23T11:48:44+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">blog</title><subtitle>항상 건강하고 행복하세요
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-03-23T22:33:47+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">blog</title><subtitle>항상 건강하고 행복하세요
 </subtitle><author><name>about me</name></author><entry><title type="html">영화리뷰 - 미키17(2025)</title><link href="http://localhost:4000/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0/2025/03/19/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0-%EB%AF%B8%ED%82%A417.html" rel="alternate" type="text/html" title="영화리뷰 - 미키17(2025)" /><published>2025-03-19T00:00:00+09:00</published><updated>2025-03-19T00:00:00+09:00</updated><id>http://localhost:4000/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0/2025/03/19/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0-%EB%AF%B8%ED%82%A417</id><content type="html" xml:base="http://localhost:4000/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0/2025/03/19/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0-%EB%AF%B8%ED%82%A417.html"><![CDATA[<p>※ 리뷰에는 스포가 포함되어 있다.</p>
 
 <p>어제가 친구 생일이었는데 같이 만나서 미키17이라는 영화를 관람했다.</p>
@@ -281,7 +281,7 @@
 
 <p>Diffusion에서는 encoder 과정을 gaussian noise 추가로 대체하고 잠재 변수와 관측 변수의 차원을 동일하게 설정한다.</p>
 
-\[\begin{align}\beta=\{\beta_1,\beta_2,\cdots,\beta_T\}\\\alpha_t=1-\beta_t\\ \bar{\alpha}_t=\alpha_1\alpha_2\cdots\alpha_t \end{align}\]
+\[\begin{align}\beta=\{\beta_1,\beta_2,\cdots,\beta_T\}\\\alpha_t=1-\beta_t\end{align}\]
 
 \[q(x_{t}\mid x_{t-1})=\mathcal{N}(x_t;x_{t-1}\sqrt{\alpha_t},(1-\alpha_t)I)\]
 
@@ -329,7 +329,23 @@
   <li>2개 샘플에서 loss 계산</li>
 </ul>
 
-\[q(x_t\mid x_0)=\]
+\[\begin{flalign} \mathbb E_{f(x)}[x]&amp;=\int xf(x)dx\\ \mathbb E_{f(x)}[kx]&amp;=\int kxf(x)dx\\ &amp;=k\int xf(x)dx\\&amp;=k\mathbb E_{f(x)}[x]\\ \mathbb E_{f(x)}[x+k]&amp;= \int (x+k)f(x)dx\\&amp;=\int xf(x)dx+\int kf(x)dx\\&amp;=\mathbb E_{f(x)}[x]+k\end{flalign}\]
+
+<p>평균($\mu$)이 0이라면</p>
+
+\[\begin{flalign}Var_{f(x)}[x]&amp;=\mathbb E_{f(x)}[x^2]=\sigma^2 \\ Var_{f(x)}[kx]&amp;=\mathbb E_{f(x)}[k^2x^2]\\&amp;=k^2\mathbb E_{f(x)}[x^2]\\&amp;=k^2\sigma^2 \end{flalign}\]
+
+<p>각 정규분포를 따르는 연속확률변수에 대해서</p>
+
+\[\begin{flalign}a\sim \mathcal{N}(a;\mu_a, \sigma_a^2I)\\b\sim \mathcal{N}(b;\mu_b, \sigma_b^2I)\\ c=a+b\\ \Longrightarrow c\sim \mathcal{N}(a;\mu_a+\mu_b, (\sigma_a^2+\sigma_b^2)I) \end{flalign}\]
+
+<p>따라서</p>
+
+\[\begin{flalign} q(x_1\mid x_0)&amp;=\mathcal{N}(x_1;\sqrt{\alpha_1}x_0,(1-\alpha_1)I)\\ \epsilon_1&amp;\sim \mathcal{N}(\epsilon_1;\vec{0},I)\\x_1&amp;=\sqrt{\alpha_1}x_0+\sqrt{(1-\alpha_1)}\epsilon_1\\q(x_2\mid x_1)&amp;=\mathcal{N}(x_2;\sqrt{\alpha_2}x_1,(1-\alpha_2)I)\\ \epsilon_2&amp;\sim \mathcal{N}(\epsilon_2;\vec{0},I) \\ x_2&amp;=\sqrt{\alpha_2}x_1+\sqrt{(1-\alpha_2)}\epsilon_2\\&amp;=\sqrt{\alpha_2}(\sqrt{\alpha_1}x_0+\sqrt{(1-\alpha_1)}\epsilon_1)+\sqrt{(1-\alpha_2)}\epsilon_2 \\ &amp;=\sqrt{\alpha_1 \alpha_2}x_0+\sqrt{\alpha_2(1-\alpha_1)}\epsilon_1+\sqrt{(1-\alpha_2)}\epsilon_2\\ q(x_2\mid x_0)&amp;=\mathcal{N}(x_2;\sqrt{\alpha_1 \alpha_2}x_0,\lbrace\alpha_2(1-\alpha_1)+(1-\alpha_2)\rbrace I )\\ &amp;=\mathcal{N}(x_2;\sqrt{\alpha_1 \alpha_2}x_0,(1-\alpha_1\alpha_2)I) \end{flalign}\]
+
+<p>$q(x_2\mid x_0)$에 대해서 $q(x_3\mid x_2), q(x_4\mid x_3), \dots$를 연쇄적으로 적용할 수 있기 때문에 다음과 같이 일반화하여 식을 작성할 수 있다.</p>
+
+\[\begin{flalign} q(x_t\mid x_0)&amp;=\mathcal{N}(x_t;\sqrt{\alpha_1\alpha_2\cdots\alpha_t}x_0,(1-\alpha_1\alpha_2\cdots\alpha_t)I) \\ &amp;= \mathcal{N}(x_t;\sqrt{\bar{\alpha}_t}x_0,(1-\bar{\alpha}_t)I)\\ (\bar{\alpha}_t&amp;= \alpha_1\alpha_2\cdots\alpha_t) \end{flalign}\]
 
 <ul>
   <li>1개 샘플에서 loss 계산</li>
