@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-03-23T23:15:16+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">blog</title><subtitle>항상 건강하고 행복하세요
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-03-25T17:21:19+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">blog</title><subtitle>항상 건강하고 행복하세요
 </subtitle><author><name>about me</name></author><entry><title type="html">영화리뷰 - 미키17(2025)</title><link href="http://localhost:4000/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0/2025/03/19/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0-%EB%AF%B8%ED%82%A417.html" rel="alternate" type="text/html" title="영화리뷰 - 미키17(2025)" /><published>2025-03-19T00:00:00+09:00</published><updated>2025-03-19T00:00:00+09:00</updated><id>http://localhost:4000/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0/2025/03/19/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0-%EB%AF%B8%ED%82%A417</id><content type="html" xml:base="http://localhost:4000/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0/2025/03/19/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0-%EB%AF%B8%ED%82%A417.html"><![CDATA[<p>※ 리뷰에는 스포가 포함되어 있다.</p>
 
 <p>어제가 친구 생일이었는데 같이 만나서 미키17이라는 영화를 관람했다.</p>
@@ -371,7 +371,43 @@
   <li>1개 샘플에서 loss 계산</li>
 </ul>
 
-\[q(x_{t-1}\mid x_t,x_0)=\]]]></content><author><name>about me</name></author><category term="독서정리" /><summary type="html"><![CDATA[Contents Contents]]></summary></entry><entry><title type="html">서평 - 5분 뚝딱 철학</title><link href="http://localhost:4000/%EC%84%9C%ED%8F%89/2025/02/15/%EC%84%9C%ED%8F%89-5%EB%B6%84-%EB%9A%9D%EB%94%B1-%EC%B2%A0%ED%95%99.html" rel="alternate" type="text/html" title="서평 - 5분 뚝딱 철학" /><published>2025-02-15T00:00:00+09:00</published><updated>2025-02-15T00:00:00+09:00</updated><id>http://localhost:4000/%EC%84%9C%ED%8F%89/2025/02/15/%EC%84%9C%ED%8F%89-5%EB%B6%84-%EB%9A%9D%EB%94%B1-%EC%B2%A0%ED%95%99</id><content type="html" xml:base="http://localhost:4000/%EC%84%9C%ED%8F%89/2025/02/15/%EC%84%9C%ED%8F%89-5%EB%B6%84-%EB%9A%9D%EB%94%B1-%EC%B2%A0%ED%95%99.html"><![CDATA[<h3 id="1-도입">1. 도입</h3>
+<p>1개 샘플로 loss를 구하기 위해서는 $q(x_{t-1}\mid x_t,x_0)$를 이용해야한다.</p>
+
+\[\begin{flalign} q(x_{t-1}\mid x_t,x_0)&amp;=\frac{q(x_t\mid x_{t-1},x_0)q(x_{t-1},x_0)}{q(x_t,x_0)}\\ &amp;=\frac{q(x_t\mid x_{t-1},x_0)q(x_{t-1}\mid x_0)}{q(x_t\mid x_0)}\\&amp;=\frac{q(x_t\mid x_{t-1})q(x_{t-1}\mid x_0)}{q(x_t\mid x_0)} \end{flalign}\]
+
+<p>3개의 정규분포가 곱 또는 나누기 연산에 의해 결합한 형태이기 때문에 $q(x_{t-1}\mid x_t,x_0)$ 역시 정규분포를 따른다.</p>
+
+\[q(x_t\mid x_{t-1})=\mathcal{N}(x_t;\sqrt{\alpha_t}x_{t-1},(1-\alpha_t)I)\]
+
+\[q(x_{t-1}\mid x_0)=\mathcal{N}(x_{t-1};\sqrt{\bar \alpha_{t-1}}x_{0},(1-\bar \alpha_{t-1})I)\]
+
+\[q(x_{t}\mid x_0)=\mathcal{N}(x_{t};\sqrt{\bar \alpha_{t}}x_{0},(1-\bar \alpha_{t})I)\]
+
+<p>exp 항만 계산하면 평균과 분산을 구할 수 있다.</p>
+
+\[\exp(-\frac{(x_t-\sqrt{\alpha_t}x_{t-1})^2}{2(1-\alpha_t)}-\frac{(x_{t-1}-\sqrt{\bar \alpha_{t-1}}x_{0})^2}{2(1-\bar \alpha_{t-1})}+\frac{(x_t-\sqrt{\bar \alpha_{t}}x_{0})^2}{2(1-\bar \alpha_t)})\]
+
+\[=\exp(-x_{t-1}^2\lbrace\frac{\alpha_t}{2(1-\alpha_t)}+\frac{1}{2(1-\bar\alpha_{t-1})}\rbrace + x_{t-1}\lbrace \frac{\sqrt{\alpha_t}x_t}{1-\alpha_t}+\frac{\sqrt{\bar \alpha_{t-1}}x_0}{1-\bar \alpha_{t-1}} \rbrace+C)\]
+
+<p>* $C$는 $x_{t-1}$과 관련이 없는 항이다.</p>
+
+<p>$\mathcal{N}(x;\mu,\sigma^2 I)$의 exp 항은 다음과 같다.</p>
+
+\[\exp(-\frac{(x-\mu)^2}{2\sigma^2}) =\exp(-\frac{x^2-2\mu x+\mu^2}{2\sigma^2})\]
+
+<p>따라서</p>
+
+\[\begin{flalign} \sigma^2&amp;=\frac{1}{2}/\lbrace\frac{\alpha_t}{2(1-\alpha_t)}+\frac{1}{2(1-\bar\alpha_{t-1})}\rbrace=\frac{(1-\alpha_t)(1-\bar\alpha_{t-1})}{1-\bar \alpha_{t}}\\ &amp;=\sigma^2_q(t) \end{flalign}\]
+
+\[\begin{flalign}\mu&amp;=\frac{\sqrt{\alpha_t}(1-\bar\alpha_{t-1})x_t+\sqrt{\bar \alpha_{t-1}}(1-\alpha_t)x_0}{1-\bar \alpha_t}\\ &amp;=\mu_q(x_t,x_0) \end{flalign}\]
+
+\[q(x_{t-1};x_t,x_0)=\mathcal{N}(x_{t-1};\mu_q(x_t,x_0),\sigma_q^2(t)I)\]
+
+<p>다음은 loss를 유도할 차례이다. $J(x_0)$은 ELBO를 변형한 최적화 대상이다.</p>
+
+\[\begin{flalign} &amp;t\sim \mathcal{U}\lbrace1,T\rbrace \\J(x_0)&amp;=\mathbb{E}_{q(x_t,x_{t-1}\mid x_0)}[\log p_\theta(x_{t-1}\mid x_t)]-\mathbb{E}_{q(x_t,x_{t-1}\mid x_0)}[\log q(x_{t-1}\mid x_t,x_0)]\\&amp;=T\cdot \mathbb{E}_{q(x_t,x_{t-1}\mid x_0)}[\log \frac{p_\theta (x_{t-1}\mid x_t)}{q(x_{t-1}\mid x_t, x_0)}] \\ &amp;= T\cdot \int q(x_t,x_{t-1}\mid x_0)\log \frac{p_\theta (x_{t-1}\mid x_t)}{q(x_{t-1}\mid x_t, x_0)}dx_{t-1}dx_t \\ &amp;= -T\cdot \int q(x_t\mid x_0)q(x_{t-1}\mid x_t,x_0)\log \frac{q(x_{t-1}\mid x_t, x_0)}{p_\theta (x_{t-1}\mid x_t)}dx_{t-1}dx_t\\&amp;=-T\cdot \mathbb{E}_{q(x_t\mid x_0)}[D_{KL}(q(x_{t-1}\mid x_t, x_0)\Vert p_\theta (x_{t-1}\mid x_t))]\\&amp;= -T\cdot \mathbb{E}_{q(x_t\mid x_0)}[D_{KL}(\mathcal{N}(x_{t-1};\mu_q(x_t,x_0),\sigma_q^2(t)I)\Vert \mathcal{N}(x_{t-1};\hat x_{t-1},\sigma_q^2(t)I))]\\&amp;=-T\cdot D_{KL}(\mathcal{N}(x_{t-1};\mu_q(x_t,x_0),\sigma_q^2(t)I)\Vert \mathcal{N}(x_{t-1};\hat x_{t-1},\sigma_q^2(t)I))\end{flalign}\]
+
+<p>따라서 최종 loss는 다음과 같다.</p>]]></content><author><name>about me</name></author><category term="독서정리" /><summary type="html"><![CDATA[Contents Contents]]></summary></entry><entry><title type="html">서평 - 5분 뚝딱 철학</title><link href="http://localhost:4000/%EC%84%9C%ED%8F%89/2025/02/15/%EC%84%9C%ED%8F%89-5%EB%B6%84-%EB%9A%9D%EB%94%B1-%EC%B2%A0%ED%95%99.html" rel="alternate" type="text/html" title="서평 - 5분 뚝딱 철학" /><published>2025-02-15T00:00:00+09:00</published><updated>2025-02-15T00:00:00+09:00</updated><id>http://localhost:4000/%EC%84%9C%ED%8F%89/2025/02/15/%EC%84%9C%ED%8F%89-5%EB%B6%84-%EB%9A%9D%EB%94%B1-%EC%B2%A0%ED%95%99</id><content type="html" xml:base="http://localhost:4000/%EC%84%9C%ED%8F%89/2025/02/15/%EC%84%9C%ED%8F%89-5%EB%B6%84-%EB%9A%9D%EB%94%B1-%EC%B2%A0%ED%95%99.html"><![CDATA[<h3 id="1-도입">1. 도입</h3>
 
 <p>군대에서 샀던 5분 뚝딱 철학을 드디어 다 읽었다.</p>
 
