@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-03-25T17:21:19+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">blog</title><subtitle>항상 건강하고 행복하세요
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-03-25T22:40:20+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">blog</title><subtitle>항상 건강하고 행복하세요
 </subtitle><author><name>about me</name></author><entry><title type="html">영화리뷰 - 미키17(2025)</title><link href="http://localhost:4000/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0/2025/03/19/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0-%EB%AF%B8%ED%82%A417.html" rel="alternate" type="text/html" title="영화리뷰 - 미키17(2025)" /><published>2025-03-19T00:00:00+09:00</published><updated>2025-03-19T00:00:00+09:00</updated><id>http://localhost:4000/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0/2025/03/19/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0-%EB%AF%B8%ED%82%A417</id><content type="html" xml:base="http://localhost:4000/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0/2025/03/19/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0-%EB%AF%B8%ED%82%A417.html"><![CDATA[<p>※ 리뷰에는 스포가 포함되어 있다.</p>
 
 <p>어제가 친구 생일이었는데 같이 만나서 미키17이라는 영화를 관람했다.</p>
@@ -245,11 +245,17 @@
 
 <p>두 정규 분포의 KL divergence는 다음과 같이 구할 수 있다.</p>
 
-\[q(z)=\mathcal{N}(z;\mu_1,\Sigma_1),\ p(z)=\mathcal{N}(z;\mu_2,\Sigma_2)\]
+\[q(z)=\mathcal{N}(z;\mu_1,\sigma_1^2 I),\ p(z)=\mathcal{N}(z;\mu_2,\sigma_2^2 I)\]
 
 \[D_{KL}(q\Vert p)=-\frac{1}{2}\sum_{h=1}^H(1+\log\frac{\sigma_{1,h}^2}{\sigma_{2,h}^2}-\frac{(\mu_{1,h}-\mu_{2,h})^2}{\sigma_{2,h}^2}-\frac{\sigma_{1,h}^2}{\sigma_{2,h}^2})\]
 
 <p>* $H$는 $z$의 차원수</p>
+
+<p>좀 더 일반적으로는 다음이 성립한다.</p>
+
+\[q(z)=\mathcal{N}(z;\mu_1,\Sigma_1),\ p(z)=\mathcal{N}(z;\mu_2,\Sigma_2)\]
+
+\[D_{KL}(\mathcal{N}(z;\mu_1,\Sigma_1)\Vert \mathcal{N}(z;\mu_2,\Sigma_2))=-\frac{1}{2}(H-\log (\frac{\det \Sigma_2}{\det \Sigma_1})-(\mu_2-\mu_1)^{\top}\Sigma_2^{-1}(\mu_2-\mu_1)-tr(\Sigma_2^{-1}\Sigma_1))\]
 
 <p>따라서</p>
 
@@ -405,9 +411,11 @@
 
 <p>다음은 loss를 유도할 차례이다. $J(x_0)$은 ELBO를 변형한 최적화 대상이다.</p>
 
-\[\begin{flalign} &amp;t\sim \mathcal{U}\lbrace1,T\rbrace \\J(x_0)&amp;=\mathbb{E}_{q(x_t,x_{t-1}\mid x_0)}[\log p_\theta(x_{t-1}\mid x_t)]-\mathbb{E}_{q(x_t,x_{t-1}\mid x_0)}[\log q(x_{t-1}\mid x_t,x_0)]\\&amp;=T\cdot \mathbb{E}_{q(x_t,x_{t-1}\mid x_0)}[\log \frac{p_\theta (x_{t-1}\mid x_t)}{q(x_{t-1}\mid x_t, x_0)}] \\ &amp;= T\cdot \int q(x_t,x_{t-1}\mid x_0)\log \frac{p_\theta (x_{t-1}\mid x_t)}{q(x_{t-1}\mid x_t, x_0)}dx_{t-1}dx_t \\ &amp;= -T\cdot \int q(x_t\mid x_0)q(x_{t-1}\mid x_t,x_0)\log \frac{q(x_{t-1}\mid x_t, x_0)}{p_\theta (x_{t-1}\mid x_t)}dx_{t-1}dx_t\\&amp;=-T\cdot \mathbb{E}_{q(x_t\mid x_0)}[D_{KL}(q(x_{t-1}\mid x_t, x_0)\Vert p_\theta (x_{t-1}\mid x_t))]\\&amp;= -T\cdot \mathbb{E}_{q(x_t\mid x_0)}[D_{KL}(\mathcal{N}(x_{t-1};\mu_q(x_t,x_0),\sigma_q^2(t)I)\Vert \mathcal{N}(x_{t-1};\hat x_{t-1},\sigma_q^2(t)I))]\\&amp;=-T\cdot D_{KL}(\mathcal{N}(x_{t-1};\mu_q(x_t,x_0),\sigma_q^2(t)I)\Vert \mathcal{N}(x_{t-1};\hat x_{t-1},\sigma_q^2(t)I))\end{flalign}\]
+\[\begin{flalign} &amp;t\sim \mathcal{U}\lbrace1,T\rbrace \\J(x_0)&amp;=\mathbb{E}_{q(x_t,x_{t-1}\mid x_0)}[\log p_\theta(x_{t-1}\mid x_t)]-\mathbb{E}_{q(x_t,x_{t-1}\mid x_0)}[\log q(x_{t-1}\mid x_t,x_0)]\\&amp;=T\cdot \mathbb{E}_{q(x_t,x_{t-1}\mid x_0)}[\log \frac{p_\theta (x_{t-1}\mid x_t)}{q(x_{t-1}\mid x_t, x_0)}] \\ &amp;= T\cdot \int q(x_t,x_{t-1}\mid x_0)\log \frac{p_\theta (x_{t-1}\mid x_t)}{q(x_{t-1}\mid x_t, x_0)}dx_{t-1}dx_t \\ &amp;= -T\cdot \int q(x_t\mid x_0)q(x_{t-1}\mid x_t,x_0)\log \frac{q(x_{t-1}\mid x_t, x_0)}{p_\theta (x_{t-1}\mid x_t)}dx_{t-1}dx_t\\&amp;=-T\cdot \mathbb{E}_{q(x_t\mid x_0)}[D_{KL}(q(x_{t-1}\mid x_t, x_0)\Vert p_\theta (x_{t-1}\mid x_t))]\\&amp;= -T\cdot \mathbb{E}_{q(x_t\mid x_0)}[D_{KL}(\mathcal{N}(x_{t-1};\mu_q(x_t,x_0),\sigma_q^2(t)I)\Vert \mathcal{N}(x_{t-1};\hat x_{t-1},\sigma_q^2(t)I))]\\&amp;=-T\cdot D_{KL}(\mathcal{N}(x_{t-1};\mu_q(x_t,x_0),\sigma_q^2(t)I)\Vert \mathcal{N}(x_{t-1};\hat x_{t-1},\sigma_q^2(t)I))\\&amp;=-\frac{T}{2}\cdot \sum_{h=1}^H(\frac{\Vert \mu_q(x_t,x_0)_h-\hat x_{t-1,h}\Vert^2}{\sigma_{q}^2(t)})\end{flalign}\]
 
-<p>따라서 최종 loss는 다음과 같다.</p>]]></content><author><name>about me</name></author><category term="독서정리" /><summary type="html"><![CDATA[Contents Contents]]></summary></entry><entry><title type="html">서평 - 5분 뚝딱 철학</title><link href="http://localhost:4000/%EC%84%9C%ED%8F%89/2025/02/15/%EC%84%9C%ED%8F%89-5%EB%B6%84-%EB%9A%9D%EB%94%B1-%EC%B2%A0%ED%95%99.html" rel="alternate" type="text/html" title="서평 - 5분 뚝딱 철학" /><published>2025-02-15T00:00:00+09:00</published><updated>2025-02-15T00:00:00+09:00</updated><id>http://localhost:4000/%EC%84%9C%ED%8F%89/2025/02/15/%EC%84%9C%ED%8F%89-5%EB%B6%84-%EB%9A%9D%EB%94%B1-%EC%B2%A0%ED%95%99</id><content type="html" xml:base="http://localhost:4000/%EC%84%9C%ED%8F%89/2025/02/15/%EC%84%9C%ED%8F%89-5%EB%B6%84-%EB%9A%9D%EB%94%B1-%EC%B2%A0%ED%95%99.html"><![CDATA[<h3 id="1-도입">1. 도입</h3>
+<p>$\sigma^2_q(t)$는 스칼라라서 sum 밖으로 뺄 수 있다. 분자의 개별 원소에 대해서 제곱 후 합한 것은 L2 norm의 제곱과 동일하기 때문에 최종 loss는 다음과 같다.</p>
+
+\[\begin{flalign}t&amp;\sim \mathcal{U}(1, T)\\x_t&amp;\sim q(x_t\mid x_0)\\ \hat x_{t-1}&amp;=\operatorname*{nn}_\theta(x_t) \\ Loss(x_0)&amp;=\frac{\Vert \mu_q(x_t,x_0)-\hat x_{t-1}\Vert^2}{\sigma_{q}^2(t)} \end{flalign}\]]]></content><author><name>about me</name></author><category term="독서정리" /><summary type="html"><![CDATA[Contents Contents]]></summary></entry><entry><title type="html">서평 - 5분 뚝딱 철학</title><link href="http://localhost:4000/%EC%84%9C%ED%8F%89/2025/02/15/%EC%84%9C%ED%8F%89-5%EB%B6%84-%EB%9A%9D%EB%94%B1-%EC%B2%A0%ED%95%99.html" rel="alternate" type="text/html" title="서평 - 5분 뚝딱 철학" /><published>2025-02-15T00:00:00+09:00</published><updated>2025-02-15T00:00:00+09:00</updated><id>http://localhost:4000/%EC%84%9C%ED%8F%89/2025/02/15/%EC%84%9C%ED%8F%89-5%EB%B6%84-%EB%9A%9D%EB%94%B1-%EC%B2%A0%ED%95%99</id><content type="html" xml:base="http://localhost:4000/%EC%84%9C%ED%8F%89/2025/02/15/%EC%84%9C%ED%8F%89-5%EB%B6%84-%EB%9A%9D%EB%94%B1-%EC%B2%A0%ED%95%99.html"><![CDATA[<h3 id="1-도입">1. 도입</h3>
 
 <p>군대에서 샀던 5분 뚝딱 철학을 드디어 다 읽었다.</p>
 
