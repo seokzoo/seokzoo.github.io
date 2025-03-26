@@ -427,7 +427,7 @@
 
 <p>최종적인 Loss 계산은 다음과 같다.</p>
 
-\[\begin{flalign}t\sim \mathcal U\lbrace 1,T\rbrace\\ x_{t-1}\sim q(x_{t-1}\mid x_0)\\x_t\sim q(x_t\mid x_{t-1})\\ \hat x_{t-1}=\operatorname*{nn}_{\theta}(x_t) \\ Loss(x_0)=\frac{T}{2}\Vert x_{t-1}-\hat x_{t-1}\Vert^2 \end{flalign}\]
+\[\begin{flalign}t\sim \mathcal U\lbrace 1,T\rbrace\\ x_{t-1}\sim q(x_{t-1}\mid x_0)\\x_t\sim q(x_t\mid x_{t-1})\\ \hat x_{t-1}=\operatorname*{nn}_{\theta}(x_t, t) \\ Loss(x_0)=\frac{T}{2}\Vert x_{t-1}-\hat x_{t-1}\Vert^2 \end{flalign}\]
 
 <p>T개 샘플링 할 필요없이 2번만 샘플링하면 되지만 더 최적화가 가능하다.</p>
 
@@ -473,7 +473,27 @@
 
 <p>$\sigma^2_q(t)$는 스칼라라서 sum 밖으로 뺄 수 있다. 분자의 개별 원소에 대해서 제곱 후 합한 것은 L2 norm의 제곱과 동일하기 때문에 최종 loss는 다음과 같다.</p>
 
-\[\begin{flalign}t&amp;\sim \mathcal{U}(1, T)\\x_t&amp;\sim q(x_t\mid x_0)\\ \hat x_{t-1}&amp;=\operatorname*{nn}_\theta(x_t) \\ Loss(x_0)&amp;=\frac{\Vert \mu_q(x_t,x_0)-\hat x_{t-1}\Vert^2}{\sigma_{q}^2(t)} \end{flalign}\]
+\[\begin{flalign}t&amp;\sim \mathcal{U}(1, T)\\x_t&amp;\sim q(x_t\mid x_0)\\ \hat x_{t-1}&amp;=\operatorname*{nn}_\theta(x_t, t) \\ Loss(x_0)&amp;=\frac{\Vert \mu_q(x_t,x_0)-\hat x_{t-1}\Vert^2}{\sigma_{q}^2(t)} \end{flalign}\]
+
+<p>neural net이 꼭 $\hat x_{t-1}$을 예측할 필요는 없다. 다른 2가지 방식을 소개한다.</p>
+
+<ul>
+  <li>neural net이 $x_0$를 예측하게 하는 방식</li>
+</ul>
+
+<p>$\mu_q(x_t,x_0)$의 구조와 유사하게 $\hat x_{t-1}$를 구성한다. neural net은 $x_0$를 예측한다.</p>
+
+\[\hat x_{t-1}=\frac{\sqrt{\alpha_t}(1-\bar\alpha_{t-1})x_t+\sqrt{\bar \alpha_{t-1}}(1-\alpha_t)\cdot \operatorname*{nn}\limits_\theta(x_t,t)}{1-\bar \alpha_t}\]
+
+\[Loss(x_0)=\frac{\bar \alpha_{t-1}(1-\alpha_t)^2}{\sigma^2_q(t)(1-\bar \alpha_t)^2}\Vert x_0-\operatorname*{nn}\limits_\theta(x_t,t)\Vert ^2\]
+
+<ul>
+  <li>neural net이 $p(x_t\mid x_0)$의 noise를 예측하게 하는 방식</li>
+</ul>
+
+<p>$x_0$를 예측하는 방식과 유사한 구조에서 $x_0$가 아닌 $p(x_t\mid x_0)$의 noise를 예측한다.</p>
+
+\[\begin{flalign}p(x_t\mid x_0)&amp;=\mathcal{N}(x_t;\sqrt{\bar\alpha_{t}}x_0,(1-\bar\alpha_{t})I)\\ \epsilon&amp;=\mathcal{N}(\epsilon;\vec{0},I)\\ x_t&amp;=\sqrt{\bar\alpha_{t}}x_0+\sqrt{1-\bar\alpha_{t}}\epsilon \\x_0&amp;=\frac{x_t-\sqrt{1-\bar\alpha_{t}}\epsilon}{\sqrt{\bar\alpha_{t}}} \end{flalign}\]
 
 
   </div>
