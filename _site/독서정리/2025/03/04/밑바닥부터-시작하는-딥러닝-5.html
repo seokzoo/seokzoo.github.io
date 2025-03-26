@@ -485,7 +485,7 @@
 
 \[\hat x_{t-1}=\frac{\sqrt{\alpha_t}(1-\bar\alpha_{t-1})x_t+\sqrt{\bar \alpha_{t-1}}(1-\alpha_t)\cdot \operatorname*{nn}\limits_\theta(x_t,t)}{1-\bar \alpha_t}\]
 
-\[Loss(x_0)=\frac{\bar \alpha_{t-1}(1-\alpha_t)^2}{\sigma^2_q(t)(1-\bar \alpha_t)^2}\Vert x_0-\operatorname*{nn}\limits_\theta(x_t,t)\Vert ^2\]
+\[\begin{flalign} Loss(x_0)&amp;=\frac{\bar \alpha_{t-1}(1-\alpha_t)^2}{\sigma^2_q(t)(1-\bar \alpha_t)^2}\Vert x_0-\operatorname*{nn}\limits_\theta(x_t,t)\Vert ^2 \\ &amp;= \Vert x_0-\operatorname*{nn}\limits_\theta(x_t,t)\Vert ^2\end{flalign}\]
 
 <ul>
   <li>neural net이 $p(x_t\mid x_0)$의 noise를 예측하게 하는 방식</li>
@@ -495,6 +495,19 @@
 
 \[\begin{flalign}p(x_t\mid x_0)&amp;=\mathcal{N}(x_t;\sqrt{\bar\alpha_{t}}x_0,(1-\bar\alpha_{t})I)\\ \epsilon&amp;=\mathcal{N}(\epsilon;\vec{0},I)\\ x_t&amp;=\sqrt{\bar\alpha_{t}}x_0+\sqrt{1-\bar\alpha_{t}}\epsilon \\x_0&amp;=\frac{x_t-\sqrt{1-\bar\alpha_{t}}\epsilon}{\sqrt{\bar\alpha_{t}}} \end{flalign}\]
 
+\[\hat x_0=\frac{x_t-\sqrt{1-\bar\alpha_{t}}\operatorname*{nn}\limits_\theta(x_t,t)}{\sqrt{\bar\alpha_{t}}}\]
+
+\[\hat x_{t-1}=\frac{\sqrt{\alpha_t}(1-\bar\alpha_{t-1})x_t+\sqrt{\bar \alpha_{t-1}}(1-\alpha_t)\cdot \frac{x_t-\sqrt{1-\bar\alpha_{t}}\operatorname*{nn}\limits_\theta(x_t,t)}{\sqrt{\bar\alpha_{t}}}}{1-\bar \alpha_t}\]
+
+\[\begin{flalign}\mu_q(x_t,x_0)&amp;=\frac{\sqrt{\alpha_t}(1-\bar\alpha_{t-1})x_t+\sqrt{\bar \alpha_{t-1}}(1-\alpha_t)x_0}{1-\bar \alpha_t}\\ &amp;=\frac{\sqrt{\alpha_t}(1-\bar\alpha_{t-1})x_t+\sqrt{\bar \alpha_{t-1}}(1-\alpha_t)\cdot \frac{x_t-\sqrt{1-\bar\alpha_{t}}\epsilon}{\sqrt{\bar\alpha_{t}}}}{1-\bar \alpha_t}\end{flalign}\]
+
+<p>기존의 loss function에 대입하여 식을 정리하면 다음과 같이 loss가 나온다.</p>
+
+\[Loss(x_0)=\Vert \operatorname*{nn}\limits_\theta(x_t,t)-\epsilon\Vert^2\]
+
+<p>논문에서는 노이즈를 예측하는 방식의 성능이 더 좋았다고 한다.</p>
+
+<p>Diffusion에서 새로운 데이터를 샘플링하는 과정은 다음과 같다.</p>
 
   </div>
 

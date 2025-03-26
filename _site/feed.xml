@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-03-26T19:07:07+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">blog</title><subtitle>항상 건강하고 행복하세요
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-03-26T19:19:55+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">blog</title><subtitle>항상 건강하고 행복하세요
 </subtitle><author><name>about me</name></author><entry><title type="html">영화리뷰 - 미키17(2025)</title><link href="http://localhost:4000/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0/2025/03/19/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0-%EB%AF%B8%ED%82%A417.html" rel="alternate" type="text/html" title="영화리뷰 - 미키17(2025)" /><published>2025-03-19T00:00:00+09:00</published><updated>2025-03-19T00:00:00+09:00</updated><id>http://localhost:4000/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0/2025/03/19/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0-%EB%AF%B8%ED%82%A417</id><content type="html" xml:base="http://localhost:4000/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0/2025/03/19/%EC%98%81%ED%99%94%EB%A6%AC%EB%B7%B0-%EB%AF%B8%ED%82%A417.html"><![CDATA[<p>※ 리뷰에는 스포가 포함되어 있다.</p>
 
 <p>어제가 친구 생일이었는데 같이 만나서 미키17이라는 영화를 관람했다.</p>
@@ -427,7 +427,7 @@
 
 \[\hat x_{t-1}=\frac{\sqrt{\alpha_t}(1-\bar\alpha_{t-1})x_t+\sqrt{\bar \alpha_{t-1}}(1-\alpha_t)\cdot \operatorname*{nn}\limits_\theta(x_t,t)}{1-\bar \alpha_t}\]
 
-\[Loss(x_0)=\frac{\bar \alpha_{t-1}(1-\alpha_t)^2}{\sigma^2_q(t)(1-\bar \alpha_t)^2}\Vert x_0-\operatorname*{nn}\limits_\theta(x_t,t)\Vert ^2\]
+\[\begin{flalign} Loss(x_0)&amp;=\frac{\bar \alpha_{t-1}(1-\alpha_t)^2}{\sigma^2_q(t)(1-\bar \alpha_t)^2}\Vert x_0-\operatorname*{nn}\limits_\theta(x_t,t)\Vert ^2 \\ &amp;= \Vert x_0-\operatorname*{nn}\limits_\theta(x_t,t)\Vert ^2\end{flalign}\]
 
 <ul>
   <li>neural net이 $p(x_t\mid x_0)$의 noise를 예측하게 하는 방식</li>
@@ -435,7 +435,21 @@
 
 <p>$x_0$를 예측하는 방식과 유사한 구조에서 $x_0$가 아닌 $p(x_t\mid x_0)$의 noise를 예측한다.</p>
 
-\[\begin{flalign}p(x_t\mid x_0)&amp;=\mathcal{N}(x_t;\sqrt{\bar\alpha_{t}}x_0,(1-\bar\alpha_{t})I)\\ \epsilon&amp;=\mathcal{N}(\epsilon;\vec{0},I)\\ x_t&amp;=\sqrt{\bar\alpha_{t}}x_0+\sqrt{1-\bar\alpha_{t}}\epsilon \\x_0&amp;=\frac{x_t-\sqrt{1-\bar\alpha_{t}}\epsilon}{\sqrt{\bar\alpha_{t}}} \end{flalign}\]]]></content><author><name>about me</name></author><category term="독서정리" /><summary type="html"><![CDATA[Contents Contents]]></summary></entry><entry><title type="html">서평 - 5분 뚝딱 철학</title><link href="http://localhost:4000/%EC%84%9C%ED%8F%89/2025/02/15/%EC%84%9C%ED%8F%89-5%EB%B6%84-%EB%9A%9D%EB%94%B1-%EC%B2%A0%ED%95%99.html" rel="alternate" type="text/html" title="서평 - 5분 뚝딱 철학" /><published>2025-02-15T00:00:00+09:00</published><updated>2025-02-15T00:00:00+09:00</updated><id>http://localhost:4000/%EC%84%9C%ED%8F%89/2025/02/15/%EC%84%9C%ED%8F%89-5%EB%B6%84-%EB%9A%9D%EB%94%B1-%EC%B2%A0%ED%95%99</id><content type="html" xml:base="http://localhost:4000/%EC%84%9C%ED%8F%89/2025/02/15/%EC%84%9C%ED%8F%89-5%EB%B6%84-%EB%9A%9D%EB%94%B1-%EC%B2%A0%ED%95%99.html"><![CDATA[<h3 id="1-도입">1. 도입</h3>
+\[\begin{flalign}p(x_t\mid x_0)&amp;=\mathcal{N}(x_t;\sqrt{\bar\alpha_{t}}x_0,(1-\bar\alpha_{t})I)\\ \epsilon&amp;=\mathcal{N}(\epsilon;\vec{0},I)\\ x_t&amp;=\sqrt{\bar\alpha_{t}}x_0+\sqrt{1-\bar\alpha_{t}}\epsilon \\x_0&amp;=\frac{x_t-\sqrt{1-\bar\alpha_{t}}\epsilon}{\sqrt{\bar\alpha_{t}}} \end{flalign}\]
+
+\[\hat x_0=\frac{x_t-\sqrt{1-\bar\alpha_{t}}\operatorname*{nn}\limits_\theta(x_t,t)}{\sqrt{\bar\alpha_{t}}}\]
+
+\[\hat x_{t-1}=\frac{\sqrt{\alpha_t}(1-\bar\alpha_{t-1})x_t+\sqrt{\bar \alpha_{t-1}}(1-\alpha_t)\cdot \frac{x_t-\sqrt{1-\bar\alpha_{t}}\operatorname*{nn}\limits_\theta(x_t,t)}{\sqrt{\bar\alpha_{t}}}}{1-\bar \alpha_t}\]
+
+\[\begin{flalign}\mu_q(x_t,x_0)&amp;=\frac{\sqrt{\alpha_t}(1-\bar\alpha_{t-1})x_t+\sqrt{\bar \alpha_{t-1}}(1-\alpha_t)x_0}{1-\bar \alpha_t}\\ &amp;=\frac{\sqrt{\alpha_t}(1-\bar\alpha_{t-1})x_t+\sqrt{\bar \alpha_{t-1}}(1-\alpha_t)\cdot \frac{x_t-\sqrt{1-\bar\alpha_{t}}\epsilon}{\sqrt{\bar\alpha_{t}}}}{1-\bar \alpha_t}\end{flalign}\]
+
+<p>기존의 loss function에 대입하여 식을 정리하면 다음과 같이 loss가 나온다.</p>
+
+\[Loss(x_0)=\Vert \operatorname*{nn}\limits_\theta(x_t,t)-\epsilon\Vert^2\]
+
+<p>논문에서는 노이즈를 예측하는 방식의 성능이 더 좋았다고 한다.</p>
+
+<p>Diffusion에서 새로운 데이터를 샘플링하는 과정은 다음과 같다.</p>]]></content><author><name>about me</name></author><category term="독서정리" /><summary type="html"><![CDATA[Contents Contents]]></summary></entry><entry><title type="html">서평 - 5분 뚝딱 철학</title><link href="http://localhost:4000/%EC%84%9C%ED%8F%89/2025/02/15/%EC%84%9C%ED%8F%89-5%EB%B6%84-%EB%9A%9D%EB%94%B1-%EC%B2%A0%ED%95%99.html" rel="alternate" type="text/html" title="서평 - 5분 뚝딱 철학" /><published>2025-02-15T00:00:00+09:00</published><updated>2025-02-15T00:00:00+09:00</updated><id>http://localhost:4000/%EC%84%9C%ED%8F%89/2025/02/15/%EC%84%9C%ED%8F%89-5%EB%B6%84-%EB%9A%9D%EB%94%B1-%EC%B2%A0%ED%95%99</id><content type="html" xml:base="http://localhost:4000/%EC%84%9C%ED%8F%89/2025/02/15/%EC%84%9C%ED%8F%89-5%EB%B6%84-%EB%9A%9D%EB%94%B1-%EC%B2%A0%ED%95%99.html"><![CDATA[<h3 id="1-도입">1. 도입</h3>
 
 <p>군대에서 샀던 5분 뚝딱 철학을 드디어 다 읽었다.</p>
 
