@@ -499,7 +499,7 @@
 
 \[\begin{flalign}\hat x_{t-1}&amp;=\frac{\sqrt{\alpha_t}(1-\bar\alpha_{t-1})x_t+\sqrt{\bar \alpha_{t-1}}(1-\alpha_t)\cdot \frac{x_t-\sqrt{1-\bar\alpha_{t}}\operatorname*{nn}\limits_\theta(x_t,t)}{\sqrt{\bar\alpha_{t}}}}{1-\bar \alpha_t}\\ &amp;= \frac{1}{\sqrt{\alpha_t}} \left( x_t - \frac{1-\alpha_t}{\sqrt{1-\bar\alpha_t}} \operatorname*{nn}_\theta(x_t,t) \right) \end{flalign}\]
 
-\[\begin{flalign}\mu_q(x_t,x_0)&amp;=\frac{\sqrt{\alpha_t}(1-\bar\alpha_{t-1})x_t+\sqrt{\bar \alpha_{t-1}}(1-\alpha_t)x_0}{1-\bar \alpha_t}\\ &amp;=\frac{\sqrt{\alpha_t}(1-\bar\alpha_{t-1})x_t+\sqrt{\bar \alpha_{t-1}}(1-\alpha_t)\cdot \frac{x_t-\sqrt{1-\bar\alpha_{t}}\epsilon}{\sqrt{\bar\alpha_{t}}}}{1-\bar \alpha_t}\end{flalign}\]
+\[\begin{flalign}\mu_q(x_t,x_0)&amp;=\frac{\sqrt{\alpha_t}(1-\bar\alpha_{t-1})x_t+\sqrt{\bar \alpha_{t-1}}(1-\alpha_t)x_0}{1-\bar \alpha_t}\\ &amp;=\frac{\sqrt{\alpha_t}(1-\bar\alpha_{t-1})x_t+\sqrt{\bar \alpha_{t-1}}(1-\alpha_t)\cdot \frac{x_t-\sqrt{1-\bar\alpha_{t}}\epsilon}{\sqrt{\bar\alpha_{t}}}}{1-\bar \alpha_t}\\&amp;=\frac{1}{\sqrt{\alpha_t}} \left( x_t - \frac{1-\alpha_t}{\sqrt{1-\bar\alpha_t}} \epsilon\right)\end{flalign}\]
 
 <p>기존의 loss function에 대입하여 식을 정리하면 다음과 같이 loss가 나온다.</p>
 
@@ -507,11 +507,13 @@
 
 <p>논문에서는 noise를 예측하는 방식의 성능이 더 좋았다고 한다.</p>
 
-<p>Diffusion에서 새로운 데이터를 샘플링하는 과정은 다음과 같다. noise를 예측하는 구조를 기준으로 설명하지만 다른 경우도 중간 과정을 예측하기 때문에 동일한 과정을 따른다.</p>
+<p>Diffusion에서 새로운 데이터를 샘플링하는 과정은 다음과 같다. noise를 예측하는 구조를 기준으로 설명하지만 다른 경우도 중간 과정을 예측하기 때문에 동일한 과정을 따른다. 아래 과정을 T부터 연쇄적으로 적용하면 된다.</p>
 
 \[\begin{flalign} \hat \epsilon &amp;= \operatorname*{nn}\limits_\theta(x_t,t)\\ \hat x_{t-1}&amp;=\frac{\sqrt{\alpha_t}(1-\bar\alpha_{t-1})x_t+\sqrt{\bar \alpha_{t-1}}(1-\alpha_t)\cdot \frac{x_t-\sqrt{1-\bar\alpha_{t}}\operatorname*{nn}\limits_\theta(x_t,t)}{\sqrt{\bar\alpha_{t}}}}{1-\bar \alpha_t}\\&amp;=\frac{1}{\sqrt{\alpha_t}} \left( x_t - \frac{1-\alpha_t}{\sqrt{1-\bar\alpha_t}} \operatorname*{nn}_\theta(x_t,t) \right)\\ \sigma_q^2(t)&amp;=\frac{(1-\alpha_t)(1-\bar\alpha_{t-1})}{1-\bar \alpha_{t}}\\p_\theta(x_{t-1}\mid x_t)&amp;=\mathcal{N}(x_{t-1};\hat x_{t-1},\sigma_q^2(t)I)\\\epsilon&amp;\sim\mathcal{N}(\epsilon;\vec{0},I)\\x_{t-1}&amp;=\hat x_{t-1}+\epsilon\cdot \sigma^2_q(t) \end{flalign}\]
 
 <p>마지막 $x_0$를 구하는 과정에서는 noise를 추가하지 않는 것이 더 좋은 성능을 보인다고 한다.</p>
+
+<p>참조 : <a href="https://gist.github.com/seokzoo/c85dae2676215cf1eb1e53cd43d89483">MNIST 학습 Diffusion 구현 코드 (pytorch)</a></p>
 
   </div>
 
