@@ -451,7 +451,7 @@
 
 \[\begin{flalign} q(x_{t-1}\mid x_t,x_0)&amp;=\frac{q(x_t\mid x_{t-1},x_0)q(x_{t-1},x_0)}{q(x_t,x_0)}\\ &amp;=\frac{q(x_t\mid x_{t-1},x_0)q(x_{t-1}\mid x_0)}{q(x_t\mid x_0)}\\&amp;=\frac{q(x_t\mid x_{t-1})q(x_{t-1}\mid x_0)}{q(x_t\mid x_0)} \end{flalign}\]
 
-<p>3개의 정규분포가 곱 또는 나누기 연산에 의해 결합한 형태이기 때문에 $q(x_{t-1}\mid x_t,x_0)$ 역시 정규분포를 따른다.</p>
+<p>3개의 정규분포가 곱 또는 나누기 연산에 의해 결합한 형태이기 때문에 $q(x_{t-1}\mid x_t,x_0)$ 역시 정규분포 형태를 따른다.</p>
 
 \[q(x_t\mid x_{t-1})=\mathcal{N}(x_t;\sqrt{\alpha_t}x_{t-1},(1-\alpha_t)I)\]
 
@@ -476,6 +476,8 @@
 \[\begin{flalign} \sigma^2&amp;=\frac{1}{2}/\lbrace\frac{\alpha_t}{2(1-\alpha_t)}+\frac{1}{2(1-\bar\alpha_{t-1})}\rbrace=\frac{(1-\alpha_t)(1-\bar\alpha_{t-1})}{1-\bar \alpha_{t}}\\ &amp;=\sigma^2_q(t) \end{flalign}\]
 
 \[\begin{flalign}\mu&amp;=\frac{\sqrt{\alpha_t}(1-\bar\alpha_{t-1})x_t+\sqrt{\bar \alpha_{t-1}}(1-\alpha_t)x_0}{1-\bar \alpha_t}\\ &amp;=\mu_q(x_t,x_0) \end{flalign}\]
+
+<p>엄밀하게는 함수에 정규화 상수를 곱해야하지만 상수항은 무시해도 되므로 정규분포로 취급한다.</p>
 
 \[q(x_{t-1};x_t,x_0)=\mathcal{N}(x_{t-1};\mu_q(x_t,x_0),\sigma_q^2(t)I)\]
 
