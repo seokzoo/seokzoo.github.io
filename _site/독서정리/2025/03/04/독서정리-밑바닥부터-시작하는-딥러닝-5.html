@@ -353,6 +353,8 @@
 
 \[ELBO(x)=\mathbb{E}_{q(z_1\mid x)}[\log p(x\mid z_1)-D_{KL}(q(z_2\mid z_1)\Vert p(z_2))] -\mathbb{E}_{q(z_2\mid x)}[D_{KL}(q(z_1\mid x)\Vert p(z_1\mid z_2))]\]
 
+<p>참조 : <a href="https://gist.github.com/seokzoo/ff4a5e010ef544c916e637fca9721629">MNIST 학습 conditional hierarchical VAE 구현 코드 (pytorch)</a></p>
+
 <h2 id="ch4-diffusion">Ch4. Diffusion</h2>
 
 <p>Diffusion에서는 encoder 과정을 gaussian noise 추가로 대체하고 잠재 변수와 관측 변수의 차원을 동일하게 설정한다.</p>
