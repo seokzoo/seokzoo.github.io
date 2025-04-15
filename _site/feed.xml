@@ -1,9 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-04-14T10:33:42+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">blog</title><subtitle>항상 건강하고 행복하세요
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-04-15T15:09:26+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">blog</title><subtitle>항상 건강하고 행복하세요
 </subtitle><author><name>about me</name></author><entry><title type="html">독서정리 - 밑바닥부터 시작하는 딥러닝 4</title><link href="http://localhost:4000/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC/2025/04/11/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC-%EB%B0%91%EB%B0%94%EB%8B%A5%EB%B6%80%ED%84%B0-%EC%8B%9C%EC%9E%91%ED%95%98%EB%8A%94-%EB%94%A5%EB%9F%AC%EB%8B%9D-4.html" rel="alternate" type="text/html" title="독서정리 - 밑바닥부터 시작하는 딥러닝 4" /><published>2025-04-11T00:00:00+09:00</published><updated>2025-04-11T00:00:00+09:00</updated><id>http://localhost:4000/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC/2025/04/11/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC-%20%EB%B0%91%EB%B0%94%EB%8B%A5%EB%B6%80%ED%84%B0-%EC%8B%9C%EC%9E%91%ED%95%98%EB%8A%94-%EB%94%A5%EB%9F%AC%EB%8B%9D-4</id><content type="html" xml:base="http://localhost:4000/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC/2025/04/11/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC-%EB%B0%91%EB%B0%94%EB%8B%A5%EB%B6%80%ED%84%B0-%EC%8B%9C%EC%9E%91%ED%95%98%EB%8A%94-%EB%94%A5%EB%9F%AC%EB%8B%9D-4.html"><![CDATA[<h1 id="contents">Contents</h1>
 <ul id="markdown-toc">
   <li><a href="#contents" id="markdown-toc-contents">Contents</a>    <ul>
       <li><a href="#강화학습이란" id="markdown-toc-강화학습이란">강화학습이란?</a>        <ul>
           <li><a href="#mdp-markov-decision-process" id="markdown-toc-mdp-markov-decision-process">MDP (Markov Decision Process)</a></li>
+          <li><a href="#bellman-equation" id="markdown-toc-bellman-equation">Bellman equation</a></li>
         </ul>
       </li>
       <li><a href="#head-2" id="markdown-toc-head-2">Head 2</a></li>
@@ -64,13 +65,29 @@
 
 <p>policy의 성능을 평가하기 위해서 state-value function($v_\pi$)을 정의한다.</p>
 
-\[\begin{flalign}G_t&amp;=\sum_{i=0}^\infty \gamma^{i}R_{t+i}\\ v_\pi(s)&amp;=\mathbb{E}_\pi(G_t\mid S_t=s) \end{flalign}\]
+\[\begin{flalign}G_t&amp;=\sum_{i=0}^\infty \gamma^{i}R_{t+i}\\ v_\pi(s)&amp;=\mathbb{E}[G_t\mid S_t=s,\pi]=\mathbb{E}_\pi[G_t\mid S_t=s] \end{flalign}\]
 
 <p>$G_t$는 return으로 앞으로 받을 rewards를 나타낸다. $\gamma$는 discount rate로 $(0,1)$ 사이의 값으로 설정할 수 있다.</p>
 
 <p>MDP에서 적어도 하나의 optimal state-value function($v_\ast$)이 존재한다. $\mu_\ast(v_\ast)$는 deterministic하며 모든 state에 대해서 다른 policy 보다 같거나 더 높은 기댓값을 갖는다.</p>
 
+<p>state-value function에 action 조건을 추가하여 action-value function(Q-function)을 정의한다. Q-function은 $t$에서 조건인 action을 택하고 그 이후부터 policy를 따를 때 return의 기댓값이다.</p>
+
+\[q_\pi(s,a)=\mathbb{E}[G_t\mid S_t=s,A_t=a,\pi]=\mathbb{E}_\pi[G_t\mid S_t=s,A_t=a]\]
+
 <p>MDP에서 다루는 문제는 episodic task와 continuous task로 나눌 수 있다. episodic task는 종료 시점이 존재하여 episode 단위로 종료 이후 새롭게 진행이 되는 문제이다. 반면 continuous task는 종료 시점이 존재하지 않는 문제를 지칭한다.</p>
+
+<h3 id="bellman-equation">Bellman equation</h3>
+
+<p>state-value function에서 Bellman equation을 유도할 수 있다.</p>
+
+\[\begin{flalign} v_\pi(s)&amp;=\mathbb{E}_\pi[R_t+\gamma G_{t+1}\mid S_t=s]\\&amp;=\mathbb{E}_\pi[R_t\mid S_t=s]+\gamma \mathbb{E}_\pi[G_{t=1}\mid S_t=s]\\&amp;=\sum_{a,s^\prime} \pi(a_i\mid s)p(s^\prime_j\mid a_i,s)r(s^\prime_j,a_i,s)+\gamma\cdot\sum_{a,s^\prime} \pi(a_i\mid s)p(s^\prime_j\mid a_i,s)v_\pi(s^\prime_j)\\&amp;=\sum_a\pi(a_i\mid s)\sum_{s^\prime} p(s^\prime_j\mid a_i,s)\lbrace r(s^\prime_j,a_i,s)+\gamma\cdot v_\pi(s^\prime_j)\rbrace\end{flalign}\]
+
+<p>마찬가지로, action-value function에서 Bellman equation을 유도할 수 있다.</p>
+
+\[\begin{flalign}q_\pi(s,a)&amp;=\mathbb{E}_\pi[G_t\mid S_t=s,A_t=a]\\&amp;=\mathbb{E}_\pi[R_t\mid S_t=s, A_t=a]+\gamma\cdot\mathbb{E}_\pi[G_{t+1}\mid S_t=s,A_t=a]\\&amp;=\sum_{s^\prime} p(s^\prime_j\mid s,a)r(s^\prime_j,a,s)+\gamma\cdot \sum_{a^\prime,s^\prime} p(s^\prime_j\mid s,a)\pi(a^\prime_i\mid s^\prime_j)q_\pi(s^\prime_j,a^\prime_i)\\&amp;=\sum_{s^\prime} p(s^\prime_j\mid s,a)\lbrace r(s^\prime_j,a,s)+\gamma\cdot\sum_{a^\prime} \pi(a^\prime_i\mid s^\prime_j)q_\pi(s^\prime_j,a^\prime_i)\rbrace \end{flalign}\]
+
+<p>적어도 하나의 optimal state-value function이 존재하므로 Bellman optimality equation(optimal action-value function)이 존재한다.</p>
 
 <h2 id="head-2">Head 2</h2>
 
