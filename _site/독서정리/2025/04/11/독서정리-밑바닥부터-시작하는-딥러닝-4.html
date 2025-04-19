@@ -78,20 +78,20 @@
     <h1 id="contents">Contents</h1>
 <ul id="markdown-toc">
   <li><a href="#contents" id="markdown-toc-contents">Contents</a>    <ul>
-      <li><a href="#강화학습이란" id="markdown-toc-강화학습이란">강화학습이란?</a>        <ul>
+      <li><a href="#ch1-강화학습이란" id="markdown-toc-ch1-강화학습이란">Ch1. 강화학습이란?</a>        <ul>
           <li><a href="#mdp-markov-decision-process" id="markdown-toc-mdp-markov-decision-process">MDP (Markov Decision Process)</a></li>
           <li><a href="#bellman-equation" id="markdown-toc-bellman-equation">Bellman equation</a></li>
         </ul>
       </li>
+      <li><a href="#ch2-head-2" id="markdown-toc-ch2-head-2">Ch2. Head 2</a></li>
       <li><a href="#head-2" id="markdown-toc-head-2">Head 2</a></li>
       <li><a href="#head-2-1" id="markdown-toc-head-2-1">Head 2</a></li>
       <li><a href="#head-2-2" id="markdown-toc-head-2-2">Head 2</a></li>
-      <li><a href="#head-2-3" id="markdown-toc-head-2-3">Head 2</a></li>
     </ul>
   </li>
 </ul>
 
-<h2 id="강화학습이란">강화학습이란?</h2>
+<h2 id="ch1-강화학습이란">Ch1. 강화학습이란?</h2>
 <p>강화학습 모델은 agent, action, reward, environment 4가지로 구성된다. environment는 어떠한 state를 갖으며 agent의 action에 대해서 적절한 reward를 준다. 현재의 state를 바탕으로 미래에 최대의 reward를 얻을 수 있는 action을 찾는 것이 강화학습의 목표이다.</p>
 
 <ul>
@@ -179,7 +179,7 @@
 
 <p>$\operatorname*{arg max}\limits_a$를 통해서 최선의 action을 찾기 때문에 위 표현을 greedy policy라고 한다.</p>
 
-<p>Bellman optimality equation을 통해 optimal policy를 구하는 것은 $A^S$만큼의 연산이 필요하기 때문에 실용적이지 않다. 따라서 이를 대체할 다른 방법이 필요하다. 먼저 optimal policy를 구하는 과정을 policy의 성능을 평가하는 policy evaluation과 이를 바탕으로 policy를 개선하는 policy improvement로 나누어 접근한다.</p>
+<p>Bellman optimality equation을 통해 optimal policy를 구하는 것은 $A^S$만큼의 연산이 필요하기 때문에 실용적이지 않다. 따라서 이를 대체할 다른 방법이 필요하다. 먼저 optimal policy를 구하는 과정(policy control)을 policy의 성능을 평가하는 policy evaluation과 이를 바탕으로 policy를 개선하는 policy improvement로 나누어 접근한다.</p>
 
 <p>다음은 dynamic programming(DP)를 이용해서 policy evaluation을 하는 방법이다.</p>
 
@@ -209,13 +209,61 @@
 
 \[\mu_\ast(s)= \operatorname*{arg max}_a \sum_{s^\prime} p(s^\prime_j\mid s,a)\lbrace r(s^\prime_j,a,s)+\gamma\cdot V_\ast(s^\prime_j)\rbrace\]
 
+<p>policy iteration이나 value iteration은 planning problem에만 적용할 수 있다. 따라서 learning problem에서는 policy를 evaluation하고 improvement하는 다른 방법이 필요하다. episodic problem에 대해서 이를 해결하는 방법을 소개한다.</p>
+
+<p>먼저 policy evaluation을 하는 방법이다. state-value function과 Q-function을 Monte Carlo method를 통해 구할 수 있다. 정책 $\pi$를 따라 종료 조건까지 탐색을 진행한다.</p>
+
+\[\begin{flalign}v_\pi(s)=V_n(s)&amp;=\mathbb{E}_\pi[G_t\mid S_t=s]\\&amp;=\mathbb{E}_\pi[R_t+\gamma R_{t+1}+\gamma^2 R_{t+1}+\cdots\mid S_t=s]\\ &amp;\approx \frac{G_1+G_2+\cdots+G_n}{n}\\G_t&amp;=R_t+\gamma\cdot G_{t+1} \end{flalign}\]
+
+<p>state-value function으로는 policy improvement가 불가능하기 때문에 learning problem에서는 Q-function으로 policy evaluation을 해야된다. 하나의 episode가 끝난 후 $Q$를 갱신하고 policy improvement를 하면 $G_t$를 얻을 확률이 달라지므로 non-stationary problem이다. 따라서 sample mean보다는 exponential moving average를 사용해서 기댓값을 추정하는 것이 유리하다.</p>
+
+\[\begin{flalign}q_\pi(s,a)=Q_n(s,a)&amp;=\mathbb{E}_\pi[G_t\mid S_t=s,A_t=a]\\ &amp;=\mathbb{E}_\pi[R_t+\gamma R_{t+1}+\gamma^2 R_{t+1}+\cdots\mid S_t=s,A_t=a]\\&amp;\approx \frac{G_1+G_2+\cdots+G_n}{n}\\&amp;=Q_{n-1}(s,a)+\frac{1}{n}(G_n-Q_{n-1}(s,a)) \end{flalign}\]
+
+<p>다음은 policy improvement를 할 차례이다.</p>
+
+\[\mu(s)=\operatorname*{arg max}_a\ q_\pi(s,a)\]
+
+<p>greedy policy를 적용하면 이후 최적화 과정에서 모든 state에 대한 탐색이 안될 수 있다. 따라서 약간의 randomness를 추가한 $\epsilon$-greedy policy를 사용한다.</p>
+
+\[\pi(a \mid s) =
+\begin{cases}
+\displaystyle\frac{\epsilon}{\lvert \mathcal{A}(s)\rvert}+1-\epsilon, 
+&amp; \text{if } a = \operatorname*{arg max}\limits_{a'}\,q_\pi(s,a'), \\[8pt]
+\displaystyle\frac{\epsilon}{\lvert \mathcal{A}(s)\rvert}, 
+&amp; \text{otherwise}.
+\end{cases}\]
+
+<p>* $\lvert\mathcal{A}(s)\rvert$는 $s$에서 가능한 action의 개수이다.</p>
+
+<p>$\epsilon$-greedy policy를 사용하게 되면 탐색 과정에 randomness가 들어가므로 원래 구하고자 하는 optimal policy와 차이가 발생한다. 따라서 이를 보정해줄 방법이 필요하다.</p>
+
+<p>강화학습에서 policy는 목적에 따라서 target policy와 behavior policy로 구분할 수 있다. behavior policy는 실제 environment와 상호작용을 통해 데이터를 수집할 때 따르는 policy이고 target policy는 behavior policy를 통해 모은 데이터를 바탕으로 improvement를 진행하는 policy이다.</p>
+
+<p>학습 모델의 설계에 따라 target policy와 behavior policy는 동일하거나 다를 수 있다. 하나의 policy를 통해 데이터 수집과 improvement를 모두 수행하는 것을 on-policy라고 한다. 지금까지 소개한 학습 방식은 모두 on-policy에 속한다. 반면 off-policy는 두 policy를 구분하여 학습을 진행한다.</p>
+
+<p>off-policy를 이해하기 위해서는 importance sampling에 대한 이해가 필요하다. importance sampling은 어떤 확률 분포에 의한 기댓값을 다른 확률 분포에 의한 기댓값으로 구하는 것을 말한다.</p>
+
+<p>예를 들어 $\pi$에 대한 $x$의 기댓값을 $b$에 대한 기댓값으로 구하고 싶다면 $x$에 적절한 가중치 $\rho$를 곱해주면 된다.</p>
+
+\[\begin{flalign} \mathbb{E}_\pi[x]&amp;=\sum x\cdot\pi(x)\\&amp;=\sum x\cdot\frac{b(x)}{b(x)}\cdot\pi(x)\\&amp;=\sum x\cdot\frac{\pi(x)}{b(x)}\cdot b(x)\\&amp;=\mathbb{E}_b[x\cdot\frac{\pi(x)}{b(x)}]\\&amp;=\mathbb{E}_b[x\cdot\rho(x)] \end{flalign}\]
+
+<p>importance sampling으로 기댓값을 구할 때 Monte Carlo method를 사용하면 $b$와 $\pi$의 차이가 클수록 추정 기댓값의 분산이 커진다. 따라서 더 적은 샘플로 더 정확한 추정을 하고 싶다면 $b$와 $\pi$가 비슷한 것이 좋다.</p>
+
+<p>importance sampling을 action-value function에 적용하면 다음과 같아진다.</p>
+
+\[\begin{flalign}\mathbb{E}_\pi[G_t\mid S_t=s,A_t=a]&amp;=\mathbb{E}_b[\rho\cdot G_t\mid S_t=s,A_t=a]\\&amp;\rho=\frac{\Pr(\text{trajectory}\mid b)}{\Pr(\text{trajectory}\mid \pi)} \end{flalign}\]
+
+<p>이때, trajectory는 $b$에 따라 이루어진 action과 그에 따른 state transition의 연속이다. $S_T$는 종료 시점의 state를 의미한다.</p>
+
+\[\text{trajectory}=S_t,A_t,S_{t+1},A_{t+1},\dots,S_T\]
+
+<h2 id="ch2-head-2">Ch2. Head 2</h2>
+
 <h2 id="head-2">Head 2</h2>
 
 <h2 id="head-2-1">Head 2</h2>
 
 <h2 id="head-2-2">Head 2</h2>
-
-<h2 id="head-2-3">Head 2</h2>
 
   </div>
 
