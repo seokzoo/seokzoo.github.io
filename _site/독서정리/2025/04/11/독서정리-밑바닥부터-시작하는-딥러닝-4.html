@@ -385,7 +385,11 @@
 
 \[\mathbb{E}_{\tau\sim\pi}[\sum_{t=0}^Tb(S_t)\nabla_\theta\log  \pi_\theta(A_{t}\mid S_{t})]=0\]
 
-<p>위에 증명 포함하기</p>
+<p>왜냐하면</p>
+
+\[\begin{flalign}\sum_{A_t} \pi_\theta(A_t\mid S_t)&amp;=1\\ \nabla_\theta\sum_{A_t} \pi_\theta(A_t\mid S_t)&amp;=0\\ &amp;=\sum_{A_t}\nabla_\theta \pi_\theta(A_t\mid S_t)\\&amp;= \sum_{A_t}\pi_\theta(A_t\mid S_t)\frac{\nabla_\theta\pi_\theta(A_t\mid S_t)}{\pi_\theta(A_t\mid S_t)}\\&amp;=\sum_{A_t}\pi_\theta(A_t\mid S_t)\nabla_\theta\log \pi_\theta(A_t\mid S_t)\\&amp;=\mathbb{E}_{A_t\sim \pi}[\nabla_\theta\log \pi_\theta(A_t\mid S_t)]\\&amp; \therefore \mathbb{E}_{A_t\sim \pi}[b(S_t)\nabla_\theta\log \pi_\theta(A_t\mid S_t)]=0 \end{flalign}\]
+
+\[\begin{flalign}\mathbb{E}_{\tau\sim\pi}[\sum_{t=0}^Tb(S_t)\nabla_\theta\log  \pi_\theta(A_{t}\mid S_{t})]&amp;=\sum_\tau\Pr(\tau\mid\pi)\sum_{t=0}^Tb(S_t)\nabla_\theta\log  \pi_\theta(A_{t}\mid S_{t}) \\&amp;=\sum^T_{t=0}\sum_\tau\Pr(\tau\mid\pi)\cdot b(S_t)\nabla_\theta\log  \pi_\theta(A_{t}\mid S_{t})\\&amp;=\sum_{t=0}^T \sum_{S_t,A_t}\sum_{\tau_{\le t}:S_t}p(\tau_{\le t}\mid \pi)\pi_\theta(A_t\mid S_t)\sum_{\tau_{\gt t}}p(\tau_{\gt t}\mid s,a,\pi)\cdot b(S_t)\nabla_\theta\log  \pi_\theta(A_{t}\mid S_{t})\\&amp;=\sum_{t=0}^T \sum_{S_t}\sum_{\tau_{\le t}:S_t}p(\tau_{\le t}\mid \pi)\sum_{A_t}\pi_\theta(A_t\mid S_t)\cdot b(S_t)\nabla_\theta\log  \pi_\theta(A_{t}\mid S_{t}) \\&amp;=0\end{flalign}\]
 
 <p>따라서 $G_t$ 대신 $G_t-b(S_t)$를 사용해도 식이 성립하며 이렇게 $b(S_t)$를 빼는 기법을 baseline이라고 한다.</p>
 
