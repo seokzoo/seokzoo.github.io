@@ -4,20 +4,20 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" /><!-- Begin Jekyll SEO tag v2.8.0 -->
 <meta name="generator" content="Jekyll v4.0.1" />
-<meta property="og:title" content="모델정리 - Transformer" />
+<meta property="og:title" content="모델정리 - JEPA" />
 <meta name="author" content="about me" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Contents Contents" />
 <meta property="og:description" content="Contents Contents" />
-<link rel="canonical" href="http://localhost:4000/%EB%AA%A8%EB%8D%B8%EC%A0%95%EB%A6%AC/2025/06/09/%EB%AA%A8%EB%8D%B8%EC%A0%95%EB%A6%AC-Transformer.html" />
-<meta property="og:url" content="http://localhost:4000/%EB%AA%A8%EB%8D%B8%EC%A0%95%EB%A6%AC/2025/06/09/%EB%AA%A8%EB%8D%B8%EC%A0%95%EB%A6%AC-Transformer.html" />
+<link rel="canonical" href="http://localhost:4000/%EB%AA%A8%EB%8D%B8%EC%A0%95%EB%A6%AC/2025/06/16/%EB%AA%A8%EB%8D%B8%EC%A0%95%EB%A6%AC-JEPA.html" />
+<meta property="og:url" content="http://localhost:4000/%EB%AA%A8%EB%8D%B8%EC%A0%95%EB%A6%AC/2025/06/16/%EB%AA%A8%EB%8D%B8%EC%A0%95%EB%A6%AC-JEPA.html" />
 <meta property="og:site_name" content="blog" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2025-06-09T00:00:00+09:00" />
+<meta property="article:published_time" content="2025-06-16T00:00:00+09:00" />
 <meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="모델정리 - Transformer" />
+<meta property="twitter:title" content="모델정리 - JEPA" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"about me"},"dateModified":"2025-06-09T00:00:00+09:00","datePublished":"2025-06-09T00:00:00+09:00","description":"Contents Contents","headline":"모델정리 - Transformer","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/%EB%AA%A8%EB%8D%B8%EC%A0%95%EB%A6%AC/2025/06/09/%EB%AA%A8%EB%8D%B8%EC%A0%95%EB%A6%AC-Transformer.html"},"url":"http://localhost:4000/%EB%AA%A8%EB%8D%B8%EC%A0%95%EB%A6%AC/2025/06/09/%EB%AA%A8%EB%8D%B8%EC%A0%95%EB%A6%AC-Transformer.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"about me"},"dateModified":"2025-06-16T00:00:00+09:00","datePublished":"2025-06-16T00:00:00+09:00","description":"Contents Contents","headline":"모델정리 - JEPA","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/%EB%AA%A8%EB%8D%B8%EC%A0%95%EB%A6%AC/2025/06/16/%EB%AA%A8%EB%8D%B8%EC%A0%95%EB%A6%AC-JEPA.html"},"url":"http://localhost:4000/%EB%AA%A8%EB%8D%B8%EC%A0%95%EB%A6%AC/2025/06/16/%EB%AA%A8%EB%8D%B8%EC%A0%95%EB%A6%AC-JEPA.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="http://localhost:4000/assets/css/main.css" />
   <link rel="shortcut icon" type="image/x-icon" href="/./favicon.png?" />
@@ -53,7 +53,7 @@
     <script type="text/javascript" async
             src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
     </script>
-    <title>모델정리 - Transformer</title>
+    <title>모델정리 - JEPA</title>
   </head>
   <header class="post-header">
     <div class="post-back">
@@ -63,14 +63,14 @@
     </div>
 
     <h1 class="post-title p-name" itemprop="name headline">
-      모델정리 - Transformer
+      모델정리 - JEPA
     </h1>
     <p class="post-meta">
       <time
         class="dt-published"
-        datetime="2025-06-09T00:00:00+09:00"
+        datetime="2025-06-16T00:00:00+09:00"
         itemprop="datePublished"
-      >Jun 9, 2025
+      >Jun 16, 2025
       </time></p>
   </header>
 
@@ -79,37 +79,44 @@
 <ul id="markdown-toc">
   <li><a href="#contents" id="markdown-toc-contents">Contents</a></li>
   <li><a href="#구현" id="markdown-toc-구현">구현</a>    <ul>
-      <li><a href="#llama" id="markdown-toc-llama">Llama</a></li>
-    </ul>
-  </li>
-  <li><a href="#head-1" id="markdown-toc-head-1">Head 1</a>    <ul>
+      <li><a href="#i-jepa" id="markdown-toc-i-jepa">I-JEPA</a></li>
       <li><a href="#head-2" id="markdown-toc-head-2">Head 2</a></li>
       <li><a href="#head-2-1" id="markdown-toc-head-2-1">Head 2</a></li>
+    </ul>
+  </li>
+  <li><a href="#논문" id="markdown-toc-논문">논문</a>    <ul>
       <li><a href="#head-2-2" id="markdown-toc-head-2-2">Head 2</a></li>
+      <li><a href="#head-2-3" id="markdown-toc-head-2-3">Head 2</a></li>
+      <li><a href="#head-2-4" id="markdown-toc-head-2-4">Head 2</a></li>
+      <li><a href="#head-2-5" id="markdown-toc-head-2-5">Head 2</a></li>
     </ul>
   </li>
 </ul>
 
 <h1 id="구현">구현</h1>
-<h2 id="llama">Llama</h2>
+
+<h2 id="i-jepa">I-JEPA</h2>
 
 <ul>
-  <li>Multi-head attention</li>
-  <li>SwiGLU</li>
-  <li>RoPE</li>
-  <li>RMSNorm</li>
+  <li>Target encoder</li>
+  <li>Context encoder</li>
+  <li>Predictor</li>
 </ul>
 
-<p>참조 : <a href="https://github.com/seokzoo/deep-learning-from-scratch/blob/main/LM/MultiHeadAttention_with_RoPE.py">Shakespeare 학습 llama 구현 코드 (pytorch)</a></p>
+<p>참조 : <a href="https://github.com/seokzoo/deep-learning-from-scratch/blob/main/JEPA/I_JEPA.py">STL10 학습 I-JEPA 구현 코드 (pytorch)</a></p>
 
-<h1 id="head-1">Head 1</h1>
 <h2 id="head-2">Head 2</h2>
 <h2 id="head-2-1">Head 2</h2>
+
+<h1 id="논문">논문</h1>
 <h2 id="head-2-2">Head 2</h2>
+<h2 id="head-2-3">Head 2</h2>
+<h2 id="head-2-4">Head 2</h2>
+<h2 id="head-2-5">Head 2</h2>
 
   </div>
 
-  <a class="u-url" href="/%EB%AA%A8%EB%8D%B8%EC%A0%95%EB%A6%AC/2025/06/09/%EB%AA%A8%EB%8D%B8%EC%A0%95%EB%A6%AC-Transformer.html" hidden></a>
+  <a class="u-url" href="/%EB%AA%A8%EB%8D%B8%EC%A0%95%EB%A6%AC/2025/06/16/%EB%AA%A8%EB%8D%B8%EC%A0%95%EB%A6%AC-JEPA.html" hidden></a>
 </article>
 
         </div>

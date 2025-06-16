@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" /><!-- Begin Jekyll SEO tag v2.8.0 -->
+<meta name="generator" content="Jekyll v4.0.1" />
+<meta property="og:title" content="모델정리 - Diffusion" />
+<meta name="author" content="about me" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Contents Contents" />
+<meta property="og:description" content="Contents Contents" />
+<link rel="canonical" href="http://localhost:4000/%EB%AA%A8%EB%8D%B8%EC%A0%95%EB%A6%AC/2025/05/13/%EB%AA%A8%EB%8D%B8%EC%A0%95%EB%A6%AC-Diffusion.html" />
+<meta property="og:url" content="http://localhost:4000/%EB%AA%A8%EB%8D%B8%EC%A0%95%EB%A6%AC/2025/05/13/%EB%AA%A8%EB%8D%B8%EC%A0%95%EB%A6%AC-Diffusion.html" />
+<meta property="og:site_name" content="blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-05-13T00:00:00+09:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="모델정리 - Diffusion" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"about me"},"dateModified":"2025-05-13T00:00:00+09:00","datePublished":"2025-05-13T00:00:00+09:00","description":"Contents Contents","headline":"모델정리 - Diffusion","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/%EB%AA%A8%EB%8D%B8%EC%A0%95%EB%A6%AC/2025/05/13/%EB%AA%A8%EB%8D%B8%EC%A0%95%EB%A6%AC-Diffusion.html"},"url":"http://localhost:4000/%EB%AA%A8%EB%8D%B8%EC%A0%95%EB%A6%AC/2025/05/13/%EB%AA%A8%EB%8D%B8%EC%A0%95%EB%A6%AC-Diffusion.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.css" />
+  <link rel="shortcut icon" type="image/x-icon" href="/./favicon.png?" />
+  <link rel="stylesheet" href="http://localhost:4000/assets/css/agate.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad();
+  </script><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="blog" /></head><body>
+    <main class="page-content" aria-label="Content">
+        <div class="wrapper">
+            <article
+  class="post h-entry"
+  itemscope
+  itemtype="http://schema.org/BlogPosting"
+>
+<head>
+    <script type="text/javascript">
+        window.MathJax = {
+            tex: {
+                packages: ['base', 'ams'],
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            },
+            loader: {
+                load: ['[tex]/ams']
+            },
+            chtml: {
+                scale: 1
+            }
+        };
+    </script>
+    <script type="text/javascript" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+    </script>
+    <title>모델정리 - Diffusion</title>
+  </head>
+  <header class="post-header">
+    <div class="post-back">
+      <a class="black-link" href="http://localhost:4000">
+        ← Home
+      </a>
+    </div>
+
+    <h1 class="post-title p-name" itemprop="name headline">
+      모델정리 - Diffusion
+    </h1>
+    <p class="post-meta">
+      <time
+        class="dt-published"
+        datetime="2025-05-13T00:00:00+09:00"
+        itemprop="datePublished"
+      >May 13, 2025
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="contents">Contents</h1>
+<ul id="markdown-toc">
+  <li><a href="#contents" id="markdown-toc-contents">Contents</a></li>
+  <li><a href="#구현" id="markdown-toc-구현">구현</a>    <ul>
+      <li><a href="#ddpm" id="markdown-toc-ddpm">DDPM</a></li>
+      <li><a href="#head-2" id="markdown-toc-head-2">Head 2</a></li>
+      <li><a href="#head-2-1" id="markdown-toc-head-2-1">Head 2</a></li>
+    </ul>
+  </li>
+  <li><a href="#논문" id="markdown-toc-논문">논문</a>    <ul>
+      <li><a href="#denoising-diffusion-implicit-modelddim-song-et-al-2020" id="markdown-toc-denoising-diffusion-implicit-modelddim-song-et-al-2020">Denoising Diffusion Implicit Model(DDIM; Song et al., 2020)</a></li>
+      <li><a href="#latent-diffusion-modelldm-rombach--blattmann-et-al-2022" id="markdown-toc-latent-diffusion-modelldm-rombach--blattmann-et-al-2022">Latent Diffusion Model(LDM; Rombach &amp; Blattmann, et al. 2022)</a></li>
+      <li><a href="#diffusion-transformerdit-peebles--xie-2023" id="markdown-toc-diffusion-transformerdit-peebles--xie-2023">Diffusion Transformer(DiT; Peebles &amp; Xie, 2023)</a></li>
+      <li><a href="#diffusion-of-thoughtdot-ye-jiacheng-et-al-2024" id="markdown-toc-diffusion-of-thoughtdot-ye-jiacheng-et-al-2024">Diffusion of Thought(DoT; Ye Jiacheng et al, 2024)</a></li>
+    </ul>
+  </li>
+  <li><a href="#사소한-것들에-대한-이야기" id="markdown-toc-사소한-것들에-대한-이야기">사소한 것들에 대한 이야기</a>    <ul>
+      <li><a href="#reverse-diffusion-process에서-qx_t-1mid-x_t는-왜-gaussian인가" id="markdown-toc-reverse-diffusion-process에서-qx_t-1mid-x_t는-왜-gaussian인가">reverse diffusion process에서 $q(x_{t-1}\mid x_t)$는 왜 Gaussian인가?</a></li>
+      <li><a href="#l0를-계산할-때-discrete-decoder로-다뤄야하는-이유" id="markdown-toc-l0를-계산할-때-discrete-decoder로-다뤄야하는-이유">L0를 계산할 때 discrete decoder로 다뤄야하는 이유?</a></li>
+      <li><a href="#langevin-dynamics와-diffusion의-연관" id="markdown-toc-langevin-dynamics와-diffusion의-연관">Langevin dynamics와 diffusion의 연관</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="구현">구현</h1>
+
+<h2 id="ddpm">DDPM</h2>
+
+<ul>
+  <li>Simplified U-Net</li>
+  <li>score based CFG diffusion</li>
+</ul>
+
+<p>참조 : <a href="https://gist.github.com/seokzoo/32b065f7c0e8c3a82790003423b8d018">MNIST 학습 score based classifier free guidance diffusion 구현 코드 (pytorch)</a></p>
+
+<h2 id="head-2">Head 2</h2>
+<h2 id="head-2-1">Head 2</h2>
+
+<h1 id="논문">논문</h1>
+<h2 id="denoising-diffusion-implicit-modelddim-song-et-al-2020">Denoising Diffusion Implicit Model(DDIM; Song et al., 2020)</h2>
+
+<h2 id="latent-diffusion-modelldm-rombach--blattmann-et-al-2022">Latent Diffusion Model(LDM; Rombach &amp; Blattmann, et al. 2022)</h2>
+
+<h2 id="diffusion-transformerdit-peebles--xie-2023">Diffusion Transformer(DiT; Peebles &amp; Xie, 2023)</h2>
+
+<h2 id="diffusion-of-thoughtdot-ye-jiacheng-et-al-2024">Diffusion of Thought(DoT; Ye Jiacheng et al, 2024)</h2>
+
+<h1 id="사소한-것들에-대한-이야기">사소한 것들에 대한 이야기</h1>
+
+<h2 id="reverse-diffusion-process에서-qx_t-1mid-x_t는-왜-gaussian인가">reverse diffusion process에서 $q(x_{t-1}\mid x_t)$는 왜 Gaussian인가?</h2>
+
+<h2 id="l0를-계산할-때-discrete-decoder로-다뤄야하는-이유">L0를 계산할 때 discrete decoder로 다뤄야하는 이유?</h2>
+
+<h2 id="langevin-dynamics와-diffusion의-연관">Langevin dynamics와 diffusion의 연관</h2>
+
+
+  </div>
+
+  <a class="u-url" href="/%EB%AA%A8%EB%8D%B8%EC%A0%95%EB%A6%AC/2025/05/13/%EB%AA%A8%EB%8D%B8%EC%A0%95%EB%A6%AC-Diffusion.html" hidden></a>
+</article>
+
+        </div>
+    </main><footer class="site-footer h-card">
+    <data class="u-url" href="/"></data>
+    <div class="wrapper">
+      <div class="footer-col-wrapper">
+        <div class="footer-col">
+          <ul class="contact-list">
+            <li class="p-name">
+              <table><tbody> 
+                <tr style="border-style: hidden;"><td style="border-style: hidden;"><a class="black-link" href="http://localhost:4000/about.html">
+                    about me 
+                  </a></td><td style="border-style: hidden;"><a class="black-link" href="http://localhost:4000/categories">
+                    category
+                      </a></td>
+                  <td style="border-style: hidden;"><a class="black-link" href="http://localhost:4000/gallery">
+                    gallery
+                      </a></td>
+                </tr>
+              </tbody></table>
+            </li><li><a class="u-email black-link" href="mailto:seokzoo_@kakao.com">seokzoo_@kakao.com</a></li></ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
