@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" /><!-- Begin Jekyll SEO tag v2.8.0 -->
+<meta name="generator" content="Jekyll v4.0.1" />
+<meta property="og:title" content="독서정리 - OS in 1000 lines" />
+<meta name="author" content="about me" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Contents Contents" />
+<meta property="og:description" content="Contents Contents" />
+<link rel="canonical" href="https://seokzoo.github.io/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC/2025/11/04/OS-in-1000-lines.html" />
+<meta property="og:url" content="https://seokzoo.github.io/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC/2025/11/04/OS-in-1000-lines.html" />
+<meta property="og:site_name" content="blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-11-04T00:00:00+09:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="독서정리 - OS in 1000 lines" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"about me"},"dateModified":"2025-11-04T00:00:00+09:00","datePublished":"2025-11-04T00:00:00+09:00","description":"Contents Contents","headline":"독서정리 - OS in 1000 lines","mainEntityOfPage":{"@type":"WebPage","@id":"https://seokzoo.github.io/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC/2025/11/04/OS-in-1000-lines.html"},"url":"https://seokzoo.github.io/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC/2025/11/04/OS-in-1000-lines.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="https://seokzoo.github.io/assets/css/main.css" />
+  <link rel="shortcut icon" type="image/x-icon" href="/./favicon.png?" />
+  <link rel="stylesheet" href="https://seokzoo.github.io/assets/css/agate.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad();
+  </script><link type="application/atom+xml" rel="alternate" href="https://seokzoo.github.io/feed.xml" title="blog" /></head><body>
+    <main class="page-content" aria-label="Content">
+        <div class="wrapper">
+            <article
+  class="post h-entry"
+  itemscope
+  itemtype="http://schema.org/BlogPosting"
+>
+<head>
+    <script type="text/javascript">
+        window.MathJax = {
+            tex: {
+                packages: ['base', 'ams'],
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            },
+            loader: {
+                load: ['[tex]/ams']
+            },
+            chtml: {
+                scale: 1
+            }
+        };
+    </script>
+    <script type="text/javascript" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+    </script>
+    <title>독서정리 - OS in 1000 lines</title>
+  </head>
+  <header class="post-header">
+    <div class="post-back">
+      <a class="black-link" href="https://seokzoo.github.io">
+        ← Home
+      </a>
+    </div>
+
+    <h1 class="post-title p-name" itemprop="name headline">
+      독서정리 - OS in 1000 lines
+    </h1>
+    <p class="post-meta">
+      <time
+        class="dt-published"
+        datetime="2025-11-04T00:00:00+09:00"
+        itemprop="datePublished"
+      >Nov 4, 2025
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="contents">Contents</h1>
+<ul id="markdown-toc">
+  <li><a href="#contents" id="markdown-toc-contents">Contents</a></li>
+  <li><a href="#risc-v-101" id="markdown-toc-risc-v-101">RISC-V 101</a></li>
+  <li><a href="#boot" id="markdown-toc-boot">Boot</a></li>
+  <li><a href="#printf-구현" id="markdown-toc-printf-구현">printf 구현</a></li>
+  <li><a href="#panic-구현" id="markdown-toc-panic-구현">panic 구현</a></li>
+  <li><a href="#exception-처리-구현" id="markdown-toc-exception-처리-구현">Exception 처리 구현</a></li>
+  <li><a href="#memory-allocation" id="markdown-toc-memory-allocation">Memory allocation</a></li>
+  <li><a href="#process" id="markdown-toc-process">Process</a></li>
+  <li><a href="#head1" id="markdown-toc-head1">head1</a></li>
+</ul>
+
+<h1 id="risc-v-101">RISC-V 101</h1>
+<pre><code class="language-riscv">/* common instructions */
+mv a0, sp // a0 = sp
+lw a0, (a1) // a0 = *a1
+sw a0, (a1) // *a1 = a0
+addi a0, a1, 111 // a0 = a1 + 111
+bnez a0, &lt;label&gt; // branch if a0 is not equal to zero
+jal ra, &lt;label&gt; // label 호출 후 return address를 ra에 저장
+ret // ra 위치로 이동
+
+/* privileged instructions */
+csrr rd, csr // csr 레지스터 읽어오는 명령
+csrw csr, rs
+csrrw rd, csr, rs // 읽으면서 쓰는 명령
+sret // trap handler에서 돌아오는 명령어
+sfence.vma // TLB 비우는 명령어
+</code></pre>
+<ul>
+  <li>Modes
+    <ul>
+      <li>U-mode : user 모드</li>
+      <li>S-mode : kernel 모드</li>
+      <li>M-mode : BIOS가 돌아가는 모드</li>
+    </ul>
+  </li>
+  <li>CSR (control and status register) : CPU settings이 저장된 레지스터
+    <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">__asm__</span> <span class="nf">__volatile__</span><span class="p">(</span><span class="s">"assembly"</span> <span class="o">:</span> <span class="n">output_operands</span> <span class="o">:</span> <span class="n">input_operands</span> <span class="o">:</span> <span class="n">clobbered_registers</span><span class="p">);</span>
+<span class="n">__asm__</span> <span class="nf">__volatile__</span><span class="p">(</span><span class="s">"csrw sscratch, %0"</span> <span class="o">:</span> <span class="o">:</span> <span class="s">"r"</span><span class="p">(</span><span class="mi">123</span><span class="p">));</span>
+</code></pre></div>    </div>
+  </li>
+  <li>operands는 constraints 형태로 저장되는데 “r”(input)이랑 “=r”(output)이 있음</li>
+  <li>clobbered_registers는 컴파일러한테 이 명령에 대한 어떤 정보를 알려주는 거임
+    <h1 id="boot">Boot</h1>
+  </li>
+  <li>SBI (supervisor binary interface) : BIOS 같은 건데 kernel을 위한 API 같은 느낌임.
+    <ul>
+      <li>OpenSBI는 QEMU에서 사용되는데 마지막에 0x80200000으로 점프함</li>
+    </ul>
+  </li>
+  <li>Linker script : linker가 참조하는 파일인데 여러 메모리 영역들을 어떤 주소에 할당할지 정해줄 수 있음</li>
+</ul>
+
+<pre><code class="language-ld">ENTRY(boot)
+
+SECTIONS {
+	. = 0x80200000;
+	.text : {
+		KEEP(*(.text.boot));
+		*(.text .text.*);
+	}
+	
+	.rodata : ALIGN(4) {
+		*(.rodata .rodata.*);
+	}
+	
+	.data : ALIGN(4) {
+		*(.data .data.*);
+	}
+	
+	.bss : ALIGN(4) {
+		__bss = .;
+		*(.bss .bss.* .sbss .sbss.*);
+		__bss_end = .;
+	}
+	
+	. = ALIGN(4);
+	. += 1024 * 128;
+	__stack_top = .;
+}
+</code></pre>
+
+<ul>
+  <li>kernel source</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">extern</span> <span class="kt">char</span> <span class="o">*</span><span class="n">__bss</span><span class="p">,</span> <span class="o">*</span><span class="n">__bss_end</span><span class="p">,</span> <span class="o">*</span><span class="n">__stack_top</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">memset</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="n">begin</span><span class="p">,</span> <span class="kt">char</span> <span class="n">c</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+		<span class="o">*</span><span class="p">(</span><span class="n">begin</span> <span class="o">+</span> <span class="n">i</span><span class="p">)</span> <span class="o">=</span> <span class="n">c</span><span class="p">;</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="n">memset</span><span class="p">((</span><span class="kt">unsigned</span> <span class="o">*</span><span class="p">)</span><span class="n">__bss</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">__bss_end</span> <span class="o">-</span> <span class="n">__bss</span><span class="p">));</span>
+	<span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">__attribute__</span><span class="p">((</span><span class="n">section</span><span class="p">(</span><span class="s">".text.boot"</span><span class="p">)))</span>
+<span class="n">__attribute__</span><span class="p">((</span><span class="kr">naked</span><span class="p">))</span>
+<span class="kt">void</span> <span class="nf">boot</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="n">__asm__</span> <span class="n">__volatile__</span><span class="p">(</span>
+		<span class="s">"mv sp, %0</span><span class="se">\n</span><span class="s">"</span>	
+		<span class="s">"j main</span><span class="se">\n</span><span class="s">"</span>
+		<span class="o">:</span>
+		<span class="o">:</span> <span class="s">"r"</span><span class="p">(</span><span class="n">__stack_top</span><span class="p">)</span>
+	<span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h1 id="printf-구현">printf 구현</h1>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">sbiret</span> <span class="p">{</span>
+	<span class="kt">long</span> <span class="n">error</span><span class="p">;</span>
+	<span class="kt">long</span> <span class="n">value</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="n">sbiret</span> <span class="nf">sbi_call</span><span class="p">(</span><span class="kt">long</span> <span class="n">arg0</span><span class="p">,</span> <span class="kt">long</span> <span class="n">arg1</span><span class="p">,</span> <span class="kt">long</span> <span class="n">arg2</span><span class="p">,</span> <span class="kt">long</span> <span class="n">arg3</span><span class="p">,</span> <span class="kt">long</span> <span class="n">arg4</span><span class="p">,</span> <span class="kt">long</span> <span class="n">arg5</span><span class="p">,</span> <span class="kt">long</span> <span class="n">fid</span><span class="p">,</span> <span class="kt">long</span> <span class="n">eid</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">register</span> <span class="kt">long</span> <span class="n">a0</span> <span class="n">__asm__</span><span class="p">(</span><span class="s">"a0"</span><span class="p">)</span> <span class="o">=</span> <span class="n">arg0</span><span class="p">;</span>
+	<span class="k">register</span> <span class="kt">long</span> <span class="n">a1</span> <span class="n">__asm__</span><span class="p">(</span><span class="s">"a1"</span><span class="p">)</span> <span class="o">=</span> <span class="n">arg1</span><span class="p">;</span>
+	<span class="k">register</span> <span class="kt">long</span> <span class="n">a2</span> <span class="n">__asm__</span><span class="p">(</span><span class="s">"a2"</span><span class="p">)</span> <span class="o">=</span> <span class="n">arg2</span><span class="p">;</span>
+	<span class="k">register</span> <span class="kt">long</span> <span class="n">a3</span> <span class="n">__asm__</span><span class="p">(</span><span class="s">"a3"</span><span class="p">)</span> <span class="o">=</span> <span class="n">arg3</span><span class="p">;</span>
+	<span class="k">register</span> <span class="kt">long</span> <span class="n">a4</span> <span class="n">__asm__</span><span class="p">(</span><span class="s">"a4"</span><span class="p">)</span> <span class="o">=</span> <span class="n">arg4</span><span class="p">;</span>
+	<span class="k">register</span> <span class="kt">long</span> <span class="n">a5</span> <span class="n">__asm__</span><span class="p">(</span><span class="s">"a5"</span><span class="p">)</span> <span class="o">=</span> <span class="n">arg5</span><span class="p">;</span>
+	<span class="k">register</span> <span class="kt">long</span> <span class="n">a6</span> <span class="n">__asm__</span><span class="p">(</span><span class="s">"a6"</span><span class="p">)</span> <span class="o">=</span> <span class="n">fid</span><span class="p">;</span>
+	<span class="k">register</span> <span class="kt">long</span> <span class="n">a7</span> <span class="n">__asm__</span><span class="p">(</span><span class="s">"a7"</span><span class="p">)</span> <span class="o">=</span> <span class="n">eid</span><span class="p">;</span>
+	
+	<span class="n">__asm__</span> <span class="n">__volatile__</span><span class="p">(</span><span class="s">"ecall"</span>
+						<span class="o">:</span> <span class="s">"=r"</span><span class="p">(</span><span class="n">a0</span><span class="p">),</span> <span class="s">"=r"</span><span class="p">(</span><span class="n">a1</span><span class="p">)</span>
+						<span class="o">:</span> <span class="s">"r"</span><span class="p">(</span><span class="n">a0</span><span class="p">),</span> <span class="s">"r"</span><span class="p">(</span><span class="n">a1</span><span class="p">),</span> <span class="s">"r"</span><span class="p">(</span><span class="n">a2</span><span class="p">),</span> <span class="s">"r"</span><span class="p">(</span><span class="n">a3</span><span class="p">),</span> <span class="s">"r"</span><span class="p">(</span><span class="n">a4</span><span class="p">),</span> <span class="s">"r"</span><span class="p">(</span><span class="n">a5</span><span class="p">),</span> <span class="s">"r"</span><span class="p">(</span><span class="n">a6</span><span class="p">),</span> <span class="s">"r"</span><span class="p">(</span><span class="n">a7</span><span class="p">)</span>
+						<span class="o">:</span> <span class="s">"memory"</span><span class="p">);</span>
+	<span class="k">return</span> <span class="p">(</span><span class="k">struct</span> <span class="n">retsbi</span><span class="p">)</span> <span class="p">{.</span><span class="n">error</span> <span class="o">=</span> <span class="n">a0</span><span class="p">,</span> <span class="p">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">a1</span><span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">putchar</span><span class="p">(</span><span class="kt">char</span> <span class="n">ch</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="n">sbi_call</span><span class="p">(</span><span class="n">ch</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<ul>
+  <li>SBI가 제공하는 기능을 호출하기 위해서 <code class="highlighter-rouge">ecall</code>을 사용하면 됨
+    <ul>
+      <li><code class="highlighter-rouge">ecall</code> 실행 시 M-mode로 전환되고 OpenSBI의 processing handler가 호출됨</li>
+      <li><code class="highlighter-rouge">a0-a5</code>는 인자로 사용됨</li>
+      <li><code class="highlighter-rouge">a7</code>은 EID(Extension ID)를 나타냄</li>
+      <li><code class="highlighter-rouge">a6</code>은 EID에 대한 FID(Function ID)를 나타냄</li>
+      <li>OpenSBI의 모든 기능의 callee는 <code class="highlighter-rouge">a0</code>(error)랑 <code class="highlighter-rouge">a1</code>(return value)을 제외한 다른 레지스터는 내용을 바꾸지 않음</li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="panic-구현">panic 구현</h1>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define PANIC(fmt, ...) \
+	do { \
+		printf("PANIC: %s: %d: " fmt "\n", __FILE__, __LINE__, ##__VA_ARGS__); \
+		while (1) {} \
+	} while(0)
+</span></code></pre></div></div>
+
+<h1 id="exception-처리-구현">Exception 처리 구현</h1>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define WRITE_CSR(register, value) \
+	do { \
+		uint32_t tmp = value; \
+		__asm__ __volatile__("csrw " #register ", %0" :: "r"(tmp)); \
+	} while(0)
+</span>
+<span class="n">WRITE_CSR</span><span class="p">(</span><span class="n">stvec</span><span class="p">,</span> <span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span> <span class="n">kernel_entry</span><span class="p">);</span>
+</code></pre></div></div>
+
+<ul>
+  <li>stvec을 통해 exception이 발생했을 때 호출할 함수를 등록할 수 있다</li>
+  <li>stvec의 하위 2bit는 mode에 대한 정보가 저장되기 때문에 4바이트 단위로 align을 해줘야 됨</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">__attribute__</span><span class="p">((</span><span class="kr">naked</span><span class="p">))</span>
+<span class="n">__attribute__</span><span class="p">((</span><span class="n">aligned</span><span class="p">(</span><span class="mi">4</span><span class="p">)))</span>
+<span class="kt">void</span> <span class="nf">kernel_entry</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">__asm__</span> <span class="n">__volatile__</span><span class="p">(</span>
+        <span class="s">"csrw sscratch, sp</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"addi sp, sp, -4 * 31</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"sw ra,  4 * 0(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"sw gp,  4 * 1(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"sw tp,  4 * 2(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"sw t0,  4 * 3(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"sw t1,  4 * 4(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"sw t2,  4 * 5(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"sw t3,  4 * 6(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"sw t4,  4 * 7(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"sw t5,  4 * 8(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"sw t6,  4 * 9(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"sw a0,  4 * 10(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"sw a1,  4 * 11(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"sw a2,  4 * 12(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"sw a3,  4 * 13(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"sw a4,  4 * 14(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"sw a5,  4 * 15(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"sw a6,  4 * 16(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"sw a7,  4 * 17(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"sw s0,  4 * 18(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"sw s1,  4 * 19(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"sw s2,  4 * 20(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"sw s3,  4 * 21(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"sw s4,  4 * 22(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"sw s5,  4 * 23(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"sw s6,  4 * 24(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"sw s7,  4 * 25(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"sw s8,  4 * 26(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"sw s9,  4 * 27(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"sw s10, 4 * 28(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"sw s11, 4 * 29(sp)</span><span class="se">\n</span><span class="s">"</span>
+
+        <span class="s">"csrr a0, sscratch</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"sw a0, 4 * 30(sp)</span><span class="se">\n</span><span class="s">"</span>
+
+        <span class="s">"mv a0, sp</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"call handle_trap</span><span class="se">\n</span><span class="s">"</span>
+
+        <span class="s">"lw ra,  4 * 0(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"lw gp,  4 * 1(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"lw tp,  4 * 2(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"lw t0,  4 * 3(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"lw t1,  4 * 4(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"lw t2,  4 * 5(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"lw t3,  4 * 6(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"lw t4,  4 * 7(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"lw t5,  4 * 8(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"lw t6,  4 * 9(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"lw a0,  4 * 10(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"lw a1,  4 * 11(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"lw a2,  4 * 12(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"lw a3,  4 * 13(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"lw a4,  4 * 14(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"lw a5,  4 * 15(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"lw a6,  4 * 16(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"lw a7,  4 * 17(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"lw s0,  4 * 18(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"lw s1,  4 * 19(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"lw s2,  4 * 20(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"lw s3,  4 * 21(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"lw s4,  4 * 22(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"lw s5,  4 * 23(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"lw s6,  4 * 24(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"lw s7,  4 * 25(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"lw s8,  4 * 26(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"lw s9,  4 * 27(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"lw s10, 4 * 28(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"lw s11, 4 * 29(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"lw sp,  4 * 30(sp)</span><span class="se">\n</span><span class="s">"</span>
+        <span class="s">"sret</span><span class="se">\n</span><span class="s">"</span>
+    <span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>kernel entry에서는 registers를 stack에 저장해놓고 handle_trap을 호출</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define READ_CSR(register) \
+	({ \
+		uint32_t tmp; \
+		__asm__ __volatile__( \
+			"csrr %0, " #register : "=r"(tmp)); \
+		); \
+		tmp; \
+	})
+</span>
+<span class="k">struct</span> <span class="n">trap_frame</span> <span class="p">{</span>
+    <span class="kt">uint32_t</span> <span class="n">ra</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">gp</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">tp</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">t0</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">t1</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">t2</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">t3</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">t4</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">t5</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">t6</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">a0</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">a1</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">a2</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">a3</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">a4</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">a5</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">a6</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">a7</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">s0</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">s1</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">s2</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">s3</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">s4</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">s5</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">s6</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">s7</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">s8</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">s9</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">s10</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">s11</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">sp</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">__attribute__</span><span class="p">((</span><span class="n">packed</span><span class="p">));</span>
+
+<span class="kt">void</span> <span class="nf">handle_trap</span><span class="p">(</span><span class="k">struct</span> <span class="n">trap_frame</span> <span class="o">*</span><span class="n">f</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">uint32_t</span> <span class="n">scause</span> <span class="o">=</span> <span class="n">READ_CSR</span><span class="p">(</span><span class="n">scause</span><span class="p">);</span>
+    <span class="kt">uint32_t</span> <span class="n">stval</span> <span class="o">=</span> <span class="n">READ_CSR</span><span class="p">(</span><span class="n">stval</span><span class="p">);</span>
+    <span class="kt">uint32_t</span> <span class="n">sepc</span> <span class="o">=</span> <span class="n">READ_CSR</span><span class="p">(</span><span class="n">sepc</span><span class="p">);</span>
+
+    <span class="n">PANIC</span><span class="p">(</span><span class="s">"unexpected trap scause=%x, stval=%x, sepc=%x</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">scause</span><span class="p">,</span> <span class="n">stval</span><span class="p">,</span> <span class="n">sepc</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<ul>
+  <li>exception 정보에 대한 CSR
+    <ul>
+      <li>scause : exception의 종류</li>
+      <li>stval : exception 종류에 따른 추가 정보</li>
+      <li>sepc : exception이 발생한 pc 위치</li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="memory-allocation">Memory allocation</h1>
+<pre><code class="language-ld">{
+	. = ALIGN(4096);
+	__free_ram = .;
+	. += 4 * 1024 * 1024
+	__free_ram_end = .;
+}
+</code></pre>
+<ul>
+  <li>linker script에 dynamic allocation을 위한 영역을 정의</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define PAGE_SIZE 4096
+</span>
+<span class="k">extern</span> <span class="kt">char</span> <span class="n">__free_ram</span><span class="p">[],</span> <span class="n">__free_ram_end</span><span class="p">[];</span>
+
+<span class="n">paddr_t</span> <span class="nf">allocate_pages</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">n</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">static</span> <span class="n">paddr_t</span> <span class="n">next_paddr</span> <span class="o">=</span> <span class="n">__free_ram</span><span class="p">;</span>
+	<span class="n">paddr_t</span> <span class="n">r</span> <span class="o">=</span> <span class="n">next_paddr</span><span class="p">;</span>
+	<span class="n">next_paddr</span> <span class="o">+=</span> <span class="n">n</span> <span class="o">*</span> <span class="n">PAGE_SIZE</span><span class="p">;</span>
+	
+	<span class="k">if</span> <span class="p">(</span><span class="n">next_paddr</span> <span class="o">&gt;</span> <span class="n">__free_ram_end</span><span class="p">)</span>
+		<span class="n">PANIC</span><span class="p">(</span><span class="s">"out of memory!"</span><span class="p">);</span>
+	
+	<span class="k">return</span> <span class="n">r</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<ul>
+  <li>단순한 linear allocation을 사용한 코드</li>
+</ul>
+
+<h1 id="process">Process</h1>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+</code></pre></div></div>
+<ul>
+  <li></li>
+</ul>
+
+<h1 id="head1">head1</h1>
+
+  </div>
+
+  <a class="u-url" href="/%EB%8F%85%EC%84%9C%EC%A0%95%EB%A6%AC/2025/11/04/OS-in-1000-lines.html" hidden></a>
+</article>
+
+        </div>
+    </main><footer class="site-footer h-card">
+    <data class="u-url" href="/"></data>
+    <div class="wrapper">
+      <div class="footer-col-wrapper">
+        <div class="footer-col">
+          <ul class="contact-list">
+            <li class="p-name">
+              <table><tbody> 
+                <tr style="border-style: hidden;"><td style="border-style: hidden;"><a class="black-link" href="https://seokzoo.github.io/about.html">
+                    about me 
+                  </a></td><td style="border-style: hidden;"><a class="black-link" href="https://seokzoo.github.io/categories">
+                    category
+                      </a></td>
+                  <td style="border-style: hidden;"><a class="black-link" href="https://seokzoo.github.io/gallery">
+                    gallery
+                      </a></td>
+                </tr>
+              </tbody></table>
+            </li><li><a class="u-email black-link" href="mailto:seokzoo_@kakao.com">seokzoo_@kakao.com</a></li></ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

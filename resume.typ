@@ -7,7 +7,7 @@
 #let linkedin = "linkedin.com/in/seokzoo"
 #let personal-site = "seokzoo.github.io"
 #let location = "Seoul, South Korea"
-#let phone = "+1 (xxx) xxx-xxxx"
+#let phone = "+82 10-6818-1522"
 
 #show: resume.with(
   author: name,
@@ -47,7 +47,8 @@
   degree: "Bachelor's of Science, Biosystems and Biomedical Science & Computer Science (double major)",
 )
 - Transferred in junior year
-- Cumulative GPA: 4.25\/4.5 | Merit Scholarship, Boseong County Scholarship Foundation
+- Cumulative GPA: 4.25\/4.5
+- Major GPA: 4.3/4.5
 
 /*== Work Experience
 
@@ -63,11 +64,11 @@
 
 == Projects
 
-=== 
+/*
 #project(
   name: "Hyperschedule",
   // Role is optional
-  role: "Maintainer",
+  // role: "Maintainer",
   // Dates is optional
   dates: dates-helper(start-date: "Nov 2023", end-date: "Present"),
   // URL is also optional
@@ -76,23 +77,47 @@
 - Maintain open-source scheduler used by 7000+ users at the Claremont Consortium with TypeScript, React and MongoDB
   - Manage PR reviews, bug fixes, and coordinate with college for releasing scheduling data and over \$1500 of yearly funding
 - Ensure 99.99% uptime during peak loads of 1M daily requests during course registration through redundant servers
+*/
+#project(
+  name: "Deep Learning from Scratch",
+  url: "https://github.com/seokzoo/deep-learning-from-scratch/",
+)
+- Implemented deep learning models including DQN, LLaMA, VAE, DDPM, and I-JEPA using PyTorch
+  - Explored recent self-supervised learning techniques and generative model architectures
+
+#project(
+  name: "nand2tetris",
+  url: "https://github.com/seokzoo/nand2tetris",
+)
+- Built a simple computer from scratch using HDL as part of the nand2tetris course
+  - Designed basic logic gates, ALU, memory units, and CPU
 
 == Extracurricular Activities
 
+=== Computer Security
 #extracurriculars(
-  activity: "Capture The Flag Competitions",
-  dates: dates-helper(start-date: "Jan 2021", end-date: "Present"),
+  activity: "Vulnerability Assessment Volunteer, Kyungpook National University IT Center",
+  dates: dates-helper(start-date: "Jan 2022", end-date: "Feb 2022"),
 )
-- Founder of Les Amateurs (#link("https://amateurs.team")[amateurs.team]), currently ranked \#4 US, \#33 global on CTFTime (2023: \#4 US, \#42 global)
-- Organized AmateursCTF 2023 and 2024, with 1000+ teams solving at least one challenge and \$2000+ in cash prizes
-  - Scaled infrastructure using GCP, Digital Ocean with Kubernetes and Docker; deployed custom software on fly.io
-- Qualified for DEFCON CTF 32 and CSAW CTF 2023, two of the most prestigious cybersecurity competitions globally
+- Participated in a security vulnerability assessment of the university's next-generation integrated information system as a volunteer
+- Reported multiple vulnerabilities including Web Shell, XSS, and others
 
-// #extracurriculars(
-//   activity: "Science Olympiad Volunteering",
-//   dates: "Sep 2023 --- Present"
-// )
-// - Volunteer and write tests for tournaments, including LA Regionals and SoCal State \@ Caltech
+#extracurriculars(
+  activity: "Vulnerability Assessment for KIBO",
+  dates: dates-helper(start-date: "Dec 2020", end-date: "Dec 2020"),
+)
+- Participated in the "KIBO New Website Vulnerability Assessment" project led by IglooSecurity
+- KIBO (Korea Technology Finance Corporation) is a quasi-governmental agency under South Korea’s Ministry of SMEs and Startups
+- Reported multiple vulnerabilities (Detailed information is confidential due to NDA)
+
+#extracurriculars(
+  activity: "Best of the Best (BoB) - Vulnerability Analysis Track",
+  dates: dates-helper(start-date: "Jul 2016", end-date: "Feb 2017"),
+)
+- Participated in the “Best of the Best” (BoB) 5th program, a national cybersecurity talent cultivation initiative hosted by the Korea Information Technology Research Institute (KITRI)
+- Conducted a team project titled "Game Emulators Zero-day Vulnerability Analysis"
+  - Analyzed vulnerabilities in VirtuaNES, a PC emulator for Nintendo NES game consoles
+  - Contributed to the development of a malicious ROM exploiting the flaw in the Mapper
 
 // #certificates(
 //   name: "OSCP",
@@ -102,5 +127,5 @@
 // )
 
 == Skills
-- *Programming Languages*: C/C++, Python, Shell Script
+- *Programming Languages*: C, C++, Python, OCaml
 - *Technologies*: Git
