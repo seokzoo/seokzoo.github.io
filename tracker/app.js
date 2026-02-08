@@ -181,12 +181,16 @@ function setFocusEnabled(enabled) {
 
 function closeEditPanel() {
   elements.editPanel.classList.add("hidden");
-  elements.editToggle.textContent = "편집";
+  if (elements.editToggle) {
+    elements.editToggle.textContent = "편집";
+  }
 }
 
 function openEditPanel() {
   elements.editPanel.classList.remove("hidden");
-  elements.editToggle.textContent = "닫기";
+  if (elements.editToggle) {
+    elements.editToggle.textContent = "닫기";
+  }
   elements.editName.focus();
 }
 
@@ -431,17 +435,19 @@ function bindEvents() {
     renderChart();
   });
 
-  elements.editToggle.addEventListener("click", () => {
-    const exercise = getSelectedExercise();
-    if (!exercise) return;
-    const isHidden = elements.editPanel.classList.contains("hidden");
-    if (isHidden) {
-      syncEditFields();
-      openEditPanel();
-    } else {
-      closeEditPanel();
-    }
-  });
+  if (elements.editToggle) {
+    elements.editToggle.addEventListener("click", () => {
+      const exercise = getSelectedExercise();
+      if (!exercise) return;
+      const isHidden = elements.editPanel.classList.contains("hidden");
+      if (isHidden) {
+        syncEditFields();
+        openEditPanel();
+      } else {
+        closeEditPanel();
+      }
+    });
+  }
 
   elements.cancelEdit.addEventListener("click", () => {
     closeEditPanel();
