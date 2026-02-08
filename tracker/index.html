@@ -52,6 +52,23 @@
             </div>
             <div id="exerciseList" class="exercise-list"></div>
           </section>
+
+          <section class="card list-card">
+            <div id="editPanel" class="edit-panel hidden">
+              <label class="field">
+                <span>운동명 수정</span>
+                <input id="editName" type="text" placeholder="운동명 입력" />
+              </label>
+              <label class="field">
+                <span>일별 목표 수정</span>
+                <input id="editGoal" type="number" min="1" step="1" placeholder="목표 횟수" />
+              </label>
+              <div class="edit-actions">
+                <button id="saveEdit" class="primary" type="button">저장</button>
+                <button id="cancelEdit" class="ghost" type="button">취소</button>
+              </div>
+            </div>
+          </section>
         </aside>
 
         <main class="main">
@@ -71,21 +88,6 @@
                   <button id="editToggle" class="ghost" type="button">편집</button>
                   <button id="deleteBtn" class="ghost danger" type="button">삭제</button>
                 </div>
-              </div>
-            </div>
-
-            <div id="editPanel" class="edit-panel hidden">
-              <label class="field">
-                <span>운동명 수정</span>
-                <input id="editName" type="text" placeholder="운동명 입력" />
-              </label>
-              <label class="field">
-                <span>일별 목표 수정</span>
-                <input id="editGoal" type="number" min="1" step="1" placeholder="목표 횟수" />
-              </label>
-              <div class="edit-actions">
-                <button id="saveEdit" class="primary" type="button">저장</button>
-                <button id="cancelEdit" class="ghost" type="button">취소</button>
               </div>
             </div>
 
