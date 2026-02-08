@@ -215,16 +215,15 @@ input:disabled {
 }
 
 .exercise-item {
-  display: grid;
-  grid-template-columns: 1fr auto;
+  display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 12px;
   padding: 12px 14px;
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.7);
   border: 1px solid transparent;
   transition: border var(--transition), background var(--transition), transform var(--transition);
-  cursor: pointer;
 }
 
 .exercise-item:hover {
@@ -244,38 +243,6 @@ input:disabled {
 
 .exercise-meta small {
   color: var(--muted);
-}
-
-.exercise-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  opacity: 0;
-  transition: opacity var(--transition);
-}
-
-.exercise-item:hover .exercise-actions,
-.exercise-item:focus-within .exercise-actions {
-  opacity: 1;
-}
-
-.exercise-badge {
-  font-size: 0.8rem;
-  color: var(--muted);
-  min-width: 64px;
-  text-align: right;
-}
-
-.exercise-edit {
-  padding: 6px 10px;
-  font-size: 0.78rem;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: #fff;
-}
-
-.exercise-edit:hover {
-  border-color: rgba(31, 27, 22, 0.3);
 }
 
 .focus-card {

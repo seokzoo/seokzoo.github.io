@@ -279,10 +279,9 @@ function updateExerciseList() {
   }
 
   state.exercises.forEach((exercise) => {
-    const item = document.createElement("div");
+    const item = document.createElement("button");
+    item.type = "button";
     item.className = "exercise-item" + (exercise.id === state.selectedExerciseId ? " active" : "");
-    item.setAttribute("role", "button");
-    item.tabIndex = 0;
 
     const meta = document.createElement("div");
     meta.className = "exercise-meta";
@@ -300,31 +299,9 @@ function updateExerciseList() {
     } else {
       badge.textContent = "";
     }
+    item.append(meta, badge);
 
-    const actions = document.createElement("div");
-    actions.className = "exercise-actions";
-
-    const editBtn = document.createElement("button");
-    editBtn.type = "button";
-    editBtn.className = "exercise-edit";
-    editBtn.textContent = "편집";
-    editBtn.addEventListener("click", async (event) => {
-      event.stopPropagation();
-      await selectExercise(exercise.id);
-      syncEditFields();
-      openEditPanel();
-    });
-
-    actions.append(badge, editBtn);
-
-    item.append(meta, actions);
     item.addEventListener("click", () => selectExercise(exercise.id));
-    item.addEventListener("keydown", (event) => {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        selectExercise(exercise.id);
-      }
-    });
     list.appendChild(item);
   });
 }
