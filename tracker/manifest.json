@@ -1,13 +1,13 @@
 {
-  "name": "운동 트래커",
-  "short_name": "운동 트래커",
-  "start_url": "/tracker/",
+  "name": "운동을 합시다",
+  "short_name": "운동을 합시다",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#f7efe4",
   "theme_color": "#f06f45",
   "icons": [
     {
-      "src": "/tracker/icons/icon.svg",
+      "src": "icons/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"

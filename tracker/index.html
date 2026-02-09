@@ -3,14 +3,14 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#f06f45" />
+    <meta name="theme-color" content="#2a6fdb" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <title>운동 카운트</title>
-    <link rel="icon" href="/tracker/icons/icon.svg" />
-    <link rel="apple-touch-icon" href="/tracker/icons/icon.svg" />
-    <link rel="manifest" href="/tracker/manifest.json" />
-    <link rel="stylesheet" href="/tracker/styles.css" />
+    <title>운동을 합시다</title>
+    <link rel="icon" href="icons/icon.svg" />
+    <link rel="apple-touch-icon" href="icons/icon.svg" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <div class="ambient"></div>
@@ -18,157 +18,202 @@
       <header class="app-header">
         <div>
           <h1>운동 트래커</h1>
-          <p class="subtitle">운동을 합시다</p>
+          <p class="subtitle">"운동을 합시다" 캠페인에 참여하세요</p>
         </div>
         <div class="header-actions">
-          <button id="installBtn" class="ghost hidden" type="button">PWA 설치</button>
+          <button id="installBtn" class="ghost hidden" type="button">설치</button>
         </div>
       </header>
 
       <div class="layout">
-        <aside class="sidebar">
-          <section class="card add-card">
-            <div class="card-header">
-              <h2>운동 추가</h2>
-              <p>운동명과 일별 목표 횟수를 설정하세요.</p>
-            </div>
-            <form id="addExerciseForm" class="stack">
-              <label class="field">
-                <span>운동명</span>
-                <input name="name" type="text" placeholder="예: 스쿼트" required />
-              </label>
-              <label class="field">
-                <span>일별 목표</span>
-                <input name="goal" type="number" min="1" step="1" placeholder="예: 30" required />
-              </label>
-              <button class="primary" type="submit">운동 추가</button>
-            </form>
-          </section>
+        <section class="card list-card exercise-list-card">
+          <div class="card-header">
+            <h2>운동</h2>
+            <p>선택하면 표시</p>
+          </div>
+          <div id="exerciseList" class="exercise-list"></div>
+        </section>
 
-          <section class="card list-card">
-            <div class="card-header">
-              <h2>운동 목록</h2>
-              <p>운동을 선택하면 기록과 추이가 표시됩니다.</p>
-            </div>
-            <div id="exerciseList" class="exercise-list"></div>
-          </section>
+        <div class="mobile-pager" id="mobilePager" role="tablist" aria-label="페이지 전환">
+          <button
+            class="pager-btn active"
+            data-page="0"
+            type="button"
+            role="tab"
+            aria-selected="true"
+            aria-controls="pageAdd"
+          >
+            추가
+          </button>
+          <button
+            class="pager-btn"
+            data-page="1"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="pageRecord"
+          >
+            기록
+          </button>
+          <button
+            class="pager-btn"
+            data-page="2"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="pageView"
+          >
+            보기
+          </button>
+        </div>
 
-          <section class="card list-card">
-            <div id="editPanel" class="edit-panel hidden">
-              <label class="field">
-                <span>운동명 수정</span>
-                <input id="editName" type="text" placeholder="운동명 입력" />
-              </label>
-              <label class="field">
-                <span>일별 목표 수정</span>
-                <input id="editGoal" type="number" min="1" step="1" placeholder="목표 횟수" />
-              </label>
-              <div class="edit-actions">
-                <button id="saveEdit" class="primary" type="button">저장</button>
-                <button id="cancelEdit" class="ghost" type="button">취소</button>
+        <div class="page-track" id="pageTrack">
+          <section class="page page-add" id="pageAdd" role="tabpanel" aria-label="운동 추가">
+            <section class="card add-card">
+              <div class="card-header">
+                <h2>추가</h2>
+                <p>이름 · 목표</p>
               </div>
-            </div>
-          </section>
-        </aside>
+              <form id="addExerciseForm" class="stack">
+                <label class="field">
+                  <span>이름</span>
+                  <input name="name" type="text" placeholder="스쿼트" required />
+                </label>
+                <label class="field">
+                  <span>목표</span>
+                  <input name="goal" type="number" min="1" step="1" placeholder="30" required />
+                </label>
+                <button class="primary" type="submit">추가</button>
+              </form>
+            </section>
 
-        <main class="main">
-          <section class="card focus-card" id="focusCard">
-            <div class="focus-header">
-              <div>
-                <p class="eyebrow">선택된 운동</p>
-                <h2 id="focusName">운동을 선택하세요</h2>
-                <p id="focusMeta" class="muted">목표를 설정하면 자동으로 달력 색상이 업데이트됩니다.</p>
-              </div>
-              <div class="focus-tools">
-                <div class="date-switch">
-                  <button id="todayBtn" class="ghost" type="button">오늘</button>
-                  <span id="selectedDateLabel" class="date-pill"></span>
+            <section class="card edit-card">
+              <div id="editPanel" class="edit-panel hidden">
+                <label class="field">
+                  <span>이름</span>
+                  <input id="editName" type="text" placeholder="이름" />
+                </label>
+                <label class="field">
+                  <span>목표</span>
+                  <input id="editGoal" type="number" min="1" step="1" placeholder="목표" />
+                </label>
+                <div class="edit-actions">
+                  <button id="saveEdit" class="primary" type="button">저장</button>
+                  <button id="cancelEdit" class="ghost" type="button">닫기</button>
                 </div>
-                <div class="manage-actions">
-                  <button id="editToggle" class="ghost" type="button">편집</button>
-                  <button id="deleteBtn" class="ghost danger" type="button">삭제</button>
-                </div>
               </div>
-            </div>
-
-            <div class="count-control">
-              <button class="circle" data-delta="-1" type="button">-</button>
-              <div class="count-display">
-                <span id="countValue">0</span>
-                <small>회</small>
-              </div>
-              <button class="circle" data-delta="1" type="button">+</button>
-            </div>
-
-            <div class="quick-buttons">
-              <button class="chip" data-add="1" type="button">+1</button>
-              <button class="chip" data-add="5" type="button">+5</button>
-              <button class="chip" data-add="10" type="button">+10</button>
-              <button id="setGoalBtn" class="chip ghost" type="button">목표로 맞추기</button>
-            </div>
-
-            <div class="inline-controls">
-              <label class="field compact">
-                <span>직접 입력</span>
-                <input id="countInput" type="number" min="0" step="1" placeholder="숫자 입력" />
-              </label>
-              <button id="applyCount" class="primary" type="button">적용</button>
-            </div>
-
-            <div id="goalStatus" class="status"></div>
+            </section>
           </section>
 
-          <section class="grid">
-            <div class="card calendar-card">
-              <div class="calendar-header">
+          <section class="page page-record" id="pageRecord" role="tabpanel" aria-label="기록 추가">
+            <section class="card focus-card" id="focusCard">
+              <div class="focus-header">
                 <div>
-                  <p class="eyebrow">달력</p>
-                  <h3 id="calendarTitle">-</h3>
+                  <p class="eyebrow">선택</p>
+                  <h2 id="focusName">운동 선택</h2>
+                  <p id="focusMeta" class="muted">목표 설정 시 달력 색상 표시</p>
                 </div>
-                <div class="calendar-actions">
-                  <button id="prevMonth" class="ghost" type="button">이전</button>
-                  <button id="nextMonth" class="ghost" type="button">다음</button>
+                <div class="focus-tools">
+                  <div class="date-switch">
+                    <button id="todayBtn" class="ghost" type="button">오늘</button>
+                    <span id="selectedDateLabel" class="date-pill"></span>
+                  </div>
+                  <div class="manage-actions">
+                    <button id="editToggle" class="ghost" type="button">수정</button>
+                    <button id="deleteBtn" class="ghost danger" type="button">삭제</button>
+                  </div>
                 </div>
               </div>
-              <div class="calendar-weekdays">
-                <span>일</span>
-                <span>월</span>
-                <span>화</span>
-                <span>수</span>
-                <span>목</span>
-                <span>금</span>
-                <span>토</span>
-              </div>
-              <div id="calendarGrid" class="calendar-grid"></div>
-              <div class="legend">
-                <span class="legend-item"><i class="dot goal"></i>목표 달성</span>
-                <span class="legend-item"><i class="dot miss"></i>목표 미달</span>
-                <span class="legend-item"><i class="dot neutral"></i>기록 없음/미래</span>
-              </div>
-            </div>
 
-            <div class="card chart-card">
-              <div class="chart-header">
-                <div>
-                  <p class="eyebrow">추이</p>
-                  <h3>운동 횟수 변화</h3>
+              <div class="count-control">
+                <button class="circle" data-delta="-1" type="button">-</button>
+                <div class="count-display">
+                  <span id="countValue">0</span>
+                  <small>회</small>
                 </div>
-                <div class="segmented" id="rangeButtons">
-                  <button data-range="daily" class="active" type="button">일별</button>
-                  <button data-range="monthly" type="button">월별</button>
-                  <button data-range="yearly" type="button">연도별</button>
-                </div>
+                <button class="circle" data-delta="1" type="button">+</button>
               </div>
-              <div class="chart-wrapper">
-                <canvas id="trendChart"></canvas>
+
+              <div class="quick-buttons">
+                <button class="chip" data-add="1" type="button">+1</button>
+                <button class="chip" data-add="5" type="button">+5</button>
+                <button class="chip" data-add="10" type="button">+10</button>
+                <button id="setGoalBtn" class="chip ghost" type="button">목표</button>
               </div>
-              <p id="chartNote" class="muted"></p>
-            </div>
+
+              <div class="inline-controls">
+                <label class="field compact">
+                  <span>입력</span>
+                  <input id="countInput" type="number" min="0" step="1" placeholder="숫자 입력" />
+                </label>
+                <button id="applyCount" class="primary" type="button">반영</button>
+              </div>
+
+              <div id="goalStatus" class="status"></div>
+            </section>
           </section>
-        </main>
+
+          <section class="page page-view" id="pageView" role="tabpanel" aria-label="기록 보기">
+            <section class="view-grid">
+              <div class="card calendar-card">
+                <div class="calendar-header">
+                  <div>
+                    <p class="eyebrow">달력</p>
+                    <h3 id="calendarTitle">-</h3>
+                  </div>
+                  <div class="calendar-actions">
+                    <button id="prevMonth" class="ghost" type="button" aria-label="이전 달">‹</button>
+                    <button id="nextMonth" class="ghost" type="button" aria-label="다음 달">›</button>
+                  </div>
+                </div>
+                <div class="calendar-weekdays">
+                  <span>일</span>
+                  <span>월</span>
+                  <span>화</span>
+                  <span>수</span>
+                  <span>목</span>
+                  <span>금</span>
+                  <span>토</span>
+                </div>
+                <div id="calendarGrid" class="calendar-grid"></div>
+                <div class="legend">
+                  <span class="legend-item"><i class="dot goal"></i>달성</span>
+                  <span class="legend-item"><i class="dot miss"></i>미달</span>
+                  <span class="legend-item"><i class="dot neutral"></i>없음</span>
+                </div>
+              </div>
+
+              <section class="card ranking-card">
+                <div class="card-header">
+                  <h2>최고 기록 TOP 10</h2>
+                  <p>하루 최고 기준</p>
+                </div>
+                <div id="rankingList" class="ranking-list" role="list"></div>
+              </section>
+
+              <div class="card chart-card">
+                <div class="chart-header">
+                  <div>
+                    <p class="eyebrow">추이</p>
+                    <h3>횟수 변화</h3>
+                  </div>
+                  <div class="segmented" id="rangeButtons">
+                    <button data-range="daily" class="active" type="button">일</button>
+                    <button data-range="monthly" type="button">월</button>
+                    <button data-range="yearly" type="button">연</button>
+                  </div>
+                </div>
+                <div class="chart-wrapper">
+                  <canvas id="trendChart"></canvas>
+                </div>
+                <p id="chartNote" class="muted"></p>
+              </div>
+            </section>
+          </section>
+        </div>
       </div>
     </div>
 
-    <script src="/tracker/app.js"></script>
+    <script src="app.js"></script>
   </body>
 </html>

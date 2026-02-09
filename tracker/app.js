@@ -38,6 +38,9 @@ const elements = {
   editGoal: document.getElementById("editGoal"),
   saveEdit: document.getElementById("saveEdit"),
   cancelEdit: document.getElementById("cancelEdit"),
+  rankingList: document.getElementById("rankingList"),
+  pageTrack: document.getElementById("pageTrack"),
+  pagerButtons: Array.from(document.querySelectorAll(".pager-btn")),
 };
 
 let dbPromise = null;
@@ -122,6 +125,10 @@ async function getEntriesForExercise(exerciseId) {
   return withStore("entries", "readonly", (store) => store.index("exerciseId").getAll(exerciseId));
 }
 
+async function getAllEntries() {
+  return withStore("entries", "readonly", (store) => store.getAll());
+}
+
 async function setEntry(exerciseId, date, count) {
   return withStore("entries", "readwrite", (store) => {
     if (count <= 0) {
@@ -182,7 +189,7 @@ function setFocusEnabled(enabled) {
 function closeEditPanel() {
   elements.editPanel.classList.add("hidden");
   if (elements.editToggle) {
-    elements.editToggle.textContent = "편집";
+    elements.editToggle.textContent = "수정";
   }
 }
 
@@ -219,36 +226,36 @@ function updateGoalStatus() {
   statusEl.className = "status";
 
   if (!exercise) {
-    statusEl.textContent = "운동을 선택하면 목표 달성 상태가 표시됩니다.";
+    statusEl.textContent = "운동 선택";
     return;
   }
 
   if (isFutureDate(state.selectedDate)) {
-    statusEl.textContent = "미래 날짜입니다. 기록을 미리 입력할 수 있어요.";
+    statusEl.textContent = "미래 날짜";
     return;
   }
 
   const count = getCountForDate(state.selectedDate);
   const goal = Number(exercise.goal) || 0;
   if (goal <= 0) {
-    statusEl.textContent = "목표 횟수를 설정하세요.";
+    statusEl.textContent = "목표 설정";
     return;
   }
 
   if (count >= goal) {
     statusEl.classList.add("goal");
-    statusEl.textContent = `목표 달성! 오늘 ${count}회, 목표 ${goal}회를 채웠어요.`;
+    statusEl.textContent = `달성 · ${count}/${goal}회`;
   } else {
     statusEl.classList.add("miss");
-    statusEl.textContent = `목표까지 ${goal - count}회 남았어요. 현재 ${count}회 기록.`;
+    statusEl.textContent = `남음 ${goal - count}회 · ${count}/${goal}회`;
   }
 }
 
 function updateFocusCard() {
   const exercise = getSelectedExercise();
   if (!exercise) {
-    elements.focusName.textContent = "운동을 선택하세요";
-    elements.focusMeta.textContent = "왼쪽에서 운동을 선택하거나 새로 추가하세요.";
+    elements.focusName.textContent = "운동 선택";
+    elements.focusMeta.textContent = "추가 후 선택";
     elements.countValue.textContent = "0";
     elements.countInput.value = "";
     elements.editName.value = "";
@@ -262,7 +269,7 @@ function updateFocusCard() {
 
   setFocusEnabled(true);
   elements.focusName.textContent = exercise.name;
-  elements.focusMeta.textContent = `일별 목표 ${exercise.goal}회`;
+  elements.focusMeta.textContent = `목표 ${exercise.goal}회`;
   const count = getCountForDate(state.selectedDate);
   elements.countValue.textContent = String(count);
   elements.countInput.value = count;
@@ -277,7 +284,7 @@ function updateExerciseList() {
   if (state.exercises.length === 0) {
     const empty = document.createElement("p");
     empty.className = "muted";
-    empty.textContent = "아직 등록된 운동이 없습니다.";
+    empty.textContent = "운동 없음";
     list.appendChild(empty);
     return;
   }
@@ -299,7 +306,7 @@ function updateExerciseList() {
     badge.className = "exercise-badge";
     if (exercise.id === state.selectedExerciseId) {
       const todayValue = getCountForDate(toDateKey(new Date()));
-      badge.textContent = `오늘 ${todayValue}회`;
+      badge.textContent = todayValue > 0 ? `${todayValue}회` : "";
     } else {
       badge.textContent = "";
     }
@@ -342,6 +349,7 @@ async function refreshExercises() {
     renderCalendar();
     renderChart();
   }
+  await renderRanking();
 }
 
 async function applyCountChange(newCount) {
@@ -358,6 +366,7 @@ async function applyCountChange(newCount) {
   updateExerciseList();
   renderCalendar();
   renderChart();
+  await renderRanking();
 }
 
 function bindEvents() {
@@ -459,7 +468,7 @@ function bindEvents() {
     const name = String(elements.editName.value || "").trim();
     const goal = Number(elements.editGoal.value);
     if (!name || goal <= 0) {
-      window.alert("운동명과 목표 횟수를 확인해주세요.");
+      window.alert("이름/목표 확인");
       return;
     }
     await updateExercise({ ...exercise, name, goal });
@@ -470,7 +479,7 @@ function bindEvents() {
   elements.deleteBtn.addEventListener("click", async () => {
     const exercise = getSelectedExercise();
     if (!exercise) return;
-    const confirmed = window.confirm(`'${exercise.name}' 운동과 기록을 모두 삭제할까요?`);
+    const confirmed = window.confirm(`'${exercise.name}' 삭제할까요?`);
     if (!confirmed) return;
     await deleteExercise(exercise.id);
     state.selectedExerciseId = null;
@@ -517,8 +526,8 @@ function renderCalendar() {
       }
     }
 
-    const countLabel = isFutureDate(dateKey) ? "-" : String(count);
-    button.innerHTML = `<span>${day}</span><small>${countLabel}회</small>`;
+    const countLabel = isFutureDate(dateKey) ? "" : String(count);
+    button.innerHTML = `<span>${day}</span><small>${countLabel}</small>`;
     button.addEventListener("click", () => {
       state.selectedDate = dateKey;
       updateFocusCard();
@@ -532,7 +541,7 @@ function renderCalendar() {
 function getRangeData() {
   const exercise = getSelectedExercise();
   if (!exercise) {
-    return { labels: [], values: [], caption: "운동을 선택하면 추이가 표시됩니다." };
+    return { labels: [], values: [], caption: "운동 선택" };
   }
 
   const values = [];
@@ -551,7 +560,7 @@ function getRangeData() {
     return {
       labels,
       values,
-      caption: `${formatMonthTitle(state.calendarDate)} 기준 일별 추이`,
+      caption: `${formatMonthTitle(state.calendarDate)} · 일`,
     };
   }
 
@@ -571,7 +580,7 @@ function getRangeData() {
     return {
       labels,
       values,
-      caption: `${year}년 월별 합계`,
+      caption: `${year} · 월`,
     };
   }
 
@@ -595,7 +604,7 @@ function getRangeData() {
   return {
     labels,
     values,
-    caption: `${recentYears[0]}년부터 ${recentYears[recentYears.length - 1]}년까지 연도별 합계`,
+    caption: `${recentYears[0]}–${recentYears[recentYears.length - 1]} · 연`,
   };
 }
 
@@ -611,9 +620,9 @@ function drawChart(labels, values, goalValue = 0) {
   ctx.clearRect(0, 0, rect.width, rect.height);
 
   if (values.length === 0) {
-    ctx.fillStyle = "rgba(31, 27, 22, 0.5)";
-    ctx.font = "14px \"Avenir Next\", sans-serif";
-    ctx.fillText("운동을 선택하면 그래프가 표시됩니다.", 16, 32);
+    ctx.fillStyle = "rgba(18, 18, 18, 0.5)";
+    ctx.font = "14px \"IBM Plex Sans KR\", sans-serif";
+    ctx.fillText("운동 선택", 16, 32);
     return;
   }
 
@@ -622,7 +631,7 @@ function drawChart(labels, values, goalValue = 0) {
   const height = rect.height - padding * 2;
   const maxValue = Math.max(...values, goalValue || 0, 1);
 
-  ctx.strokeStyle = "rgba(31, 27, 22, 0.12)";
+  ctx.strokeStyle = "rgba(18, 18, 18, 0.12)";
   ctx.lineWidth = 1;
   for (let i = 0; i <= 4; i += 1) {
     const y = padding + (height / 4) * i;
@@ -640,15 +649,15 @@ function drawChart(labels, values, goalValue = 0) {
   });
 
   const gradient = ctx.createLinearGradient(0, padding, 0, padding + height);
-  gradient.addColorStop(0, "rgba(240, 111, 69, 0.35)");
-  gradient.addColorStop(1, "rgba(240, 111, 69, 0)");
+  gradient.addColorStop(0, "rgba(42, 111, 219, 0.35)");
+  gradient.addColorStop(1, "rgba(42, 111, 219, 0)");
 
   ctx.beginPath();
   points.forEach((point, index) => {
     if (index === 0) ctx.moveTo(point.x, point.y);
     else ctx.lineTo(point.x, point.y);
   });
-  ctx.strokeStyle = "#f06f45";
+  ctx.strokeStyle = "#2a6fdb";
   ctx.lineWidth = 2.5;
   ctx.stroke();
 
@@ -670,21 +679,21 @@ function drawChart(labels, values, goalValue = 0) {
     ctx.stroke();
     ctx.setLineDash([]);
     ctx.fillStyle = "rgba(45, 139, 87, 0.9)";
-    ctx.font = "12px \"Avenir Next\", sans-serif";
-    const label = `목표 ${goalValue}회`;
+    ctx.font = "12px \"IBM Plex Sans KR\", sans-serif";
+    const label = `목표 ${goalValue}`;
     ctx.fillText(label, padding + 6, Math.max(goalY - 6, padding + 12));
     ctx.restore();
   }
 
-  ctx.fillStyle = "#1f1b16";
+  ctx.fillStyle = "#121212";
   points.forEach((point) => {
     ctx.beginPath();
     ctx.arc(point.x, point.y, 3.5, 0, Math.PI * 2);
     ctx.fill();
   });
 
-  ctx.fillStyle = "rgba(31, 27, 22, 0.6)";
-  ctx.font = "11px \"Avenir Next\", sans-serif";
+  ctx.fillStyle = "rgba(18, 18, 18, 0.6)";
+  ctx.font = "11px \"IBM Plex Sans KR\", sans-serif";
   const labelStep = values.length > 14 ? Math.ceil(values.length / 6) : 1;
   labels.forEach((label, index) => {
     if (index % labelStep !== 0 && index !== labels.length - 1) return;
@@ -710,8 +719,94 @@ function renderChart() {
   const avg = Math.round((total / values.length) * 10) / 10;
   const max = Math.max(...values);
 
-  const goalNote = goalValue > 0 && state.range === "daily" ? ` · 목표 ${goalValue}회` : "";
-  elements.chartNote.textContent = `${caption} · 총 ${total}회 · 평균 ${avg}회 · 최고 ${max}회${goalNote}`;
+  const goalNote = goalValue > 0 && state.range === "daily" ? ` · 목표 ${goalValue}` : "";
+  elements.chartNote.textContent = `${caption} · 합 ${total} · 평균 ${avg} · 최고 ${max}${goalNote}`;
+}
+
+async function renderRanking() {
+  const list = elements.rankingList;
+  if (!list) return;
+  list.innerHTML = "";
+
+  if (state.exercises.length === 0) {
+    const empty = document.createElement("p");
+    empty.className = "muted";
+    empty.textContent = "운동 추가";
+    list.appendChild(empty);
+    return;
+  }
+
+  const entries = await getAllEntries();
+  if (!entries.length) {
+    const empty = document.createElement("p");
+    empty.className = "muted";
+    empty.textContent = "기록 없음";
+    list.appendChild(empty);
+    return;
+  }
+
+  const maxByExercise = new Map();
+  entries.forEach((entry) => {
+    if (!entry || entry.count <= 0) return;
+    const current = maxByExercise.get(entry.exerciseId);
+    if (
+      !current ||
+      entry.count > current.count ||
+      (entry.count === current.count && entry.date > current.date)
+    ) {
+      maxByExercise.set(entry.exerciseId, { count: entry.count, date: entry.date });
+    }
+  });
+
+  const ranking = state.exercises
+    .map((exercise) => {
+      const record = maxByExercise.get(exercise.id);
+      if (!record) return null;
+      return { id: exercise.id, name: exercise.name, count: record.count, date: record.date };
+    })
+    .filter(Boolean)
+    .sort((a, b) => {
+      if (b.count !== a.count) return b.count - a.count;
+      if (a.date !== b.date) return a.date < b.date ? 1 : -1;
+      return a.name.localeCompare(b.name, "ko");
+    });
+
+  if (ranking.length === 0) {
+    const empty = document.createElement("p");
+    empty.className = "muted";
+    empty.textContent = "기록 없음";
+    list.appendChild(empty);
+    return;
+  }
+
+  ranking.slice(0, 10).forEach((item, index) => {
+    const row = document.createElement("div");
+    row.className = "ranking-item";
+    row.setAttribute("role", "listitem");
+
+    const rank = document.createElement("span");
+    rank.className = "ranking-rank";
+    rank.textContent = String(index + 1);
+
+    const main = document.createElement("div");
+    main.className = "ranking-main";
+    const name = document.createElement("strong");
+    name.textContent = item.name;
+    const sub = document.createElement("small");
+    sub.textContent = "최고";
+    main.append(name, sub);
+
+    const metric = document.createElement("div");
+    metric.className = "ranking-metric";
+    const count = document.createElement("span");
+    count.textContent = `${item.count}회`;
+    const date = document.createElement("small");
+    date.textContent = formatKoreanDate(item.date);
+    metric.append(count, date);
+
+    row.append(rank, main, metric);
+    list.appendChild(row);
+  });
 }
 
 function setupInstallPrompt() {
@@ -734,14 +829,97 @@ function setupInstallPrompt() {
 function registerServiceWorker() {
   if (!("serviceWorker" in navigator)) return;
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("/tracker/sw.js").catch(() => {});
+    navigator.serviceWorker.register("sw.js").catch(() => {});
   });
+}
+
+function setupMobilePager() {
+  const track = elements.pageTrack;
+  const buttons = elements.pagerButtons;
+  if (!track || !buttons || buttons.length === 0) return;
+
+  const media = window.matchMedia("(max-width: 980px)");
+  let activeIndex = 1;
+
+  const clampIndex = (index) => Math.max(0, Math.min(index, buttons.length - 1));
+
+  const setActive = (index) => {
+    const safeIndex = clampIndex(index);
+    activeIndex = safeIndex;
+    buttons.forEach((btn, idx) => {
+      const isActive = idx === safeIndex;
+      btn.classList.toggle("active", isActive);
+      btn.setAttribute("aria-selected", isActive ? "true" : "false");
+    });
+  };
+
+  const pageWidth = () => track.getBoundingClientRect().width || track.clientWidth;
+
+  const scrollToIndex = (index, behavior = "smooth") => {
+    const safeIndex = clampIndex(index);
+    const width = pageWidth();
+    if (!width) return;
+    track.scrollTo({ left: width * safeIndex, behavior });
+    setActive(safeIndex);
+  };
+
+  buttons.forEach((button, idx) => {
+    button.addEventListener("click", () => {
+      const index = Number(button.dataset.page ?? idx);
+      scrollToIndex(index, "smooth");
+    });
+  });
+
+  let rafId = null;
+  const updateFromScroll = () => {
+    if (!media.matches) return;
+    const width = pageWidth();
+    if (!width) return;
+    const index = clampIndex(Math.round(track.scrollLeft / width));
+    if (index !== activeIndex) setActive(index);
+  };
+
+  const handleScroll = () => {
+    if (rafId) return;
+    rafId = requestAnimationFrame(() => {
+      rafId = null;
+      updateFromScroll();
+    });
+  };
+
+  track.addEventListener("scroll", handleScroll, { passive: true });
+
+  const handleResize = () => {
+    if (!media.matches) return;
+    scrollToIndex(activeIndex, "auto");
+  };
+
+  window.addEventListener("resize", handleResize);
+
+  if (media.matches) {
+    scrollToIndex(activeIndex, "auto");
+  } else {
+    setActive(activeIndex);
+  }
+
+  const handleMediaChange = () => {
+    if (media.matches) {
+      scrollToIndex(activeIndex, "auto");
+    }
+  };
+
+  if (typeof media.addEventListener === "function") {
+    media.addEventListener("change", handleMediaChange);
+  } else if (typeof media.addListener === "function") {
+    media.addListener(handleMediaChange);
+  }
 }
 
 async function init() {
   bindEvents();
   setupInstallPrompt();
   registerServiceWorker();
+  setupMobilePager();
   updateSelectedDateLabel();
   await refreshExercises();
 }
