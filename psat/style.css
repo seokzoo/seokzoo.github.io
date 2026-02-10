@@ -40,7 +40,8 @@ button {
     display: flex;
     flex-direction: column;
     height: 100vh; /* Fixed to viewport height */
-    max-width: 600px;
+    width: 100%;
+    max-width: 1024px;
     margin: 0 auto;
     background-color: var(--card-bg);
     box-shadow: 0 0 20px rgba(0,0,0,0.05);
