@@ -208,6 +208,26 @@
                 </div>
                 <p id="chartNote" class="muted"></p>
               </div>
+
+              <section class="card data-card" aria-label="데이터 가져오기/내보내기">
+                <div class="card-header">
+                  <h2>데이터</h2>
+                  <p>내보내기 · 가져오기</p>
+                </div>
+                <div class="data-actions">
+                  <button id="exportBtn" class="primary" type="button">내보내기</button>
+                  <button id="importBtn" class="ghost" type="button">가져오기</button>
+                  <input
+                    id="importFile"
+                    class="hidden"
+                    type="file"
+                    accept=".json,.gz,application/json,application/gzip"
+                  />
+                </div>
+                <p id="dataNote" class="muted data-note">
+                  압축 JSON(gzip) 저장 · 가져오면 기존 데이터는 교체됩니다.
+                </p>
+              </section>
             </section>
           </section>
         </div>

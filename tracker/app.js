@@ -1,5 +1,7 @@
 const DB_NAME = "workout-tracker";
 const DB_VERSION = 1;
+const EXPORT_VERSION = 1;
+const EXPORT_APP_ID = "workout-tracker";
 
 const state = {
   exercises: [],
@@ -41,6 +43,10 @@ const elements = {
   rankingList: document.getElementById("rankingList"),
   pageTrack: document.getElementById("pageTrack"),
   pagerButtons: Array.from(document.querySelectorAll(".pager-btn")),
+  exportBtn: document.getElementById("exportBtn"),
+  importBtn: document.getElementById("importBtn"),
+  importFile: document.getElementById("importFile"),
+  dataNote: document.getElementById("dataNote"),
 };
 
 let dbPromise = null;
@@ -136,6 +142,141 @@ async function setEntry(exerciseId, date, count) {
     }
     return store.put({ exerciseId, date, count });
   });
+}
+
+async function replaceDatabaseData(exercises, entries) {
+  const db = await openDb();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(["exercises", "entries"], "readwrite");
+    const exercisesStore = tx.objectStore("exercises");
+    const entriesStore = tx.objectStore("entries");
+    exercisesStore.clear();
+    entriesStore.clear();
+    exercises.forEach((exercise) => exercisesStore.put(exercise));
+    entries.forEach((entry) => entriesStore.put(entry));
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+}
+
+function buildExportFilename(extension) {
+  const stamp = toDateKey(new Date()).replace(/-/g, "");
+  return `workout-data-${stamp}.${extension}`;
+}
+
+function setDataNote(message, tone = "muted") {
+  if (!elements.dataNote) return;
+  elements.dataNote.textContent = message;
+  elements.dataNote.classList.remove("success", "error");
+  elements.dataNote.classList.toggle("muted", tone === "muted");
+  if (tone === "success") {
+    elements.dataNote.classList.add("success");
+  }
+  if (tone === "error") {
+    elements.dataNote.classList.add("error");
+  }
+}
+
+function updateDataNoteDefaults() {
+  if (!elements.dataNote) return;
+  const supportsGzip = "CompressionStream" in window;
+  elements.dataNote.textContent = supportsGzip
+    ? "압축 JSON(gzip) 저장 · 가져오면 기존 데이터는 교체됩니다."
+    : "JSON 저장 · 가져오면 기존 데이터는 교체됩니다.";
+}
+
+async function buildExportPayload() {
+  const exercises = await getAllExercises();
+  const entries = await getAllEntries();
+  return {
+    app: EXPORT_APP_ID,
+    version: EXPORT_VERSION,
+    exportedAt: new Date().toISOString(),
+    exercises,
+    entries,
+  };
+}
+
+async function createExportBlob(text) {
+  if ("CompressionStream" in window) {
+    const stream = new Blob([text]).stream().pipeThrough(new CompressionStream("gzip"));
+    const buffer = await new Response(stream).arrayBuffer();
+    return {
+      blob: new Blob([buffer], { type: "application/gzip" }),
+      extension: "json.gz",
+      compressed: true,
+    };
+  }
+  return {
+    blob: new Blob([text], { type: "application/json" }),
+    extension: "json",
+    compressed: false,
+  };
+}
+
+function downloadBlob(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = filename;
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 3000);
+}
+
+async function readImportFile(file) {
+  const buffer = await file.arrayBuffer();
+  const bytes = new Uint8Array(buffer);
+  const isGzip = bytes.length >= 2 && bytes[0] === 0x1f && bytes[1] === 0x8b;
+  if (isGzip) {
+    if (!("DecompressionStream" in window)) {
+      throw new Error("gzip 해제를 지원하지 않는 브라우저입니다.");
+    }
+    const stream = new Blob([buffer]).stream().pipeThrough(new DecompressionStream("gzip"));
+    return await new Response(stream).text();
+  }
+  return new TextDecoder().decode(buffer);
+}
+
+function normalizeImportPayload(raw) {
+  if (!raw || typeof raw !== "object") {
+    throw new Error("파일 형식이 올바르지 않습니다.");
+  }
+  if (raw.app && raw.app !== EXPORT_APP_ID) {
+    throw new Error("다른 앱에서 내보낸 파일입니다.");
+  }
+
+  const rawExercises = Array.isArray(raw.exercises) ? raw.exercises : [];
+  const rawEntries = Array.isArray(raw.entries) ? raw.entries : [];
+
+  const exercises = [];
+  const exerciseIds = new Set();
+
+  rawExercises.forEach((item) => {
+    if (!item) return;
+    const id = Number(item.id);
+    const name = String(item.name || "").trim();
+    const goal = Number(item.goal);
+    if (!Number.isFinite(id) || !name || !Number.isFinite(goal)) return;
+    if (exerciseIds.has(id)) return;
+    exercises.push({ id, name, goal });
+    exerciseIds.add(id);
+  });
+
+  const entries = [];
+  rawEntries.forEach((item) => {
+    if (!item) return;
+    const exerciseId = Number(item.exerciseId);
+    const date = String(item.date || "");
+    const count = Number(item.count);
+    if (!Number.isFinite(exerciseId) || !exerciseIds.has(exerciseId)) return;
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return;
+    if (!Number.isFinite(count) || count <= 0) return;
+    entries.push({ exerciseId, date, count });
+  });
+
+  return { exercises, entries };
 }
 
 function toDateKey(date) {
@@ -486,6 +627,55 @@ function bindEvents() {
     closeEditPanel();
     await refreshExercises();
   });
+
+  if (elements.exportBtn) {
+    elements.exportBtn.addEventListener("click", async () => {
+      setDataNote("내보내는 중...");
+      try {
+        const payload = await buildExportPayload();
+        const json = JSON.stringify(payload);
+        const { blob, extension, compressed } = await createExportBlob(json);
+        downloadBlob(blob, buildExportFilename(extension));
+        setDataNote(compressed ? "내보내기 완료 · gzip" : "내보내기 완료 · JSON", "success");
+      } catch (error) {
+        console.error(error);
+        setDataNote("내보내기 실패", "error");
+      }
+    });
+  }
+
+  if (elements.importBtn && elements.importFile) {
+    elements.importBtn.addEventListener("click", () => {
+      elements.importFile.click();
+    });
+
+    elements.importFile.addEventListener("change", async (event) => {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      const confirmed = window.confirm("가져오면 현재 데이터는 교체됩니다. 계속할까요?");
+      if (!confirmed) {
+        event.target.value = "";
+        return;
+      }
+      setDataNote("가져오는 중...");
+      try {
+        const text = await readImportFile(file);
+        const raw = JSON.parse(text);
+        const { exercises, entries } = normalizeImportPayload(raw);
+        await replaceDatabaseData(exercises, entries);
+        state.selectedExerciseId = null;
+        state.entriesMap = new Map();
+        await refreshExercises();
+        setDataNote("가져오기 완료", "success");
+      } catch (error) {
+        console.error(error);
+        setDataNote("가져오기 실패", "error");
+        window.alert(error?.message || "가져오기 실패");
+      } finally {
+        event.target.value = "";
+      }
+    });
+  }
 }
 
 function renderCalendar() {
@@ -920,6 +1110,7 @@ async function init() {
   setupInstallPrompt();
   registerServiceWorker();
   setupMobilePager();
+  updateDataNoteDefaults();
   updateSelectedDateLabel();
   await refreshExercises();
 }

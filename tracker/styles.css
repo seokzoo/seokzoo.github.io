@@ -181,7 +181,8 @@ p {
     grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
     grid-template-areas:
       "calendar chart"
-      "ranking chart";
+      "ranking chart"
+      "data data";
     align-items: start;
   }
 
@@ -195,6 +196,10 @@ p {
 
   .view-grid .chart-card {
     grid-area: chart;
+  }
+
+  .view-grid .data-card {
+    grid-area: data;
   }
 }
 
@@ -641,6 +646,31 @@ input:disabled {
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+.data-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.data-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.data-note {
+  font-size: 0.85rem;
+}
+
+.data-note.success {
+  color: var(--goal);
+}
+
+.data-note.error {
+  color: var(--miss);
 }
 
 .chart-header {
