@@ -145,7 +145,6 @@ p {
   align-items: start;
   min-width: 0;
   scroll-behavior: smooth;
-  touch-action: pan-x;
 }
 
 .page {
@@ -770,6 +769,10 @@ canvas {
   .page-view {
     grid-column: auto;
     grid-row: auto;
+  }
+
+  .page-view {
+    touch-action: pan-y;
   }
 
   .app-header {
