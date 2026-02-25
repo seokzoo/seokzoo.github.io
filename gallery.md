@@ -1,51 +1,35 @@
 ---
-layout: default
-title: gallery
-images:
-  #- image_path: /photos/
-  #  title: 
-  - image_path: /photos/jaws.jpg
-    title: 아가리(Jaws)
-  - image_path: /photos/mosquitouse2.jpeg
-    title: 모기쥐 완성판
-  - image_path: /photos/mosquitouse.jpeg
-    title: 모기쥐
-  - image_path: /photos/owl.jpeg
-    title: 부엉이
-  - image_path: /photos/hippocampus.jpeg
-    title: 해마
-  - image_path: /photos/caught_bigfoot.jpeg
-    title: 붙잡힌 빅풋 완성판
-  - image_path: /photos/bigfoot.png
-    title: 빅풋
-  - image_path: /photos/flowerpot.png
-    title: 화분
-  - image_path: /photos/cloud.png
-    title: 몽실몽실한 구름
-  - image_path: /photos/apple.png
-    title: 사과
+title: Gallery
 ---
 
 <div>
-  <head>
-    <title>{{ page.title }}</title>
-    <script src="{{ site.url }}/assets/js/medium-zoom.min.js"></script>
-    <script>window.addEventListener('load', function() { mediumZoom('[zoomable]', { margin: 24 }); });</script>
-  </head>
-  <div class="post-back">
-    <a class="black-link" href="{{ site.url | relative_url }}"> ← {{ site.moving.back_to }} </a>
-  </div>
-  <div>
-    <h1>{{ page.title | capitalize }}</h1>
     <ul class="photo-gallery">
       <table border="1" style="margin: auto; text-align: center;">
         <tbody>
-          {% for image in page.images %}
-            <tr><td><img zoomable loading="lazy" src="{{ image.image_path }}" alt="{{ image.title }}"/></td></tr>
-            <tr><td>{{ image.title }}</td></tr>
-          {% endfor %}
+          <tr><td><img zoomable loading="lazy" src="/photos/jaws.jpg" alt="아가리(Jaws)"/></td></tr>
+          <tr><td>아가리(Jaws)</td></tr>
+          <tr><td><img zoomable loading="lazy" src="/photos/mosquitouse2.jpeg" alt="모기쥐 완성판"/></td></tr>
+          <tr><td>모기쥐 완성판</td></tr>
+          <tr><td><img zoomable loading="lazy" src="/photos/mosquitouse.jpeg" alt="모기쥐"/></td></tr>
+          <tr><td>모기쥐</td></tr>
+          <tr><td><img zoomable loading="lazy" src="/photos/owl.jpeg" alt="부엉이"/></td></tr>
+          <tr><td>부엉이</td></tr>
+          <tr><td><img zoomable loading="lazy" src="/photos/hippocampus.jpeg" alt="해마"/></td></tr>
+          <tr><td>해마</td></tr>
+          <tr><td><img zoomable loading="lazy" src="/photos/caught_bigfoot.jpeg" alt="붙잡힌 빅풋 완성판"/></td></tr>
+          <tr><td>붙잡힌 빅풋 완성판</td></tr>
+          <tr><td><img zoomable loading="lazy" src="/photos/bigfoot.png" alt="빅풋"/></td></tr>
+          <tr><td>빅풋</td></tr>
+          <tr><td><img zoomable loading="lazy" src="/photos/flowerpot.png" alt="화분"/></td></tr>
+          <tr><td>화분</td></tr>
+          <tr><td><img zoomable loading="lazy" src="/photos/cloud.png" alt="몽실몽실한 구름"/></td></tr>
+          <tr><td>몽실몽실한 구름</td></tr>
+          <tr><td><img zoomable loading="lazy" src="/photos/apple.png" alt="사과"/></td></tr>
+          <tr><td>사과</td></tr>
         </tbody>
       </table>
     </ul>
-  </div>
 </div>
+
+<script src="/assets/js/medium-zoom.min.js"></script>
+<script>window.addEventListener('load', function() { mediumZoom('[zoomable]', { margin: 24 }); });</script>

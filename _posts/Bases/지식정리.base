@@ -1,0 +1,11 @@
+filters:
+  and:
+    - file.properties['categories'] == '지식정리'
+views:
+  - type: table
+    name: Table
+    order:
+      - file.name
+    sort:
+      - property: categories
+        direction: ASC

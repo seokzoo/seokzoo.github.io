@@ -1,0 +1,6 @@
+filters:
+  and:
+    - file.properties['categories'] == '글쓰기'
+views:
+  - type: table
+    name: Table
