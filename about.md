@@ -8,6 +8,12 @@ title: "about me"
     <div class="about-info">
       <div class="about-your-name">about me</div>
       <p class="about-description">Hi, I'm seokju!</p>
+      <ul class="social-media-list">
+  <li>
+    <a class="black-link" href="https://github.com/seokzoo"> [Github]</a>
+  </li><li>
+    <a class="black-link" href="https://linkedin.com/in/seokzoo/">[Linkedin]</a>
+  </li></ul>
     </div>
   </div>
   <div class="about-content e-content" itemprop="articleBody">
