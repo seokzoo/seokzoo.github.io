@@ -16,12 +16,12 @@ categories: 지식정리
 
 - Optimal Q-function에 대한 Bellman equation
 - $$
-  \begin{aligned}
+  \begin{align}
   y=\mathbb{E}_{s^\prime\sim\epsilon}[r+\gamma\cdot\max_{a^\prime} Q(s^\prime,a^\prime;\theta_{old})] \\
   L(\theta_{new})=\mathbb{E}_{s,a\sim \rho(\cdot)}[(y-Q(s,a;\theta_{new}))^2] \\
   \nabla L(\theta_{new})=\mathbb{E}_{s,a\sim \rho(\cdot)}[(y-Q(s,a;\theta_{new}))\nabla Q(s,a;\theta_{new})]\\
   \theta\leftarrow \theta-\alpha\cdot \nabla L(\theta)
-  \end{aligned}
+  \end{align}
   $$
 - target network와 experience replay를 적용해주면 된다
 

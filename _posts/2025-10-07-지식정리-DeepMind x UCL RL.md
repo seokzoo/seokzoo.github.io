@@ -66,7 +66,7 @@ categories: 지식정리
 
 ### policy gradient based on action preferences $H_t(s, a)$
 
-$$\begin{aligned}\pi(s,a)=\frac{e^{H_t(s,a)}}{\sum_b e^{H_t(s,b)}}\\ \theta\leftarrow \theta+\alpha \nabla_\theta \mathbb{E}[G_t\mid \pi_{\theta}] \end{aligned}$$
+$$\begin{align}\pi(s,a)=\frac{e^{H_t(s,a)}}{\sum_b e^{H_t(s,b)}}\\ \theta\leftarrow \theta+\alpha \nabla_\theta \mathbb{E}[G_t\mid \pi_{\theta}] \end{align}$$
 
 - action preferences : learnable parameters
 - How to compute this gradient : Log-likelihood trick $$\begin{flalign}\nabla_\theta\mathbb{E}[G_t\mid \pi_\theta]&=\nabla_\theta \sum_{a,s} \pi_\theta(a,s)\mathbb{E}[G_t\mid S_t=s, A_t=a]\\&= \sum_{a,s}q(s,a)\nabla_\theta\pi_\theta(a,s)\\&=\sum_{a,s}q(s,a)\frac{\pi_\theta(a,s)}{\pi_\theta(a,s)}\nabla_\theta\pi_\theta(a,s)\\&=\sum_{a,s}q(s,a)\pi_\theta(a,s)\nabla_\theta\log \pi_\theta(a,s)\\&=\mathbb{E}_{\pi_\theta}[G_t\nabla_\theta\log \pi_\theta(a,s)]\\\therefore \theta&\leftarrow \theta +\alpha G_t\nabla_\theta\log \pi_\theta(a,s) \end{flalign}$$
