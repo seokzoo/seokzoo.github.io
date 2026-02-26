@@ -3,6 +3,7 @@
 // put your custom CSS here!
 
 body {
+  padding: 0 2%;
   font:
     400 15.3px/1.6 "Bitter",
     "Hiragino Sans GB",
@@ -49,7 +50,18 @@ ul,
 ol,
 dl,
 figure {
-  margin-bottom: 15px;
+  margin-bottom: 15px !important;
+}
+
+ul,
+ol {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+li>ul,
+li>ol {
+  margin-bottom: 0 !important;
 }
 
 h1,
@@ -58,8 +70,8 @@ h3,
 h4,
 h5,
 h6 {
-  margin-top: 2rem;
-  font-weight: 400;
+  margin-top: 2rem !important;
+  font-weight: 400 !important;
 }
 
 hr {
@@ -95,12 +107,53 @@ article {
   margin-bottom: 30px;
 }
 
+article>h1 {
+  font-size: 39.6px !important;
+  line-height: 1.3 !important;
+  font-weight: 1000 !important;
+  margin-top: -0.5rem !important;
+}
+
+@media (max-width: 500px) {
+  article>h1 {
+    font-size: 32.4px !important;
+  }
+}
+
+@media screen and (min-width: 800px) {
+  article>h1 {
+    font-size: 39.6px !important;
+  }
+}
+
 article h2 {
-  font-size: 31.5px;
+  font-size: 31.5px !important;
+}
+
+@media screen and (min-width: 800px) {
+  article h2 {
+    font-size: 36px !important;
+  }
 }
 
 article h3 {
-  font-size: 24.75px;
+  font-size: 24.75px !important;
+}
+
+@media screen and (min-width: 800px) {
+  article h3 {
+    font-size: 29.25px !important;
+  }
+}
+
+article h4 {
+  font-size: 20.25px !important;
+}
+
+@media screen and (min-width: 800px) {
+  article h4 {
+    font-size: 22.5px !important;
+  }
 }
 
 blockquote {
@@ -109,6 +162,45 @@ blockquote {
   padding-left: 15px;
   font-size: 18px;
   letter-spacing: -1px;
+}
+
+@media (max-width: 600px) {
+  blockquote {
+    font-size: 14.4px;
+  }
+}
+
+pre,
+code {
+  font-size: 16.2px !important;
+  border: 1px solid #e0e0e0;
+  border-radius: 3px;
+  background-color: #f0f0f0;
+}
+
+code {
+  padding: 1px 1px !important;
+}
+
+pre {
+  padding: 2px 2px !important;
+  overflow-x: auto !important;
+}
+
+pre>code {
+  border: 0 !important;
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}
+
+img {
+  margin-bottom: 5px !important;
+  margin-top: 5px !important;
+  padding: 2px 2px !important;
+  border-radius: 3px !important;
+  background-color: #f0f0f0 !important;
+  max-width: 100% !important;
+  vertical-align: middle !important;
 }
 
 .about-avatar {
@@ -156,15 +248,48 @@ ul.post-list li {
   width: 90px !important;
   min-width: 90px !important;
   flex-shrink: 0 !important;
+  font-size: 18px !important;
+  color: #515151 !important;
 }
 
 .post-link-layout {
   margin-left: 10% !important;
+  font-size: 21.6px !important;
 }
 
 @media (max-width: 500px) {
   .post-meta {
     width: 65px !important;
     min-width: 65px !important;
+    font-size: 14.4px !important;
+  }
+
+  .post-link-layout {
+    font-size: 18px !important;
   }
 }
+
+th,
+td {
+  padding: 10px 15px !important;
+}
+
+.black-link {
+  font-weight: 400 !important;
+}
+
+.home-sub-heading { margin-top: -0.6rem !important; color: #515151 !important; font-size: 18px !important; }
+
+@media (max-width: 500px) { .home-sub-heading { font-size: 14.4px !important; } }
+
+.post-year { margin-top: 2rem !important; margin-bottom: 0.25rem !important; font-weight: 700 !important; color: #373737 !important; font-size: 27px !important; }
+
+@media (max-width: 500px) { .post-year { font-size: 21.6px !important; } }
+
+.post-list ul { margin-left: 0; }
+
+.post-list ul li { display: flex; }
+
+.post-list { margin-top: 2.5rem; margin-left: 0; list-style: none; }
+
+.post-list li { margin-bottom: 2.5px; }
