@@ -56,8 +56,15 @@
   degree: "B.S., Biosystems and Biomedical Science & Computer Science (double major)",
 )
 - Transferred in junior year
-- Cumulative GPA: 4.27\/4.5 (97.7/100)
+- Cumulative GPA: 4.28\/4.5 (97.8/100)
 - Major GPA: 4.34/4.5
+
+#edu(
+  institution: "Korea Advanced Institute of Science and Technology",
+  location: "Daejeon, South Korea",
+  dates: dates-helper(start-date: "Mar 2026", end-date: "Feb 2028"),
+  degree: "M.S. in Computer Science",
+)
 
 /*== Work Experience
 
