@@ -179,7 +179,9 @@ style ProcessedWafer fill:#ccc,stroke:#333
 	- 우선순위가 높거나 due date이 촉박한 hot jobs(rocket jobs)이 있으면 혼잡성이 더 올라감.  
 	- time windows가 지나 버려서 wafer가 산화되거나 오염되면 rework를 해야될 수도 있고 scrapped material이 될 수도 있음
 		- time windows(Q-Time) : 특정 공정에서 다음 공정까지 허용되는 최대 제한 시간
-	- sequence-dependent setup times : 이전에 어떤 작업을 했냐에 따라 setup time이 달라질 수 있음 e.g. ion implantation에서 이전에 어떤 dopant를 사용했냐에 따라 다음 작업 setup time이 달라질 수 있음
+	- sequence-dependent setup times : setup time이 constant 일 수도 있지만 어떤 경우에는 이전에 어떤 작업을 했냐에 따라 setup time이 달라질 수 있음 e.g. ion implantation에서 이전에 어떤 dopant를 사용했냐에 따라 다음 작업 setup time이 달라질 수 있음
+		- 이런 경우에는 각 setup time을 이전에 어떤 작업을 했냐에 따라 setup matrix로 저장
+	- batch formation할 때도 chemical 성질이나 processing time에 따라 incompatible할 수도 있음
 
 ### Production Planning and Control Hierarchy
 
@@ -223,9 +225,126 @@ production planning은 time bucket 단위로 이뤄지며 planning decisions의 
   
 ## Modeling and Analysis Tools
 
+### Systems and Models
 
+- Systems : components와 그것들의 interaction으로 구성되며 system이 environment와 상호작용하면 open 상태라고 하고 아니면 closed라고 한다.
+	- Interaction : information, energy, material의 교환
+	- 속을 알 수 없는 systems을 input-output systems(black box systems)이라고 한다
+
+- Models : real systems의 특정 측면을 표현한 것 $$ M:=(S_O, S_M,f)$$
+	- real original system : $S_O$
+	- system components of $S_O$ : $V_O$
+	- model : $S_M$
+	- model components of $S_M$ : $V_M$
+	- model mapping $f:V_O\rightarrow V_M$
+
+$V_M$을 나타내기 위해서 파라미터 선정이 필요한데 wafer fab 같은 경우는 machine의 종류나 개수, process flow의 구조, job release rate이 파라미터임.   
+
+- Model의 종류
+	- 목적에 따른 분류
+		- descriptive model : system components와 그것들의 관계에 대해서 묘사하여 system이 어떻게 동작하는지 나타내지만 왜 그렇게 동작하는지와 앞으로 어떻게 동작할지는 알 수 없음
+		- prescriptive model : 여러 alternatives 중에서 하나의 action을 선택하는 모델
+			- e.g. optimization model : objective functions과 constraints로 구성되며 constrains를 모두 만족하는 solution을 feasible하다고 한다
+	- 시간에 따른 분류
+		- static model : 특정 시점만 다룬 모델
+		- dynamic model : 시간의 흐름에 따라 변화하는 모델
+	- 결정론에 따른 분류
+		- deterministic model : 모델의 모든 파라미터가 상수로 알려진 모델
+		- stochastic model : 일부 파라미터가 확률 분포를 따르는 모델
+
+### Decision methods and Descriptive models
+
+- decision problem (=decision model, optimization model) : action 또는 sequence of actions 중에서 requirements를 만족하는 가장 좋은 feasible한 것을 찾는 문제
+	- alternative feasible actions 집합과 objective functions으로 구성됨
+- decision methods : decision problem에서 feasible or optimal solution을 찾는 방법
+
+대부분 decision problem은 NP-hard에 속하기 때문에 heuristics을 사용하지만 소규모 데이터에서 heuristics의 성능을 평가하기 위해 optimal decision methods를 사용함.  
+
+#### Branch-and-Bound Algorithms
+
+기본적으로는 state space 전체를 탐색하는 알고리즘임  
+
+- Branching : state space tree 형태로 문제를 subproblem으로 쪼갬
+- Bounding : lower bound를 갱신해가면서 그것보다 낮으면 pruning함
+
+#### Mixed Integer Programming (MIP)
+
+일반적인 linear programming과 형식이 비슷한데 decision variables 중 일부 또는 전부가 정수 조건일 때 문제를 해결하는 방법  
+
+보통 branch and bound나 cutting plane을 통해 해를 찾음  
+
+#### Stochastic Programming
+
+first stage에서 decision을 내리고 어떤 random event가 발생해서 first decision의 결과에 영향을 줬을 때, second stage에서 resource decision을 통해 보완할 수 있는 상황에서 해결 방법  
+
+#### Dynamic Programming
+
+optimal solution을 구할 때 subproblems의 optimal solution을 통해 구할 수 있는 경우의 해결 방법으로 single machine scheduling에 주로 사용  
+
+#### Neighborhood Search Techniques and Genetic Algorithms
+
+- Metaheuristics : 휴리스틱을 통해서 더 나은 local optima를 찾기 위한 방법론
+	- Neighborhood Search Techniques : 현재의 solution을 neighbor로 move시켜서 local optima를 찾는 방법
+		- simulated annealing(SA) : 초기에는 비개선 해도 탐색하고 시간이 지날 때 마다 개선된 해만 탐색하는 기법
+		- Variable Neighborhood Search(VNS) : 여러 neighborhood structure를 번갈아 가며 사용하는 기법
+	- Genetic Algorithms : 적자 생존을 모방한 알고리즘 (selection -> crossover -> mutation)
+
+#### Queueing Theory
+
+- calling population : service를 받으려고 하는 잠재적인 jobs
+- queueing discipline : queue에 대기 중인 jobs 중 어떤 job에 먼저 serve할 지에 대한 규칙
+- cycle time (CT) : arrival이랑 departure 사이 시간
+	- service time : waiting time을 제외한 시간
+	- CT = service time + waiting time
+- work-in-process (WIP) : system에 머무르고 있는 jobs의 개수
+
+- queueing system
+	- steady state : 시간이 지나도 queue와 관련된 확률(state, queue length 등)이 바뀌지 않는 상태를 말하며 이 경우에는 CT랑 WIP가 initial condition에 영향을 받지 않는다.
+		- steady state에서는 Little's Law가 성립한다. $$\text{WIP}=\lambda\cdot \text{CT} $$
+			- 이때 $\lambda$는 input rate(=arrival rate, throughput)을 의미함
+			- steady state의 M/M/1 queue에서 state가 n일 확률을 $p_n$이라고 하면  $$\begin{flalign}p_n&=P(N=n)=(1-\frac{\lambda}{\mu})(\frac{\lambda}{\mu})^n\\\text{WIP}&=\sum^\infty_{n=0}n\cdot p_n=\frac{\lambda}{\mu-\lambda}\\\text{CT}&=\frac{1}{\mu-\lambda}\end{flalign}$$
+			- Kingman approximation : 분포가 포아송이 아닌 임의 분포를 따르는 경우의 CT $$ \text{CT}_q=E(T_q)\approx(\frac{C_a^2+C_s^2}{2})(\frac{u}{1-u})E(T_s)$$
+				- $T_s$ : random variable of service time
+				- $C_a$ : arrival time의 변동 계수
+				- $C_s$ : service time의 변동 계수
+				- $u=\frac{\lambda}{\mu}$
+				- (변동 계수는 표준편차를 평균으로 나눈 값)
+	- five-field notation by Kendall : arrival의 분포/departure의 분포/server 수/queue capacity/(optional)system이 사용하는 queueing discipline
+	- 근데 실제 현장에 들어맞지는 않음 : Fab에서는 arrival이랑 departure가 independent하지 않음, queueing theory가 의미 있으려면 steady-state여야 하는데 그렇지 않은 경우도 많음. re-entrant한 특성 때문에 전체 모델링이 어려움. analytic solution을 구할 수가 없음.
+
+#### Discrete-Event Simulation(DES) Techniques 
+
+사용 이유 : queueing theory는 arrival이나 departure가 특정 확률 분포를 따른다는 가정을 바탕으로 만들어진거라서 현실에서는 impractical 할 수 있음.   
+
+- simulation : time-dependent manner로 process를 설명하는 것
+	- discrete event simulation : future events의 timing이 결정된 후에 next future event로 점프하는 방식이고 보통 시간 간격이 동일함
+	- continuous simulation : 무한히 많은 time step이 존재하는 경우라고 생각하면 됨
+  
+- simulation model for a wafer fab $S_M$
+	- components
+		- equipments
+		- operators and secondary resources
+		- material handling과 관련된 components
+		- process flow
+	- JS-related modeling : cluster tools을 제외하고는 internal behavior는 신경 안써도 괜찮음
+		- machine-related parameters : machine group의 이름, machine의 이름, group에 속한 machine의 수, batch-size, setup time, preventive maintenance cycles(장비의 maintenance를 위한 작업 주기), batch formation criterion(어떤 jobs끼리 batch를 형성할 수 있는지에 대한 정보), breakdown-repair cycles(time-to-repair(TTR)와 time-to-failure(TTF) 확률 분포로 구성. 만약 failure가 고쳐지는 도중에 또 failure가 발생하면 first failure가 끝날 때까지 second failure를 미룸)
+		- operators(human decision maker)-related parameters : operator group의 이름, group에 속한 operator의 수, operator의 skill, staffing information(shift 마다 변화하는 operators 수에 대한 정보), operator break cycles(regular break이나 화장실 가는 것 등을 포함)
+			- 요즘 fab에서는 모델링 안하기도 함
+	- MS-related modeling
+		- Carriers
+		- Stockers and their assignment of bays or machines
+		- Transportation system
+	- BP(process flow)-related modeling : 대부분 deterministic이지만 rework loop나 alternative subprocess flow가 포함될 수 있음
+		- parameters for each process step : process step의 이름, process step에 관련된 machine 또는 machine group의 이름, operator requirements, 필요한 auxiliary resources, processing time, load & unload times(buffer나 material handling system 사이에 jobs을 옮길 때 드는 시간), required setup state, scrapped material의 양, rework loops(몇몇 wafer가 rework가 필요한 경우에 그 wafer들을 child job이라고 부르며 나머지 wafer는 parent job이라고 부름), alternative flows(subprocess로 나뉘어 처리된 다음 합쳐지는 경우)
+
+교과서에는 JS, MS modeling 할 때 brooks automation 사에서 만든 AutoMod나 AutoSched 같은 소프트웨어를 사용했는데 요즘은 custom simulator를 사용한다고 함   
+
+- MiniFab model : 학습을 위해서 bottleneck machines과 관련된 process step만 모델링한 reduced simulation model
+	- 
 
 ## Dispatching Approaches
+
+
 
 ## Deterministic Scheduling Approaches
 
