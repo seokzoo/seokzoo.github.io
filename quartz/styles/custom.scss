@@ -333,3 +333,178 @@ article {
     margin-left: 1.5rem !important;
   }
 }
+
+/* Blog post reading styles. Keep this scoped to Markdown files under _posts/. */
+.blog-post-content {
+  max-width: 720px;
+  margin-top: 2.4rem !important;
+  color: #1f1f1f;
+  font-size: 18px;
+  line-height: 1.85;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+
+  > * + * {
+    margin-top: 1.05rem !important;
+  }
+
+  p {
+    margin-bottom: 1.15rem !important;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: #171717;
+    line-height: 1.35 !important;
+    font-weight: 700 !important;
+    letter-spacing: 0;
+    word-break: keep-all;
+  }
+
+  h1 {
+    margin-top: 3rem !important;
+    margin-bottom: 1.2rem !important;
+    font-size: 2rem !important;
+  }
+
+  h2 {
+    margin-top: 3rem !important;
+    margin-bottom: 1rem !important;
+    padding-top: 0.75rem;
+    border-top: 1px solid #e8e8e8;
+    font-size: 1.65rem !important;
+  }
+
+  h3 {
+    margin-top: 2.25rem !important;
+    margin-bottom: 0.85rem !important;
+    font-size: 1.32rem !important;
+  }
+
+  h4 {
+    margin-top: 1.9rem !important;
+    margin-bottom: 0.7rem !important;
+    font-size: 1.12rem !important;
+  }
+
+  ul,
+  ol {
+    margin: 0 0 1.2rem 0 !important;
+    padding-left: 1.45rem !important;
+  }
+
+  li {
+    margin: 0.35rem 0;
+    padding-left: 0.2rem;
+    line-height: 1.78;
+  }
+
+  li > p {
+    margin: 0.35rem 0 !important;
+  }
+
+  li > ul,
+  li > ol {
+    margin-top: 0.35rem !important;
+    margin-bottom: 0.35rem !important;
+  }
+
+  blockquote {
+    margin: 1.6rem 0 !important;
+    padding: 0.95rem 1.15rem !important;
+    border-left: 4px solid #2a7ae2;
+    border-radius: 0 6px 6px 0;
+    background: #f6f8fa;
+    color: #3f3f3f;
+    font-size: 0.98em;
+    line-height: 1.75;
+    letter-spacing: 0;
+  }
+
+  blockquote > :last-child {
+    margin-bottom: 0 !important;
+  }
+
+  code {
+    padding: 0.12rem 0.28rem !important;
+    border: 1px solid #e3e3e3;
+    border-radius: 4px;
+    background-color: #f6f8fa;
+    font-size: 0.9em !important;
+  }
+
+  pre {
+    margin: 1.5rem 0 !important;
+    padding: 0.9rem 1rem !important;
+    border-color: #d8dee4;
+    border-radius: 6px;
+    background-color: #f6f8fa;
+    line-height: 1.65;
+  }
+
+  pre > code {
+    border: 0;
+    padding: 0 !important;
+    background: transparent;
+  }
+
+  img {
+    display: block;
+    height: auto;
+    margin: 1.6rem auto !important;
+    padding: 0 !important;
+    border-radius: 6px !important;
+    background: transparent !important;
+  }
+
+  table {
+    width: 100%;
+    margin: 1.5rem 0 !important;
+    border-collapse: collapse;
+    font-size: 0.95em;
+    line-height: 1.55;
+  }
+
+  th,
+  td {
+    border: 1px solid #e8e8e8;
+    vertical-align: top;
+  }
+
+  th {
+    background: #f6f8fa;
+    font-weight: 700;
+  }
+}
+
+@media (max-width: 600px) {
+  .blog-post-content {
+    margin-top: 2rem !important;
+    font-size: 16.5px;
+    line-height: 1.78;
+
+    h1 {
+      font-size: 1.72rem !important;
+    }
+
+    h2 {
+      font-size: 1.42rem !important;
+    }
+
+    h3 {
+      font-size: 1.18rem !important;
+    }
+
+    ul,
+    ol {
+      padding-left: 1.25rem !important;
+    }
+
+    blockquote {
+      margin: 1.25rem 0 !important;
+      padding: 0.8rem 0.95rem !important;
+    }
+  }
+}

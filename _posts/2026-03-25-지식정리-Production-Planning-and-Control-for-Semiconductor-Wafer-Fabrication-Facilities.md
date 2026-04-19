@@ -118,9 +118,9 @@ categories: 지식정리
 		- coating : photoresist strip을 wafer에 코팅
 		- exposure : exposure tools(scanner)을 통해서 reticle의 패턴을 wafer 위에 노출
 		- developing : polymerized section이 제거되는 과정 
-	- Etch : photoresist strip이 덮히지 않은 부분이 wafer에서 제거되는 과정으로 wet etch와 dry etch로 구분됨.
+	- Etch : photoresist strip이 덮히지 않은 부분이 wafer에서 제거되는 과정으로 wet etch(용액에 넣다 빼는 방식)와 dry etch(플라즈마)로 구분됨.
 	- Ion implantation : etched된 부분에 doping material이 증착됨
-	- Film deposition : dielectric(절연체) 또는 metal layer를 wafer 위에 증착하는 과정으로 PVD(physical vapor deposition), CVD(chemical vapor deposition), epitaxy, metallization이 사용됨
+	- Film deposition : dielectric(절연체) 또는 metal layer(metallization)를 wafer 위에 증착하는 과정으로 PVD(physical vapor deposition), CVD(chemical vapor deposition), epitaxy, metallization이 사용됨
 	- Planarization(=CMP; Chemical-Mechanical polishing) : slurry를 통해 wafer surface를 깍아서 평탄화하는 과정
 
 Oxidation, diffusion, deposition 과정 진입 전에 cleaning step이 수행되며 job이 work area 사이에 옮겨 갈 때 inspection이나 measurement step이 수행됨  

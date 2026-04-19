@@ -110,6 +110,72 @@ function canonicalizeCallout(calloutName: string): keyof typeof calloutMapping {
 export const externalLinkRegex = /^https?:\/\//i
 
 export const arrowRegex = new RegExp(/(-{1,2}>|={1,2}>|<-{1,2}|<={1,2})/g)
+const mermaidFlowDirections = new Set(["TB", "BT", "RL", "LR", "TD"])
+const mermaidDiagramTypes = new Set([
+  "block-beta",
+  "c4context",
+  "c4container",
+  "c4component",
+  "c4deployment",
+  "classdiagram",
+  "classdiagram-v2",
+  "erdiagram",
+  "flowchart",
+  "gantt",
+  "gitgraph",
+  "graph",
+  "journey",
+  "mindmap",
+  "packet-beta",
+  "pie",
+  "quadrantchart",
+  "requirementdiagram",
+  "sankey-beta",
+  "sequencediagram",
+  "statediagram",
+  "statediagram-v2",
+  "timeline",
+  "xychart-beta",
+])
+
+function normalizeMermaidDirective(value: string): string {
+  return value.replace(
+    /^(\s*)(graph|flowchart)(TB|BT|RL|LR|TD)\b/i,
+    (_match, leading, diagramType, direction) => `${leading}${diagramType} ${direction}`,
+  )
+}
+
+function normalizeMermaidCode(node: Code): string | undefined {
+  const lang = node.lang?.trim()
+  if (!lang) {
+    return undefined
+  }
+
+  if (lang.toLowerCase() === "mermaid") {
+    return normalizeMermaidDirective(node.value)
+  }
+
+  const directMatch = lang.match(/^(graph|flowchart)(TB|BT|RL|LR|TD)$/i)
+  if (directMatch) {
+    const [, diagramType, direction] = directMatch
+    return `${diagramType} ${direction}\n${node.value}`
+  }
+
+  const normalizedLang = lang.toLowerCase()
+  if (mermaidDiagramTypes.has(normalizedLang)) {
+    const direction = node.meta?.trim().toUpperCase()
+    const directive =
+      (normalizedLang === "graph" || normalizedLang === "flowchart") &&
+      direction &&
+      mermaidFlowDirections.has(direction)
+        ? `${lang} ${direction}`
+        : lang
+
+    return `${directive}\n${node.value}`
+  }
+
+  return undefined
+}
 
 // !?                 -> optional embedding
 // \[\[               -> open brace
@@ -524,8 +590,10 @@ export const ObsidianFlavoredMarkdown: QuartzTransformerPlugin<Partial<Options>>
         plugins.push(() => {
           return (tree: Root, file) => {
             visit(tree, "code", (node: Code) => {
-              if (node.lang === "mermaid") {
+              const mermaidCode = normalizeMermaidCode(node)
+              if (mermaidCode) {
                 file.data.hasMermaidDiagram = true
+                node.value = mermaidCode
                 node.data = {
                   hProperties: {
                     className: ["mermaid"],
