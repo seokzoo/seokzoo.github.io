@@ -137,39 +137,54 @@ Oxidation, diffusion, deposition 과정 진입 전에 cleaning step이 수행되
 어떤 공정은 금방 처리되지만 어떤 공정은 몇 시간이 걸리기도 하고 batch machine부터 한 번에 하나의 wafer만 처리할 수 있는 machine까지 다양함    
 
 
-```mermaid
-graph TD
-RawWafer((Raw Wafer/<br/>Wafer Start))
-ProcessedWafer((Processed<br/>Wafer))
-BackEnd[Sort, Assembly,<br/>Final Test]
+``` d2
+direction: down
 
-subgraph FrontEnd [Front-end]
-direction TB
-Oxidation[Oxidation/<br/>Diffusion]
-Film[Film Deposition]
-Planarization[Planarization]
-Lithography[Photo-lithography]
-Etch[Etch]
-Ion[Ion Implantation]
+RawWafer: "Raw Wafer\nWafer Start"
+ProcessedWafer: "Processed\nWafer"
+BackEnd: "Sort, Assembly,\nFinal Test"
 
-Oxidation <--> Film
-Oxidation <--> Lithography
-Ion --> Oxidation
-Film <--> Planarization
-Lithography <--> Etch
-Lithography <--> Ion
-Etch --> Planarization
-Etch <--> Oxidation
-Planarization --> Lithography
-end
+FrontEnd: {
+  label: "Front-end"
+  direction: down
 
-RawWafer --> Oxidation
-Oxidation --> ProcessedWafer
-ProcessedWafer --> BackEnd
+  Oxidation: "Oxidation\nDiffusion"
+  Film: "Film Deposition"
+  Planarization: "Planarization"
+  Lithography: "Photo-lithography"
+  Etch: "Etch"
+  Ion: "Ion Implantation"
 
-style FrontEnd fill:#f9f9f9,stroke:#333,stroke-width:2px
-style RawWafer fill:#fff,stroke:#333
-style ProcessedWafer fill:#ccc,stroke:#333
+  Oxidation <-> Film
+  Oxidation <-> Lithography
+  Ion -> Oxidation
+  Film <-> Planarization
+  Lithography <-> Etch
+  Lithography <-> Ion
+  Etch -> Planarization
+  Etch <-> Oxidation
+  Planarization -> Lithography
+}
+
+RawWafer -> FrontEnd.Oxidation
+FrontEnd.Oxidation -> ProcessedWafer
+ProcessedWafer -> BackEnd
+
+FrontEnd.style: {
+  fill: "#f9f9f9"
+  stroke: "#333"
+  stroke-width: 2
+}
+
+RawWafer.style: {
+  fill: "#fff"
+  stroke: "#333"
+}
+
+ProcessedWafer.style: {
+  fill: "#ccc"
+  stroke: "#333"
+}
 ```
 
 - multiple orders per job problem : batch machine에서는 order 마다 POUPs을 사용하기 보다는 적절히 합친 다음 batch 단위로 처리하는 것이 효율적임. 그래서 서로 다른 customers의 order를 group화 해서 production jobs을 형성할 필요가 있음.     

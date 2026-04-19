@@ -1,0 +1,11 @@
+.d2-diagram {
+  margin: 1.5rem 0;
+  overflow-x: auto;
+
+  & > svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
+}
