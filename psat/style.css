@@ -461,9 +461,15 @@ button, input, select {
   font-weight: 900;
 }
 
-/* Growth Matrix Table UI */
+/* Matrix Table UI (Growth Matrix & Matrix Addition Fill) */
 .matrix-container {
   margin: 1rem 0;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .matrix-table {
@@ -473,25 +479,70 @@ button, input, select {
   border-radius: 8px;
   overflow: hidden;
   border: 1px solid var(--border);
+  min-width: 320px;
 }
 
 .matrix-table th, .matrix-table td {
-  padding: 0.75rem;
+  padding: 0.6rem 0.5rem;
   text-align: center;
-  font-size: 1rem;
+  font-size: 0.92rem;
   border: 1px solid var(--border);
+  vertical-align: middle;
 }
 
 .matrix-table th {
   background: #f1f5f9;
   font-weight: 600;
   color: var(--text-light);
+  white-space: nowrap;
 }
 
 .matrix-table td {
   font-weight: 700;
   color: var(--primary);
   background: white;
+}
+
+/* Matrix Addition Blank Inputs */
+.matrix-blank-input {
+  width: 100%;
+  max-width: 70px;
+  padding: 0.4rem 0.25rem;
+  border: 1.5px solid var(--accent);
+  border-radius: 6px;
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--primary);
+  background: #f0f9ff;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.matrix-blank-input:focus {
+  border-color: var(--accent-hover);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+.matrix-blank-input.correct {
+  border-color: var(--success) !important;
+  background: var(--success-bg) !important;
+  color: #065f46 !important;
+}
+
+.matrix-blank-input.wrong {
+  border-color: var(--error) !important;
+  background: var(--error-bg) !important;
+  color: var(--error) !important;
+}
+
+.correct-hint {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--error);
+  margin-top: 2px;
 }
 
 /* Ordering UI (fraction_ordering) */
@@ -641,10 +692,13 @@ button, input, select {
   margin-top: 0.5rem;
   list-style: none;
   font-size: 0.88rem;
+  max-height: 200px;
+  overflow-y: auto;
 }
 
 .feedback-detail-list li {
   padding: 0.2rem 0;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.05);
 }
 
 /* Quiz Controls */

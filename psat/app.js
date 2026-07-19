@@ -179,10 +179,12 @@ const app = {
     const category = catSelect.value
     setSelect.innerHTML = ""
 
+    const catName = category === "div" ? "나눗셈" : category === "mul" ? "곱셈" : "덧뺄셈"
+
     for (let i = 1; i <= 50; i++) {
       const opt = document.createElement("option")
       opt.value = i
-      opt.textContent = `Set ${i} (${category === "div" ? "나눗셈" : "곱셈"})`
+      opt.textContent = `Set ${i} (${catName})`
       setSelect.appendChild(opt)
     }
   },
@@ -204,7 +206,7 @@ const app = {
       const selected = allQ.slice(0, 25)
       app.setupQuizState(selected, "random", "무작위 모의고사")
     } else {
-      let allQ = [...CALC_DATA.div, ...CALC_DATA.mul]
+      let allQ = [...CALC_DATA.div, ...CALC_DATA.mul, ...(CALC_DATA.add_sub || [])]
       app.shuffle(allQ)
       const selected = allQ.slice(0, 20)
       app.setupQuizState(selected, "random", "무작위 모의고사 (20문제)")
@@ -213,9 +215,11 @@ const app = {
 
   startCalcTypeQuiz: (type) => {
     let questions = []
-    const all = [...CALC_DATA.div, ...CALC_DATA.mul]
+    const all = [...CALC_DATA.div, ...CALC_DATA.mul, ...(CALC_DATA.add_sub || [])]
     if (type === "all") {
       questions = [...all]
+    } else if (type === "matrix_addition") {
+      questions = all.filter((item) => item.type.includes("matrix_addition"))
     } else {
       questions = all.filter((item) => item.type === type)
     }
@@ -228,6 +232,7 @@ const app = {
       fraction_ordering: "분수 순서 정렬",
       multiplication_comparison: "곱셈 대소 비교",
       growth_matrix_comparison: "증가율 비교",
+      matrix_addition: "덧뺄셈 표 빈칸 채우기",
       all: "전체 유형 혼합",
     }
 
@@ -238,7 +243,10 @@ const app = {
     const category = document.getElementById("calc-category-select").value
     const setNum = parseInt(document.getElementById("calc-set-select").value, 10)
 
-    const pool = category === "div" ? CALC_DATA.div : CALC_DATA.mul
+    let pool = CALC_DATA.div
+    if (category === "mul") pool = CALC_DATA.mul
+    else if (category === "add_sub") pool = CALC_DATA.add_sub || []
+
     const questions = pool.filter((item) => item.set_id === setNum)
 
     if (questions.length === 0) {
@@ -246,7 +254,8 @@ const app = {
       return
     }
 
-    const info = `Set ${setNum} (${category === "div" ? "나눗셈" : "곱셈"})`
+    const catName = category === "div" ? "나눗셈" : category === "mul" ? "곱셈" : "덧뺄셈"
+    const info = `Set ${setNum} (${catName})`
     app.setupQuizState(questions, "calc_set", info)
   },
 
@@ -265,7 +274,9 @@ const app = {
       const filtered = records.filter((rec) => {
         if (rec.subject) return rec.subject === currentSubject
         // Fallback for older records
-        return currentSubject === "constitution" ? !rec.id.startsWith("div-") && !rec.id.startsWith("mul-") : rec.id.startsWith("div-") || rec.id.startsWith("mul-")
+        return currentSubject === "constitution"
+          ? !rec.id.startsWith("div-") && !rec.id.startsWith("mul-") && !rec.id.startsWith("add_sub-")
+          : rec.id.startsWith("div-") || rec.id.startsWith("mul-") || rec.id.startsWith("add_sub-")
       })
 
       if (filtered.length === 0) {
@@ -283,12 +294,11 @@ const app = {
           }
         })
       } else {
+        const allCalc = [...CALC_DATA.div, ...CALC_DATA.mul, ...(CALC_DATA.add_sub || [])]
         filtered.forEach((rec) => {
           if (rec.problemData) {
             questions.push(rec.problemData)
           } else {
-            // Find by id
-            const allCalc = [...CALC_DATA.div, ...CALC_DATA.mul]
             const q = allCalc.find((item) => item.id === rec.id)
             if (q) questions.push(q)
           }
@@ -352,6 +362,8 @@ const app = {
       app.renderGrowthMatrixQuestion(q, qArea)
     } else if (q.type === "fraction_ordering") {
       app.renderFractionOrderingQuestion(q, qArea)
+    } else if (q.type && q.type.includes("matrix_addition")) {
+      app.renderMatrixAdditionQuestion(q, qArea)
     }
 
     // Restore state if answered
@@ -405,7 +417,6 @@ const app = {
                     <span class="denominator">${rightDen}</span>
                   </div>`
     } else {
-      // multiplication_comparison
       const leftExpr = q.detail.left_expr.replace("*", "×")
       const rightExpr = q.detail.right_expr.replace("*", "×")
 
@@ -434,27 +445,29 @@ const app = {
     const html = `
       <div class="q-title">다음 매트릭스의 행별 증가율(또는 비율)을 비교하세요.</div>
       <div class="matrix-container">
-        <table class="matrix-table">
-          <thead>
-            <tr>
-              <th>구분</th>
-              <th>시점 A</th>
-              <th>시점 B</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Row 1</strong></td>
-              <td>${matrix[0][0]}</td>
-              <td>${matrix[0][1]}</td>
-            </tr>
-            <tr>
-              <td><strong>Row 2</strong></td>
-              <td>${matrix[1][0]}</td>
-              <td>${matrix[1][1]}</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="table-responsive">
+          <table class="matrix-table">
+            <thead>
+              <tr>
+                <th>구분</th>
+                <th>시점 A</th>
+                <th>시점 B</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Row 1</strong></td>
+                <td>${matrix[0][0]}</td>
+                <td>${matrix[0][1]}</td>
+              </tr>
+              <tr>
+                <td><strong>Row 2</strong></td>
+                <td>${matrix[1][0]}</td>
+                <td>${matrix[1][1]}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="sub-text" style="text-align: center; font-weight: 600;">
         비교: (${q.detail.left_fraction}) VS (${q.detail.right_fraction})
@@ -509,13 +522,79 @@ const app = {
     container.innerHTML = html
   },
 
+  // 5. Matrix Addition Fill-in-the-blanks Render (add_sub.json)
+  renderMatrixAdditionQuestion: (q, container) => {
+    const headers = q.detail.headers || []
+    const rowLabels = q.detail.row_labels || []
+    const grid = q.detail.grid || []
+    const blanks = q.detail.blanks || []
+
+    // Build lookup map for blanks: "row_idx,col_idx" -> blankObj
+    const blankMap = {}
+    blanks.forEach((b) => {
+      blankMap[`${b.row_idx},${b.col_idx}`] = b
+    })
+
+    let tableHtml = `<div class="table-responsive"><table class="matrix-table"><thead><tr><th>구분</th>`
+    headers.forEach((h) => {
+      tableHtml += `<th>${h}</th>`
+    })
+    tableHtml += `</tr></thead><tbody>`
+
+    rowLabels.forEach((rLabel, rIdx) => {
+      tableHtml += `<tr><td><strong>${rLabel}</strong></td>`
+      headers.forEach((cLabel, cIdx) => {
+        const key = `${rIdx},${cIdx}`
+        const blankObj = blankMap[key]
+
+        if (blankObj) {
+          tableHtml += `<td id="cell-container-${rIdx}-${cIdx}">
+            <input type="number" 
+                   class="matrix-blank-input" 
+                   id="blank-${rIdx}-${cIdx}" 
+                   data-row-idx="${rIdx}" 
+                   data-col-idx="${cIdx}" 
+                   data-correct="${blankObj.value}" 
+                   data-row-name="${blankObj.row}" 
+                   data-col-name="${blankObj.col}"
+                   placeholder="?">
+          </td>`
+        } else {
+          const val = grid[rIdx] ? grid[rIdx][cIdx] : ""
+          tableHtml += `<td>${val}</td>`
+        }
+      })
+      tableHtml += `</tr>`
+    })
+
+    tableHtml += `</tbody></table></div>`
+
+    const html = `
+      <div class="q-title">다음 표의 빈칸 <strong>[ ? ]</strong> 에 알맞은 숫자를 계산하여 입력하세요.</div>
+      <div class="matrix-container">${tableHtml}</div>
+      <div class="ordering-actions" style="margin-top: 1rem;">
+        <button class="btn-reset" onclick="app.resetMatrixInputs()">초기화</button>
+        <button id="btn-submit-matrix" class="btn-submit" onclick="app.checkMatrixBlankAnswer()">정답 제출</button>
+      </div>
+    `
+    container.innerHTML = html
+  },
+
+  // Reset Matrix Inputs
+  resetMatrixInputs: () => {
+    if (app.state.userAnswers[app.state.currentIndex] !== null) return
+    document.querySelectorAll(".matrix-blank-input").forEach((inp) => {
+      inp.value = ""
+    })
+  },
+
   // Ordering Interactions
   addToNextSlot: (fractionStr, chipIdx) => {
     if (app.state.userAnswers[app.state.currentIndex] !== null) return
 
     const slots = app.state.orderingSlots
     const emptyIdx = slots.indexOf(null)
-    if (emptyIdx === -1) return // Full
+    if (emptyIdx === -1) return
 
     slots[emptyIdx] = { val: fractionStr, chipIdx: chipIdx }
     document.getElementById(`slot-val-${emptyIdx}`).textContent = fractionStr
@@ -577,7 +656,7 @@ const app = {
     app.stopTimer()
 
     const q = app.state.questions[app.state.currentIndex]
-    const correctSymbol = q.answer // '>' or '<'
+    const correctSymbol = q.answer
     const isCorrect = selectedSymbol === correctSymbol
 
     app.state.userAnswers[app.state.currentIndex] = selectedSymbol
@@ -604,16 +683,52 @@ const app = {
     document.getElementById("btn-next").disabled = false
   },
 
+  checkMatrixBlankAnswer: () => {
+    if (app.state.userAnswers[app.state.currentIndex] !== null) return
+    app.stopTimer()
+
+    const q = app.state.questions[app.state.currentIndex]
+    const inputs = document.querySelectorAll(".matrix-blank-input")
+
+    const userAnsMap = {}
+    let correctCount = 0
+    let totalBlanks = inputs.length
+
+    inputs.forEach((inp) => {
+      const rIdx = inp.dataset.rowIdx
+      const cIdx = inp.dataset.colIdx
+      const rName = inp.dataset.rowName
+      const cName = inp.dataset.colName
+      const correctVal = parseInt(inp.dataset.correct, 10)
+      const userVal = parseInt(inp.value, 10)
+
+      const isBlankCorrect = !isNaN(userVal) && userVal === correctVal
+      if (isBlankCorrect) correctCount++
+
+      userAnsMap[`${rIdx},${cIdx}`] = {
+        userVal: inp.value,
+        correctVal: correctVal,
+        isCorrect: isBlankCorrect,
+        keyName: `${rName}_${cName}`,
+      }
+    })
+
+    const isAllCorrect = correctCount === totalBlanks
+    app.state.userAnswers[app.state.currentIndex] = userAnsMap
+    app.state.results[app.state.currentIndex] = isAllCorrect
+
+    app.showMatrixAdditionFeedback(q, userAnsMap, correctCount, totalBlanks, isAllCorrect)
+    document.getElementById("btn-next").disabled = false
+  },
+
   // Timeout Answer Handler
   handleTimeout: () => {
     app.stopTimer()
     if (app.state.userAnswers[app.state.currentIndex] !== null) return
 
-    const q = app.state.questions[app.state.currentIndex]
     app.state.userAnswers[app.state.currentIndex] = "TIMEOUT"
     app.state.results[app.state.currentIndex] = false
 
-    // Show feedback and auto advance
     const feedbackArea = document.getElementById("feedback-area")
     feedbackArea.innerHTML = `
       <div class="calc-feedback-card wrong">
@@ -656,7 +771,6 @@ const app = {
       if (correctBtn) correctBtn.classList.add("correct")
     }
 
-    // Detail breakdown card
     const feedbackArea = document.getElementById("feedback-area")
     let detailText = ""
 
@@ -716,6 +830,55 @@ const app = {
     feedbackArea.classList.remove("hidden")
   },
 
+  showMatrixAdditionFeedback: (q, userAnsMap, correctCount, totalBlanks, isAllCorrect) => {
+    const inputs = document.querySelectorAll(".matrix-blank-input")
+    const resetBtn = document.querySelector(".btn-reset")
+    const submitBtn = document.getElementById("btn-submit-matrix")
+
+    if (resetBtn) resetBtn.style.pointerEvents = "none"
+    if (submitBtn) submitBtn.style.pointerEvents = "none"
+
+    inputs.forEach((inp) => {
+      inp.readOnly = true
+      const rIdx = inp.dataset.rowIdx
+      const cIdx = inp.dataset.colIdx
+      const key = `${rIdx},${cIdx}`
+      const info = userAnsMap[key]
+
+      if (info && info.isCorrect) {
+        inp.classList.add("correct")
+      } else {
+        inp.classList.add("wrong")
+        const container = document.getElementById(`cell-container-${rIdx}-${cIdx}`)
+        if (container && !container.querySelector(".correct-hint")) {
+          const hint = document.createElement("span")
+          hint.className = "correct-hint"
+          hint.textContent = `(${info ? info.correctVal : inp.dataset.correct})`
+          container.appendChild(hint)
+        }
+      }
+    })
+
+    // Breakdown list
+    const blanks = q.detail.blanks || []
+    let listHtml = ""
+    blanks.forEach((b) => {
+      listHtml += `<li><strong>${b.row} - ${b.col}:</strong> ${b.value}</li>`
+    })
+
+    const feedbackArea = document.getElementById("feedback-area")
+    feedbackArea.innerHTML = `
+      <div class="calc-feedback-card ${isAllCorrect ? "correct" : "wrong"}">
+        <div><strong>${isAllCorrect ? "🎉 완벽합니다! (모든 빈칸 정답)" : `❌ ${totalBlanks}개 중 ${correctCount}개 정답`}</strong></div>
+        <div style="margin-top: 6px; font-weight: 600;">[전체 빈칸 정답 목록]</div>
+        <ul class="feedback-detail-list">
+          ${listHtml}
+        </ul>
+      </div>
+    `
+    feedbackArea.classList.remove("hidden")
+  },
+
   restoreQuestionFeedback: (q, prevAns) => {
     const isCorrect = app.state.results[app.state.currentIndex]
 
@@ -723,6 +886,9 @@ const app = {
       app.showConstitutionFeedback(prevAns, q.answer - 1, isCorrect)
     } else if (q.type === "fraction_ordering") {
       app.showOrderingFeedback(q, prevAns, q.detail.sorted_order.join(" > "), isCorrect)
+    } else if (q.type && q.type.includes("matrix_addition")) {
+      const blanks = q.detail.blanks || []
+      app.showMatrixAdditionFeedback(q, prevAns || {}, isCorrect ? blanks.length : 0, blanks.length, isCorrect)
     } else {
       app.showComparisonFeedback(q, prevAns, q.answer, isCorrect)
     }
@@ -795,7 +961,6 @@ const app = {
     const score = Math.round((correctCount / total) * 100)
     const currentSubject = app.state.subject
 
-    // Save history & wrong answers
     const tx = app.db.transaction(["history", "wrong_answers"], "readwrite")
 
     const historyStore = tx.objectStore("history")
@@ -864,7 +1029,6 @@ const app = {
 
       const data = allData.filter((item) => item.subject === currentSubject || (!item.subject && currentSubject === "constitution"))
 
-      // Group by date
       const grouped = data.reduce((acc, item) => {
         const d = new Date(item.id)
         const dateKey = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`
@@ -914,7 +1078,6 @@ const app = {
         chartContainer.appendChild(group)
       })
 
-      // Top 10 Rank
       const rankList = document.getElementById("rank-list")
       const sortedByScore = [...data].sort((a, b) => b.score - a.score)
       const top10 = sortedByScore.slice(0, 10)
@@ -935,7 +1098,6 @@ const app = {
     }
   },
 
-  // Helper
   shuffle: (array) => {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1))
