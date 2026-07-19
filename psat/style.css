@@ -1,15 +1,19 @@
 :root {
-  --primary: #333;
+  --primary: #1e293b;
   --accent: #2563eb;
-  --bg: #f8f9fa;
+  --accent-hover: #1d4ed8;
+  --bg: #f8fafc;
   --card-bg: #ffffff;
-  --text: #1f2937;
-  --text-light: #6b7280;
-  --border: #e5e7eb;
+  --text: #0f172a;
+  --text-light: #64748b;
+  --border: #e2e8f0;
   --success: #10b981;
+  --success-bg: #ecfdf5;
   --error: #ef4444;
+  --error-bg: #fef2f2;
   --highlight-correct: #d1fae5;
   --highlight-wrong: #fee2e2;
+  --radius: 12px;
 }
 
 * {
@@ -28,67 +32,115 @@ body {
   flex-direction: column;
 }
 
-button {
+button, input, select {
   font-family: inherit;
   border: none;
   background: none;
-  cursor: pointer;
 }
 
 /* Layout */
 .app-layout {
   display: flex;
   flex-direction: column;
-  height: 100vh; /* Fixed to viewport height */
+  height: 100vh;
   width: 100%;
   max-width: 1024px;
   margin: 0 auto;
   background-color: var(--card-bg);
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
-  overflow: hidden; /* Prevent body scroll */
+  overflow: hidden;
 }
 
 .app-header {
-  flex-shrink: 0; /* Header size stays fixed */
-  padding: 1rem;
+  flex-shrink: 0;
+  padding: 0.75rem 1rem;
   border-bottom: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   position: sticky;
   top: 0;
   z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .app-header h1 {
-  font-size: 1.25rem;
-  text-align: center;
-  margin-bottom: 1rem;
+  font-size: 1.15rem;
   font-weight: 700;
+  color: var(--primary);
+}
+
+.settings-btn {
+  font-size: 1.25rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.settings-btn:hover {
+  background: var(--border);
+}
+
+/* Subject Switcher */
+.subject-toggle {
+  display: flex;
+  background: #f1f5f9;
+  padding: 3px;
+  border-radius: 10px;
+  gap: 4px;
+}
+
+.subj-btn {
+  flex: 1;
+  padding: 0.5rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-light);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.subj-btn.active {
+  background: white;
+  color: var(--accent);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .app-nav {
   display: flex;
   justify-content: center;
   gap: 1rem;
+  margin-top: 0.25rem;
 }
 
 .nav-btn {
-  padding: 0.5rem 1rem;
-  font-size: 0.95rem;
+  padding: 0.4rem 1rem;
+  font-size: 0.9rem;
   color: var(--text-light);
   border-bottom: 2px solid transparent;
   transition: all 0.2s;
+  cursor: pointer;
 }
 
 .nav-btn.active {
   color: var(--primary);
-  border-bottom-color: var(--primary);
-  font-weight: 600;
+  border-bottom-color: var(--accent);
+  font-weight: 700;
 }
 
 .app-content {
-  flex: 1; /* Take up remaining space */
-  overflow-y: auto; /* Internal scrolling only */
+  flex: 1;
+  overflow-y: auto;
   padding: 1rem;
   -webkit-overflow-scrolling: touch;
 }
@@ -97,25 +149,29 @@ button {
 .card {
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 1.5rem;
+  border-radius: var(--radius);
+  padding: 1.25rem;
   margin-bottom: 1rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 
 .card h2 {
-  font-size: 1.1rem;
-  margin-bottom: 1rem;
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
   color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 
 .sub-text {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: var(--text-light);
   margin-bottom: 1rem;
+  line-height: 1.4;
 }
 
-/* Home View */
+/* Home View & Grid */
 .year-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
@@ -128,44 +184,141 @@ button {
   border: 1px solid var(--border);
   border-radius: 8px;
   font-weight: 500;
+  cursor: pointer;
   transition: background 0.2s;
 }
 
 .year-btn:hover {
-  background: #e9ecef;
+  background: #e2e8f0;
+}
+
+/* Type Grid for Calculation Practice */
+.type-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+.type-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0.75rem;
+  background: #f8fafc;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  gap: 0.4rem;
+}
+
+.type-btn:hover {
+  border-color: var(--accent);
+  background: #eff6ff;
+  transform: translateY(-1px);
+}
+
+.type-btn.full-width {
+  grid-column: span 2;
+  flex-direction: row;
+  padding: 0.85rem;
+}
+
+.type-icon {
+  font-size: 1.4rem;
+}
+
+.type-title {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* Select & Inputs */
+.set-selector-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.custom-select, .custom-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: white;
+  font-size: 0.95rem;
+  color: var(--text);
+  outline: none;
+}
+
+.custom-select:focus, .custom-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .action-btn {
   width: 100%;
-  padding: 1rem;
-  background: var(--primary);
+  padding: 0.85rem;
+  background: var(--accent);
   color: white;
   border-radius: 8px;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  text-align: center;
+}
+
+.action-btn:hover {
+  background: var(--accent-hover);
 }
 
 .action-btn.outline {
   background: white;
-  border: 1px solid var(--primary);
-  color: var(--primary);
+  border: 1px solid var(--accent);
+  color: var(--accent);
 }
 
-/* Quiz View */
+.action-btn.outline:hover {
+  background: #eff6ff;
+}
+
+/* Quiz View Header & Timer */
 .quiz-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   font-size: 0.9rem;
   color: var(--text-light);
 }
 
+.quiz-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.timer-badge {
+  background: #fee2e2;
+  color: #b91c1c;
+  padding: 0.25rem 0.6rem;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
 .progress-bar {
-  height: 4px;
+  position: relative;
+  height: 6px;
   background: var(--border);
-  border-radius: 2px;
-  margin-bottom: 1.5rem;
+  border-radius: 3px;
+  margin-bottom: 1.25rem;
   overflow: hidden;
 }
 
@@ -176,87 +329,329 @@ button {
   transition: width 0.3s ease;
 }
 
+.timer-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: #ef4444;
+  width: 0%;
+  opacity: 0.7;
+  transition: width 1s linear;
+}
+
+/* Question Types UI */
 .question-card {
-  margin-bottom: 2rem;
-}
-
-.q-text {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
-  white-space: pre-wrap;
-}
-
-.q-image-container {
-  width: 100%;
-  text-align: center;
   margin-bottom: 1.5rem;
 }
 
-.q-image {
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
-  border: 1px solid var(--border);
+.q-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--primary);
+  line-height: 1.5;
 }
 
-.choice-list {
+/* Comparison UI (Division / Multiplication) */
+.comp-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+}
+
+.comp-card {
+  flex: 1;
+  background: #f8fafc;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem 0.75rem;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  align-items: center;
+  justify-content: center;
+  min-height: 110px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
-.choice-item {
-  padding: 1rem;
-  border: 1px solid var(--border);
-  border-radius: 8px;
+.comp-vs {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text-light);
+}
+
+.fraction-display {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--primary);
+}
+
+.numerator {
+  padding-bottom: 3px;
+}
+
+.fraction-line {
+  width: 100%;
+  border-bottom: 2px solid var(--primary);
+  margin: 2px 0;
+}
+
+.denominator {
+  padding-top: 3px;
+}
+
+.multiplication-display {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-align: center;
+}
+
+/* Comparison Answer Buttons */
+.comp-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.comp-btn {
+  flex: 1;
+  padding: 1.2rem;
+  font-size: 1.8rem;
+  font-weight: 800;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  background: white;
   cursor: pointer;
   transition: all 0.2s;
+  color: var(--primary);
   display: flex;
-  align-items: flex-start;
-  line-height: 1.4;
+  align-items: center;
+  justify-content: center;
 }
 
-.choice-item:hover {
-  background: var(--bg);
+.comp-btn:hover {
+  border-color: var(--accent);
+  background: #eff6ff;
+  color: var(--accent);
 }
 
-.choice-item.selected {
-  border-color: var(--primary);
-  background: #f3f4f6;
+.comp-btn.selected {
+  border-color: var(--accent);
+  background: #dbeafe;
+  color: var(--accent);
+}
+
+.comp-btn.correct {
+  background-color: var(--highlight-correct) !important;
+  border-color: var(--success) !important;
+  color: #065f46 !important;
+}
+
+.comp-btn.selected-wrong {
+  background-color: var(--highlight-wrong) !important;
+  border-color: var(--error) !important;
+  color: var(--error) !important;
+  font-weight: 900;
+}
+
+/* Growth Matrix Table UI */
+.matrix-container {
+  margin: 1rem 0;
+}
+
+.matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.75rem 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.matrix-table th, .matrix-table td {
+  padding: 0.75rem;
+  text-align: center;
+  font-size: 1rem;
+  border: 1px solid var(--border);
+}
+
+.matrix-table th {
+  background: #f1f5f9;
   font-weight: 600;
+  color: var(--text-light);
 }
 
-.choice-item.correct {
-  background-color: var(--highlight-correct);
+.matrix-table td {
+  font-weight: 700;
+  color: var(--primary);
+  background: white;
+}
+
+/* Ordering UI (fraction_ordering) */
+.ordering-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin: 1rem 0;
+}
+
+.slots-header {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-light);
+}
+
+.ordering-slots {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.ordering-slot {
+  flex: 1;
+  min-width: 70px;
+  background: #f8fafc;
+  border: 2px dashed var(--border);
+  border-radius: 8px;
+  padding: 0.6rem 0.4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 64px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ordering-slot.filled {
+  border-style: solid;
+  border-color: var(--accent);
+  background: #eff6ff;
+}
+
+.slot-rank {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-light);
+  margin-bottom: 2px;
+}
+
+.slot-val {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.pool-header {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-light);
+}
+
+.candidate-pool {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.ordering-chip {
+  padding: 0.6rem 1rem;
+  background: white;
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.ordering-chip:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.ordering-chip.used {
+  opacity: 0.35;
+  pointer-events: none;
+  border-style: dashed;
+}
+
+.ordering-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.btn-reset {
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-submit {
+  flex: 1;
+  padding: 0.75rem;
+  background: var(--accent);
+  color: white;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-submit:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+}
+
+/* Detailed Feedback Cards */
+.calc-feedback-card {
+  background: #f8fafc;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.calc-feedback-card.correct {
+  background: var(--success-bg);
   border-color: var(--success);
   color: #065f46;
 }
 
-.choice-item.wrong {
-  background-color: var(--highlight-wrong);
+.calc-feedback-card.wrong {
+  background: var(--error-bg);
   border-color: var(--error);
   color: #991b1b;
-  font-weight: bold;
 }
 
-.choice-item.answer-highlight {
-  background-color: var(
-    --highlight-wrong
-  ); /* Initially red for wrong context, but if just showing answer... */
-  border-color: var(--error);
-  /* The requirement: "Actual answer red highlight" if wrong */
+.feedback-detail-list {
+  margin-top: 0.5rem;
+  list-style: none;
+  font-size: 0.88rem;
 }
 
-/* Override for specific logic: 
-   If User Correct: Selected -> Green.
-   If User Wrong: Selected -> Bold, Actual Answer -> Red.
-*/
+.feedback-detail-list li {
+  padding: 0.2rem 0;
+}
 
+/* Quiz Controls */
 .quiz-controls {
   display: flex;
   gap: 1rem;
-  margin-top: 2rem;
+  margin-top: 1.5rem;
 }
 
 .control-btn {
@@ -265,7 +660,13 @@ button {
   border: 1px solid var(--border);
   border-radius: 8px;
   background: white;
-  font-weight: 500;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.control-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .control-btn.primary {
@@ -274,23 +675,85 @@ button {
   border-color: var(--primary);
 }
 
-/* Result View */
+/* Modal Overlay & Dialog */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modal-content {
+  background: white;
+  width: 100%;
+  max-width: 440px;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h3 {
+  font-size: 1.15rem;
+  color: var(--primary);
+}
+
+.close-btn {
+  font-size: 1.2rem;
+  color: var(--text-light);
+  cursor: pointer;
+}
+
+.setting-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.setting-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.setting-desc {
+  font-size: 0.8rem;
+  color: var(--text-light);
+}
+
+/* Result & Stats */
 .score-card {
   text-align: center;
-  padding: 2rem 0;
+  padding: 1.5rem 0;
   border-bottom: 1px dashed var(--border);
   margin-bottom: 1.5rem;
 }
 
 .score-display {
   font-size: 3rem;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--accent);
-  margin: 1rem 0;
+  margin: 0.5rem 0;
 }
 
 .score-unit {
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: var(--text-light);
 }
 
@@ -298,7 +761,7 @@ button {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 0.5rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .res-item {
@@ -307,7 +770,7 @@ button {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.9rem;
   background: var(--bg);
 }
@@ -322,7 +785,6 @@ button {
   color: var(--error);
 }
 
-/* Stats View */
 .rank-list {
   list-style: none;
 }
@@ -332,10 +794,6 @@ button {
   justify-content: space-between;
   padding: 0.75rem 0;
   border-bottom: 1px solid var(--border);
-}
-
-.rank-item:last-child {
-  border-bottom: none;
 }
 
 .rank-rank {
@@ -353,9 +811,8 @@ button {
   font-weight: 600;
 }
 
-/* Chart */
 .chart-container {
-  height: 300px;
+  height: 250px;
   display: flex;
   align-items: flex-end;
   gap: 8px;
@@ -368,13 +825,13 @@ button {
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex: 0 0 40px;
+  flex: 0 0 36px;
   height: 100%;
   justify-content: flex-end;
 }
 
 .chart-bar {
-  width: 24px;
+  width: 20px;
   background: var(--accent);
   border-radius: 4px 4px 0 0;
   transition: all 0.2s;
@@ -392,11 +849,6 @@ button {
   font-size: 11px;
   font-weight: 700;
   color: var(--primary);
-}
-
-.chart-bar:hover {
-  filter: brightness(1.1);
-  transform: scaleX(1.2);
 }
 
 .chart-label {
@@ -417,6 +869,6 @@ button {
     margin: 20px auto;
     border-radius: 16px;
     height: calc(100vh - 40px);
-    min-height: 600px; /* Minimum height to prevent squashing */
+    min-height: 650px;
   }
 }
