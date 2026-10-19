@@ -12,6 +12,15 @@
     <meta name="theme-color" content="#ffffff" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <!-- KaTeX for formula rendering -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css"
+    />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"
+    ></script>
   </head>
   <body>
     <div class="app-layout">
@@ -70,6 +79,18 @@
           <h2>유형별 계산 연습</h2>
           <p class="sub-text">원하는 계산 유형을 선택하여 연습하세요.</p>
           <div class="type-grid">
+            <button class="type-btn" onclick="app.startCalcTypeQuiz('inequality_comparison')">
+              <span class="type-icon">⚖️</span>
+              <span class="type-title">부등호 비교 (&gt;, =, &lt;)</span>
+            </button>
+            <button class="type-btn" onclick="app.startCalcTypeQuiz('max_selection')">
+              <span class="type-icon">🏆</span>
+              <span class="type-title">최댓값 선택</span>
+            </button>
+            <button class="type-btn" onclick="app.startCalcTypeQuiz('trend_analysis')">
+              <span class="type-icon">📈</span>
+              <span class="type-title">증감 추이 (+, =, -)</span>
+            </button>
             <button class="type-btn" onclick="app.startCalcTypeQuiz('division_comparison')">
               <span class="type-icon">➗</span>
               <span class="type-title">분수 대소 비교</span>
@@ -83,12 +104,12 @@
               <span class="type-title">곱셈 대소 비교</span>
             </button>
             <button class="type-btn" onclick="app.startCalcTypeQuiz('growth_matrix_comparison')">
-              <span class="type-icon">📈</span>
+              <span class="type-icon">📊</span>
               <span class="type-title">증가율 비교</span>
             </button>
-            <button class="type-btn full-width" onclick="app.startCalcTypeQuiz('matrix_addition')">
+            <button class="type-btn" onclick="app.startCalcTypeQuiz('matrix_addition')">
               <span class="type-icon">➕</span>
-              <span class="type-title">덧뺄셈 표 빈칸 채우기</span>
+              <span class="type-title">덧뺄셈 표 빈칸</span>
             </button>
             <button class="type-btn full-width" onclick="app.startCalcTypeQuiz('all')">
               <span class="type-icon">🎲</span>
@@ -99,9 +120,10 @@
 
         <div class="card">
           <h2>세트별 문제 풀이</h2>
-          <p class="sub-text">나눗셈 / 곱셈 / 덧뺄셈 세트를 골라서 풀기 (각 50세트)</p>
+          <p class="sub-text">나눗셈 / 곱셈 / 덧뺄셈 / 10_19 기출 연습 세트 선택</p>
           <div class="set-selector-group">
             <select id="calc-category-select" class="custom-select" onchange="app.updateSetOptions()">
+              <option value="prob_1019">10_19 기출/연습 세트 (Set 1~17)</option>
               <option value="div">나눗셈 세트 (Set 1~50)</option>
               <option value="mul">곱셈 세트 (Set 1~50)</option>
               <option value="add_sub">덧뺄셈 세트 (Set 1~50)</option>

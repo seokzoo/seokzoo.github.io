@@ -1,0 +1,866 @@
+{
+  "부등호 비교 (A vs B)": {
+    "count": 115,
+    "problems": [
+      {
+        "id": 1,
+        "problem": "\\frac{36,217}{52,116} \\text{ vs } \\frac{10,248}{13,262}",
+        "answer": "<"
+      },
+      {
+        "id": 2,
+        "problem": "\\frac{103}{5,543} \\text{ vs } \\frac{120}{5,340}",
+        "answer": "<"
+      },
+      {
+        "id": 3,
+        "problem": "\\frac{156 + 30 + 97 + 248 + 702}{229 + 358 - 201 + 19 + 42} \\text{ vs } 1.2",
+        "answer": ">"
+      },
+      {
+        "id": 7,
+        "problem": "\\frac{5}{51} \\text{ vs } \\frac{4}{40}",
+        "answer": "<"
+      },
+      {
+        "id": 8,
+        "problem": "(\\frac{344.1}{285.5} - 1) \\times 100 \\text{ vs } 20",
+        "answer": ">"
+      },
+      {
+        "id": 11,
+        "problem": "\\frac{383}{12,413} \\times 100 \\text{ vs } 5",
+        "answer": "<"
+      },
+      {
+        "id": 12,
+        "problem": "\\frac{9,096}{11,573} \\times 100 \\text{ vs } 80",
+        "answer": "<"
+      },
+      {
+        "id": 13,
+        "problem": "\\frac{522}{2,559} \\times 100 \\text{ vs } 20",
+        "answer": ">"
+      },
+      {
+        "id": 14,
+        "problem": "\\frac{9,014}{11,537} \\times 100 \\text{ vs } 70",
+        "answer": ">"
+      },
+      {
+        "id": 15,
+        "problem": "\\frac{79.4 \\times 149 - 80.6 \\times 39}{149 + 39} \\text{ vs } 80",
+        "answer": "<"
+      },
+      {
+        "id": 16,
+        "problem": "\\frac{5.49 \\times 176 + 4.21 \\times 76 + 4.46 \\times 204}{176 + 76 + 204} \\text{ vs } 5",
+        "answer": "<"
+      },
+      {
+        "id": 19,
+        "problem": "\\frac{9-11+20}{76} \\text{ vs } \\frac{99}{180}",
+        "answer": "<"
+      },
+      {
+        "id": 20,
+        "problem": "\\frac{76}{76+180} \\text{ vs } \\frac{9}{9+28}",
+        "answer": ">"
+      },
+      {
+        "id": 22,
+        "problem": "\\frac{452}{520} \\text{ vs } \\frac{231}{1,039}",
+        "answer": ">"
+      },
+      {
+        "id": 23,
+        "problem": "\\frac{40 + 50 + 10 + 40}{120 + 100 + 80 + 70} \\text{ vs } 0.4",
+        "answer": "<"
+      },
+      {
+        "id": 24,
+        "problem": "\\frac{12}{19} \\text{ vs } 0.6",
+        "answer": ">"
+      },
+      {
+        "id": 27,
+        "problem": "\\frac{73.8}{121.0} \\text{ vs } \\frac{76.9}{125.3}",
+        "answer": "<"
+      },
+      {
+        "id": 29,
+        "problem": "9,953 \\times \\frac{4}{3} \\text{ vs } 13,863",
+        "answer": "<"
+      },
+      {
+        "id": 31,
+        "problem": "0.65 \\text{ vs } \\frac{137}{225}",
+        "answer": ">"
+      },
+      {
+        "id": 32,
+        "problem": "\\frac{177}{1,335} \\text{ vs } \\frac{102}{395}",
+        "answer": "<"
+      },
+      {
+        "id": 35,
+        "problem": "0.5 \\text{ vs } \\frac{450}{942}",
+        "answer": ">"
+      },
+      {
+        "id": 37,
+        "problem": "\\frac{5}{100-5} \\text{ vs } \\frac{1}{100-1} \\times 5",
+        "answer": ">"
+      },
+      {
+        "id": 38,
+        "problem": "\\frac{24,088}{46,753 + 24,088 + 7,341} \\text{ vs } 0.4",
+        "answer": "<"
+      },
+      {
+        "id": 39,
+        "problem": "\\frac{62,394}{62,394 + 37,794 + 10,211} \\text{ vs } 0.6",
+        "answer": "<"
+      },
+      {
+        "id": 40,
+        "problem": "0.5 \\text{ vs } \\frac{23,637}{40,830}",
+        "answer": "<"
+      },
+      {
+        "id": 41,
+        "problem": "\\frac{539,000}{5,347,468} \\times 3 \\text{ vs } \\frac{2,220,000}{9,794,796}",
+        "answer": ">"
+      },
+      {
+        "id": 43,
+        "problem": "\\frac{38.6}{251.7} \\text{ vs } \\frac{92.2}{399.9}",
+        "answer": "<"
+      },
+      {
+        "id": 44,
+        "problem": "100,000 \\text{ vs } \\frac{6,320,823}{65}",
+        "answer": ">"
+      },
+      {
+        "id": 45,
+        "problem": "\\frac{16}{16+1} \\text{ vs } \\frac{22}{22+2+1+4}",
+        "answer": ">"
+      },
+      {
+        "id": 46,
+        "problem": "\\frac{4}{8} \\times 100 \\text{ vs } \\frac{2}{10} \\times 100",
+        "answer": ">"
+      },
+      {
+        "id": 47,
+        "problem": "\\frac{37}{42} \\times 100 \\text{ vs } \\frac{30}{37+30} \\times 100",
+        "answer": ">"
+      },
+      {
+        "id": 49,
+        "problem": "\\frac{8}{83} \\times 100 \\text{ vs } \\frac{16}{500} \\times 100",
+        "answer": ">"
+      },
+      {
+        "id": 51,
+        "problem": "\\frac{69,912}{996} \\text{ vs } \\frac{29,371}{2,230} \\times 5",
+        "answer": ">"
+      },
+      {
+        "id": 52,
+        "problem": "\\frac{1}{3} \\text{ vs } \\frac{18,643}{56,309}",
+        "answer": ">"
+      },
+      {
+        "id": 53,
+        "problem": "0.9 \\text{ vs } \\frac{153,168}{167,040}",
+        "answer": "<"
+      },
+      {
+        "id": 54,
+        "problem": "20 \\text{ vs } |(\\frac{25}{30}-1) \\times 100|",
+        "answer": ">"
+      },
+      {
+        "id": 56,
+        "problem": "\\frac{36.1}{72.8} \\text{ vs } \\frac{93.0}{162.4}",
+        "answer": "<"
+      },
+      {
+        "id": 57,
+        "problem": "\\frac{22.0}{72.8} \\text{ vs } \\frac{34.8}{162.4}",
+        "answer": ">"
+      },
+      {
+        "id": 58,
+        "problem": "\\frac{1,628 - 1,122}{1,122} \\text{ vs } \\frac{1,437 - 1,311}{1,311}",
+        "answer": ">"
+      },
+      {
+        "id": 59,
+        "problem": "\\frac{420 - 299}{299} \\text{ vs } \\frac{1,437 - 1,311}{1,311}",
+        "answer": ">"
+      },
+      {
+        "id": 60,
+        "problem": "\\frac{299}{135} \\text{ vs } 2",
+        "answer": ">"
+      },
+      {
+        "id": 61,
+        "problem": "37,865 \\times 0.290 \\text{ vs } 36,952 \\times 0.294",
+        "answer": ">"
+      },
+      {
+        "id": 62,
+        "problem": "36,952 \\times 0.294 \\text{ vs } 33,314 \\times 0.349",
+        "answer": "<"
+      },
+      {
+        "id": 63,
+        "problem": "4,843 \\times 0.304 \\text{ vs } 2,756 \\times 0.438",
+        "answer": ">"
+      },
+      {
+        "id": 64,
+        "problem": "11,634 \\text{ vs } 11,695 \\times 2",
+        "answer": "<"
+      },
+      {
+        "id": 65,
+        "problem": "9,644 \\text{ vs } 3,888 \\times 2",
+        "answer": ">"
+      },
+      {
+        "id": 66,
+        "problem": "5,315 \\text{ vs } 2,580 \\times 2",
+        "answer": ">"
+      },
+      {
+        "id": 69,
+        "problem": "600 \\times 0.280 \\text{ vs } 3,600 \\times 0.590 \\times 0.1",
+        "answer": "<"
+      },
+      {
+        "id": 70,
+        "problem": "399\\text{만m}^3 \\times 55\\% \\text{ vs } 200\\text{만m}^3",
+        "answer": ">"
+      },
+      {
+        "id": 71,
+        "problem": "51\\text{만m}^3 \\times 0.25 \\text{ vs } 10\\text{만m}^3",
+        "answer": ">"
+      },
+      {
+        "id": 72,
+        "problem": "13.2 \\text{ vs } 6.1 \\times 2",
+        "answer": ">"
+      },
+      {
+        "id": 74,
+        "problem": "0.7 \\times 30 + \\frac{15}{9} \\times 30 + 0 \\times 40 \\text{ vs } 0.9 \\times 30 + \\frac{12}{18} \\times 30 + 0 \\times 40",
+        "answer": ">"
+      },
+      {
+        "id": 75,
+        "problem": "0.7 \\times 30 + \\frac{9}{12} \\times 30 + 1 \\times 40 \\text{ vs } 0.7 \\times 30 + \\frac{17}{17} \\times 30 + 1 \\times 40",
+        "answer": "<"
+      },
+      {
+        "id": 76,
+        "problem": "0.7 \\times 30 + \\frac{17}{17} \\times 30 + 1 \\times 40 \\text{ vs } 0.8 \\times 30 + \\frac{10}{15} \\times 30 + 1 \\times 40",
+        "answer": ">"
+      },
+      {
+        "id": 77,
+        "problem": "105,000 \\times 0.3 + 120,000 \\times 0.2 + 125,000 \\times 0.3 + 100,000 \\times 0.2 \\text{ vs } 115,000",
+        "answer": "<"
+      },
+      {
+        "id": 79,
+        "problem": "0.14 \\times 0.02 + 0.65 \\times 0.05 + 0.16 \\times 0.25 + 0.05 \\text{ vs } 0.08",
+        "answer": ">"
+      },
+      {
+        "id": 80,
+        "problem": "\\frac{11,397}{49,902} \\times 100 \\text{ vs } 20",
+        "answer": ">"
+      },
+      {
+        "id": 82,
+        "problem": "\\frac{4,500}{19,430} \\text{ vs } 0.25",
+        "answer": "<"
+      },
+      {
+        "id": 88,
+        "problem": "\\frac{456}{154} \\text{ vs } \\frac{637}{640}",
+        "answer": ">"
+      },
+      {
+        "id": 93,
+        "problem": "\\frac{3.60}{89} \\text{ vs } \\frac{2.40}{30}",
+        "answer": "<"
+      },
+      {
+        "id": 96,
+        "problem": "0.80 \\text{ vs } \\frac{17,800+6,750+24,051}{70} / \\frac{10,203+5,410+21,910}{45}",
+        "answer": "<"
+      },
+      {
+        "id": 100,
+        "problem": "(\\frac{508,375}{433,103}-1) \\text{ vs } 0.20",
+        "answer": "<"
+      },
+      {
+        "id": 102,
+        "problem": "786 \\times \\frac{446}{1,572} \\text{ vs } 200",
+        "answer": ">"
+      },
+      {
+        "id": 103,
+        "problem": "\\frac{1,106}{5,598} \\text{ vs } \\frac{557}{4,574}",
+        "answer": ">"
+      },
+      {
+        "id": 104,
+        "problem": "\\frac{2,614}{5,598} \\text{ vs } \\frac{2,394}{4,574}",
+        "answer": "<"
+      },
+      {
+        "id": 105,
+        "problem": "\\frac{204}{5,598} \\text{ vs } \\frac{191}{4,574}",
+        "answer": "<"
+      },
+      {
+        "id": 106,
+        "problem": "\\frac{489}{5,598} \\text{ vs } \\frac{559}{4,574}",
+        "answer": "<"
+      },
+      {
+        "id": 108,
+        "problem": "(\\frac{125.2}{110.8}-1) \\text{ vs } (\\frac{121.3}{114.3}-1) \\times 2",
+        "answer": ">"
+      },
+      {
+        "id": 110,
+        "problem": "\\frac{1,240}{9,966} \\times 100 \\text{ vs } 69.67\\%-27.70\\%",
+        "answer": "<"
+      },
+      {
+        "id": 111,
+        "problem": "4,143 \\text{ vs } 10,080 \\times (69.67\\%-27.70\\%)",
+        "answer": "<"
+      },
+      {
+        "id": 113,
+        "problem": "\\frac{29.3}{4.2} \\text{ vs } 5",
+        "answer": ">"
+      },
+      {
+        "id": 114,
+        "problem": "\\frac{30.3}{8.1} \\text{ vs } 5",
+        "answer": "<"
+      },
+      {
+        "id": 115,
+        "problem": "\\frac{173}{193} \\text{ vs } 0.90",
+        "answer": "<"
+      },
+      {
+        "id": 116,
+        "problem": "\\frac{167}{193} \\text{ vs } 0.90",
+        "answer": "<"
+      },
+      {
+        "id": 117,
+        "problem": "\\frac{164}{193} \\text{ vs } 0.90",
+        "answer": "<"
+      },
+      {
+        "id": 118,
+        "problem": "\\frac{168}{193} \\text{ vs } 0.90",
+        "answer": "<"
+      },
+      {
+        "id": 119,
+        "problem": "|(\\frac{66}{97}-1)| \\times 100 \\text{ vs } 30.0",
+        "answer": ">"
+      },
+      {
+        "id": 120,
+        "problem": "|(\\frac{16}{12}-1)| \\times 100 \\text{ vs } 30.0",
+        "answer": ">"
+      },
+      {
+        "id": 124,
+        "problem": "[\\frac{420}{447} / \\frac{252}{524}] \\text{ vs } 2",
+        "answer": "<"
+      },
+      {
+        "id": 125,
+        "problem": "\\frac{600,648}{461,733} \\text{ vs } 1.3",
+        "answer": ">"
+      },
+      {
+        "id": 126,
+        "problem": "\\frac{820,329}{600,648} \\text{ vs } 1.3",
+        "answer": ">"
+      },
+      {
+        "id": 127,
+        "problem": "\\frac{1,159,087}{820,329} \\text{ vs } 1.3",
+        "answer": ">"
+      },
+      {
+        "id": 128,
+        "problem": "\\frac{1,589,985}{1,159,087} \\text{ vs } 1.3",
+        "answer": ">"
+      },
+      {
+        "id": 132,
+        "problem": "\\frac{33,776}{154,384} \\text{ vs } 0.25",
+        "answer": "<"
+      },
+      {
+        "id": 133,
+        "problem": "\\frac{27,911}{124,346} \\text{ vs } 0.25",
+        "answer": "<"
+      },
+      {
+        "id": 134,
+        "problem": "\\frac{24,078}{113,339} \\text{ vs } 0.25",
+        "answer": "<"
+      },
+      {
+        "id": 135,
+        "problem": "\\frac{19,666}{102,083} \\text{ vs } 0.25",
+        "answer": "<"
+      },
+      {
+        "id": 136,
+        "problem": "\\frac{17,971}{91,462} \\text{ vs } 0.25",
+        "answer": "<"
+      },
+      {
+        "id": 137,
+        "problem": "\\frac{13,176}{87,186} \\text{ vs } 0.25",
+        "answer": "<"
+      },
+      {
+        "id": 138,
+        "problem": "\\frac{152,257 \\times 3.2}{100,362 \\times 2.3} \\text{ vs } 2",
+        "answer": ">"
+      },
+      {
+        "id": 139,
+        "problem": "\\frac{9,363}{100,362} \\text{ vs } 0.10",
+        "answer": "<"
+      },
+      {
+        "id": 140,
+        "problem": "1 - \\frac{1,567}{23,891} \\text{ vs } 0.95",
+        "answer": "<"
+      },
+      {
+        "id": 144,
+        "problem": "[\\frac{1,980,061}{2,294} / \\frac{19,000}{90}] \\text{ vs } 3",
+        "answer": ">"
+      },
+      {
+        "id": 145,
+        "problem": "\\frac{40,343}{3,900} \\text{ vs } \\frac{723,006}{63,700}",
+        "answer": "<"
+      },
+      {
+        "id": 147,
+        "problem": "\\frac{2,636}{2,021} \\text{ vs } \\frac{204}{55}",
+        "answer": "<"
+      },
+      {
+        "id": 148,
+        "problem": "\\frac{2,991}{2,636} \\text{ vs } \\frac{743}{204}",
+        "answer": "<"
+      },
+      {
+        "id": 150,
+        "problem": "0.50 \\text{ vs } \\frac{346+28,314+23,884}{128,048}",
+        "answer": ">"
+      },
+      {
+        "id": 151,
+        "problem": "0.50 \\text{ vs } \\frac{253+24,106+24,192}{119,370}",
+        "answer": ">"
+      },
+      {
+        "id": 152,
+        "problem": "0.50 \\text{ vs } \\frac{228+30,407+22,735}{116,864}",
+        "answer": ">"
+      },
+      {
+        "id": 153,
+        "problem": "0.50 \\text{ vs } \\frac{307+22,534+17,482}{79,024}",
+        "answer": "<"
+      },
+      {
+        "id": 154,
+        "problem": "0.50 \\text{ vs } \\frac{45+5,462+2,805}{21,786}",
+        "answer": ">"
+      },
+      {
+        "id": 155,
+        "problem": "0.50 \\text{ vs } \\frac{2,494+39,493+13,958}{112,410}",
+        "answer": ">"
+      },
+      {
+        "id": 161,
+        "problem": "\\frac{26,480 - (1,040+4,050)}{1,040+4,050} \\text{ vs } 5",
+        "answer": "<"
+      },
+      {
+        "id": 162,
+        "problem": "\\frac{4,050+19+4,640+102}{1,040 - 0} \\text{ vs } 9",
+        "answer": "<"
+      },
+      {
+        "id": 163,
+        "problem": "\\frac{1,757.1}{2,192.4} \\times 100 \\text{ vs } 77.6",
+        "answer": ">"
+      },
+      {
+        "id": 164,
+        "problem": "\\frac{1,767.3}{2,241.4} \\times 100 \\text{ vs } 80.0",
+        "answer": "<"
+      },
+      {
+        "id": 165,
+        "problem": "\\frac{767.7}{737.2} \\text{ vs } 1.05",
+        "answer": "<"
+      },
+      {
+        "id": 166,
+        "problem": "\\frac{849.9}{783.7} \\text{ vs } 1.05",
+        "answer": ">"
+      },
+      {
+        "id": 167,
+        "problem": "\\frac{910.1}{847.0} \\text{ vs } 1.05",
+        "answer": ">"
+      },
+      {
+        "id": 168,
+        "problem": "\\frac{902.6}{847.2} \\text{ vs } 1.10",
+        "answer": "<"
+      },
+      {
+        "id": 169,
+        "problem": "\\frac{916.0}{851.3} \\text{ vs } 1.10",
+        "answer": "<"
+      },
+      {
+        "id": 173,
+        "problem": "[\\frac{53,643}{477,440} / \\frac{12,700}{211,542}] \\text{ vs } 1.5",
+        "answer": ">"
+      },
+      {
+        "id": 176,
+        "problem": "(\\frac{536}{4,500} - \\frac{430}{4,300}) \\times 100 \\text{ vs } 1.5",
+        "answer": ">"
+      },
+      {
+        "id": 177,
+        "problem": "|\\frac{344-65}{450-54}-1| \\text{ vs } |\\frac{21+0}{22+10}-1|",
+        "answer": "<"
+      },
+      {
+        "id": 180,
+        "problem": "\\frac{33,984 \\times 0.782}{33,887 \\times 0.806} \\text{ vs } (1-0.03)",
+        "answer": ">"
+      }
+    ]
+  },
+  "최댓값 선택 (A vs B vs C ...)": {
+    "count": 50,
+    "problems": [
+      {
+        "id": 4,
+        "problem": "20 \\text{ vs } \\frac{1,233}{60} \\text{ vs } \\frac{849}{63}",
+        "answer": "\\frac{1,233}{60}"
+      },
+      {
+        "id": 5,
+        "problem": "\\frac{702}{32} \\text{ vs } \\frac{156}{4} \\text{ vs } \\frac{30}{3} \\text{ vs } \\frac{97}{5} \\text{ vs } \\frac{248}{16}",
+        "answer": "\\frac{156}{4}"
+      },
+      {
+        "id": 6,
+        "problem": "\\frac{44}{39} \\text{ vs } \\frac{51}{44} \\text{ vs } \\frac{51}{49} \\text{ vs } \\frac{50}{49} \\text{ vs } \\frac{47}{44}",
+        "answer": "\\frac{51}{44}"
+      },
+      {
+        "id": 9,
+        "problem": "\\frac{84.3}{80.4} \\text{ vs } \\frac{90.5}{84.3} \\text{ vs } \\frac{102.0}{90.5} \\text{ vs } \\frac{112.8}{102.0}",
+        "answer": "\\frac{102.0}{90.5}"
+      },
+      {
+        "id": 17,
+        "problem": "\\frac{570}{747} \\text{ vs } \\frac{560}{855} \\text{ vs } \\frac{480}{654}",
+        "answer": "\\frac{570}{747}"
+      },
+      {
+        "id": 30,
+        "problem": "\\frac{54}{555} \\text{ vs } \\frac{1}{76} \\text{ vs } \\frac{6}{88} \\text{ vs } \\frac{9}{111}",
+        "answer": "\\frac{54}{555}"
+      },
+      {
+        "id": 33,
+        "problem": "\\frac{439,362}{575,077} \\text{ vs } \\frac{500,391}{759,745} \\text{ vs } \\frac{468,839}{609,215}",
+        "answer": "\\frac{468,839}{609,215}"
+      },
+      {
+        "id": 34,
+        "problem": "\\frac{909.7}{575,077} \\text{ vs } \\frac{4,548.4}{759,745} \\text{ vs } \\frac{1,364.5}{609,215}",
+        "answer": "\\frac{4,548.4}{759,745}"
+      },
+      {
+        "id": 36,
+        "problem": "\\frac{7}{1,112} \\text{ vs } \\frac{7}{417} \\text{ vs } \\frac{189}{2,766} \\text{ vs } \\frac{353}{3,302} \\text{ vs } \\frac{220}{1,499} \\text{ vs } \\frac{39}{287} \\text{ vs } \\frac{6}{16}",
+        "answer": "\\frac{6}{16}"
+      },
+      {
+        "id": 42,
+        "problem": "\\frac{92.2}{30.9} \\text{ vs } \\frac{14.8}{7.2} \\text{ vs } \\frac{56.2}{50.4} \\text{ vs } \\frac{63.3}{22.7} \\text{ vs } \\frac{87.7}{41.4}",
+        "answer": "\\frac{92.2}{30.9}"
+      },
+      {
+        "id": 48,
+        "problem": "\\frac{788}{0.334} \\text{ vs } \\frac{8,949}{0.414} \\text{ vs } \\frac{4,002}{0.424} \\text{ vs } \\frac{4,268}{0.405} \\text{ vs } \\frac{113}{0.363} \\text{ vs } \\frac{61}{0.391}",
+        "answer": "\\frac{8,949}{0.414}"
+      },
+      {
+        "id": 50,
+        "problem": "\\frac{912}{520} \\text{ vs } \\frac{469}{209} \\text{ vs } \\frac{218}{109} \\text{ vs } \\frac{1,448}{648}",
+        "answer": "\\frac{469}{209}"
+      },
+      {
+        "id": 55,
+        "problem": "\\frac{59.7}{44.4} \\text{ vs } \\frac{44.6}{31.3} \\text{ vs } \\frac{26.6}{20.5} \\text{ vs } \\frac{47.0}{36.1} \\text{ vs } \\frac{33.1}{22.7} \\text{ vs } \\frac{28.8}{17.1} \\text{ vs } \\frac{49.9}{46.7}",
+        "answer": "\\frac{28.8}{17.1}"
+      },
+      {
+        "id": 73,
+        "problem": "2 \\text{ vs } \\frac{3 \\times 1 + 4 \\times 2 + 2 \\times 4}{9} \\text{ vs } \\frac{3 \\times 1 + 4 \\times 3 + 2 \\times 5}{9}",
+        "answer": "\\frac{3 \\times 1 + 4 \\times 3 + 2 \\times 5}{9}"
+      },
+      {
+        "id": 81,
+        "problem": "\\frac{50}{1,507} \\text{ vs } \\frac{21}{177} \\text{ vs } \\frac{65}{368} \\text{ vs } \\frac{13}{79} \\text{ vs } \\frac{10}{97} \\text{ vs } \\frac{14}{134} \\text{ vs } \\frac{21}{155} \\text{ vs } \\frac{15}{151} \\text{ vs } \\frac{12}{118}",
+        "answer": "\\frac{65}{368}"
+      },
+      {
+        "id": 83,
+        "problem": "\\frac{1,507}{4,980} \\text{ vs } \\frac{177}{4,500} \\text{ vs } \\frac{368}{3,400} \\text{ vs } \\frac{79}{2,000} \\text{ vs } \\frac{97}{1,200} \\text{ vs } \\frac{134}{1,100} \\text{ vs } \\frac{155}{850} \\text{ vs } \\frac{151}{730} \\text{ vs } \\frac{118}{670}",
+        "answer": "\\frac{1,507}{4,980}"
+      },
+      {
+        "id": 84,
+        "problem": "\\frac{91}{698} \\text{ vs } \\frac{108}{759} \\text{ vs } \\frac{79}{721} \\text{ vs } \\frac{89}{602} \\text{ vs } \\frac{79}{717} \\text{ vs } \\frac{72}{575}",
+        "answer": "\\frac{89}{602}"
+      },
+      {
+        "id": 85,
+        "problem": "\\frac{18}{717} \\text{ vs } \\frac{426}{717} \\text{ vs } \\frac{21}{717} \\text{ vs } \\frac{13}{717} \\text{ vs } \\frac{79}{717} \\text{ vs } \\frac{90}{717} \\text{ vs } \\frac{70}{717}",
+        "answer": "\\frac{426}{717}"
+      },
+      {
+        "id": 86,
+        "problem": "(\\frac{83}{105}-1) \\text{ vs } (\\frac{90}{83}-1) \\text{ vs } (\\frac{72}{90}-1)",
+        "answer": "(\\frac{90}{83}-1)"
+      },
+      {
+        "id": 87,
+        "problem": "(\\frac{20}{28}-1) \\text{ vs } (\\frac{13}{20}-1) \\text{ vs } (\\frac{6}{13}-1)",
+        "answer": "(\\frac{20}{28}-1)"
+      },
+      {
+        "id": 89,
+        "problem": "\\frac{460}{368} \\text{ vs } \\frac{615}{638} \\text{ vs } \\frac{135}{224} \\text{ vs } \\frac{257}{381} \\text{ vs } \\frac{308}{443} \\text{ vs } \\frac{154}{236}",
+        "answer": "\\frac{460}{368}"
+      },
+      {
+        "id": 90,
+        "problem": "\\frac{387}{2,401} \\text{ vs } \\frac{339}{2,697} \\text{ vs } \\frac{550}{3,810} \\text{ vs } \\frac{426}{3,777} \\text{ vs } \\frac{276}{3,858}",
+        "answer": "\\frac{387}{2,401}"
+      },
+      {
+        "id": 91,
+        "problem": "\\frac{489}{29.1} \\text{ vs } \\frac{368}{26.9} \\text{ vs } \\frac{460}{31.0} \\text{ vs } \\frac{583}{31.6} \\text{ vs } \\frac{422}{31.6}",
+        "answer": "\\frac{583}{31.6}"
+      },
+      {
+        "id": 92,
+        "problem": "\\frac{1,448}{4,159} \\text{ vs } \\frac{637}{4,159} \\text{ vs } \\frac{456}{4,159} \\text{ vs } \\frac{586}{4,159} \\text{ vs } \\frac{426}{4,159} \\text{ vs } \\frac{224}{4,159} \\text{ vs } \\frac{382}{4,159}",
+        "answer": "\\frac{1,448}{4,159}"
+      },
+      {
+        "id": 94,
+        "problem": "(1-\\frac{26,000}{28,500}) \\text{ vs } (1-\\frac{25,250}{26,000}) \\text{ vs } (1-\\frac{22,100}{25,250})",
+        "answer": "(1-\\frac{22,100}{25,250})"
+      },
+      {
+        "id": 95,
+        "problem": "(1-\\frac{28,500}{32,500}) \\text{ vs } (1-\\frac{26,250}{28,500}) \\text{ vs } (1-\\frac{24,000}{26,250})",
+        "answer": "(1-\\frac{28,500}{32,500})"
+      },
+      {
+        "id": 101,
+        "problem": "\\frac{88}{502} \\text{ vs } \\frac{59}{446} \\text{ vs } \\frac{68}{624}",
+        "answer": "\\frac{88}{502}"
+      },
+      {
+        "id": 107,
+        "problem": "(1-\\frac{557}{1,106}) \\text{ vs } (1-\\frac{2,394}{2,614}) \\text{ vs } (1-\\frac{191}{204}) \\text{ vs } (1-\\frac{97}{713})",
+        "answer": "(1-\\frac{97}{713})"
+      },
+      {
+        "id": 112,
+        "problem": "\\frac{2,181}{1+0.203} \\text{ vs } \\frac{16,838}{1-0.161} \\text{ vs } \\frac{1,174}{1+0.241} \\text{ vs } \\frac{1,479}{1-0.223} \\text{ vs } \\frac{1,788}{1-0.370}",
+        "answer": "\\frac{16,838}{1-0.161}"
+      },
+      {
+        "id": 121,
+        "problem": "\\frac{7,667}{9,315} \\text{ vs } \\frac{8,243}{10,020} \\text{ vs } \\frac{8,800}{10,397} \\text{ vs } \\frac{8,444}{10,811} \\text{ vs } \\frac{8,182}{10,147}",
+        "answer": "\\frac{8,800}{10,397}"
+      },
+      {
+        "id": 122,
+        "problem": "\\frac{8,469}{75.0} \\text{ vs } \\frac{5,020}{77.4} \\text{ vs } \\frac{17,700}{112.8} \\text{ vs } \\frac{14,620}{111.5} \\text{ vs } \\frac{6,000}{77.4}",
+        "answer": "\\frac{17,700}{112.8}"
+      },
+      {
+        "id": 123,
+        "problem": "\\frac{75.0}{350} \\text{ vs } \\frac{77.4}{392} \\text{ vs } \\frac{112.8}{420} \\text{ vs } \\frac{111.5}{420} \\text{ vs } \\frac{77.4}{252}",
+        "answer": "\\frac{77.4}{252}"
+      },
+      {
+        "id": 129,
+        "problem": "\\frac{1,157,940}{399,464} \\text{ vs } \\frac{12,567}{5,620} \\text{ vs } \\frac{389,855}{55,756} \\text{ vs } \\frac{29,623}{893}",
+        "answer": "\\frac{29,623}{893}"
+      },
+      {
+        "id": 130,
+        "problem": "\\frac{1}{2} \\text{ vs } \\frac{4,487}{7,187} \\text{ vs } \\frac{4,089}{6,497} \\text{ vs } \\frac{2,000}{4,068} \\text{ vs } \\frac{2,598}{3,728} \\text{ vs } \\frac{1,676}{3,609} \\text{ vs } \\frac{1,426}{3,069} \\text{ vs } \\frac{1,417}{3,050} \\text{ vs } \\frac{1,410}{3,036} \\text{ vs } \\frac{1,000}{3,000} \\text{ vs } \\frac{814}{2,990}",
+        "answer": "\\frac{2,598}{3,728}"
+      },
+      {
+        "id": 131,
+        "problem": "|\\frac{20,609}{13,262}-1| \\text{ vs } |\\frac{53,714}{43,584}-1| \\text{ vs } |\\frac{13,176}{33,776}-1| \\text{ vs } |\\frac{7,176}{33,047}-1|",
+        "answer": "|\\frac{7,176}{33,047}-1|"
+      },
+      {
+        "id": 141,
+        "problem": "\\frac{15,100}{225} \\text{ vs } \\frac{63,700}{49} \\text{ vs } \\frac{27,200}{151} \\text{ vs } \\frac{3,900}{77}",
+        "answer": "\\frac{63,700}{49}"
+      },
+      {
+        "id": 142,
+        "problem": "\\frac{15,100}{60} \\text{ vs } \\frac{63,700}{7} \\text{ vs } \\frac{27,200}{51} \\text{ vs } \\frac{3,900}{39}",
+        "answer": "\\frac{63,700}{7}"
+      },
+      {
+        "id": 143,
+        "problem": "\\frac{66,660}{1,665} \\text{ vs } \\frac{723,006}{1,554} \\text{ vs } \\frac{260,192}{9,091} \\text{ vs } \\frac{40,343}{1,269}",
+        "answer": "\\frac{723,006}{1,554}"
+      },
+      {
+        "id": 146,
+        "problem": "\\frac{4.5}{64.0} \\text{ vs } \\frac{3.5}{17.3} \\text{ vs } \\frac{2.0}{10.8}",
+        "answer": "\\frac{3.5}{17.3}"
+      },
+      {
+        "id": 149,
+        "problem": "0.20 \\text{ vs } \\frac{127,540}{595,539} \\text{ vs } \\frac{138,313}{595,539} \\text{ vs } \\frac{129,583}{595,539} \\text{ vs } \\frac{83,774}{595,539} \\text{ vs } \\frac{20,937}{595,539} \\text{ vs } \\frac{95,392}{595,539}",
+        "answer": "\\frac{138,313}{595,539}"
+      },
+      {
+        "id": 156,
+        "problem": "\\frac{1,046}{446} \\text{ vs } \\frac{1,231}{550} \\text{ vs } \\frac{1,419}{572} \\text{ vs } \\frac{1,493}{522} \\text{ vs } \\frac{1,785}{529} \\text{ vs } \\frac{3,097}{837} \\text{ vs } \\frac{2,951}{1,004} \\text{ vs } \\frac{3,484}{1,296} \\text{ vs } \\frac{4,006}{1,497} \\text{ vs } \\frac{5,708}{2,355}",
+        "answer": "\\frac{3,097}{837}"
+      },
+      {
+        "id": 157,
+        "problem": "\\frac{18,760}{9,315} \\text{ vs } \\frac{18,710}{10,020} \\text{ vs } \\frac{19,060}{10,811} \\text{ vs } \\frac{19,392}{10,147}",
+        "answer": "\\frac{18,760}{9,315}"
+      },
+      {
+        "id": 158,
+        "problem": "\\frac{2,774}{6,352} \\text{ vs } \\frac{2,585}{6,739} \\text{ vs } \\frac{2,284}{7,410} \\text{ vs } \\frac{2,317}{7,458} \\text{ vs } \\frac{1,682}{7,175}",
+        "answer": "\\frac{2,774}{6,352}"
+      },
+      {
+        "id": 159,
+        "problem": "\\frac{106}{2,963} \\text{ vs } \\frac{161}{3,281} \\text{ vs } \\frac{82}{2,987} \\text{ vs } \\frac{72}{3,353} \\text{ vs } \\frac{86}{2,972}",
+        "answer": "\\frac{161}{3,281}"
+      },
+      {
+        "id": 160,
+        "problem": "\\frac{99}{125} \\text{ vs } \\frac{64}{114} \\text{ vs } \\frac{58}{104} \\text{ vs } \\frac{56}{80} \\text{ vs } \\frac{31}{50}",
+        "answer": "\\frac{99}{125}"
+      },
+      {
+        "id": 170,
+        "problem": "\\frac{537,857}{488,100} \\text{ vs } \\frac{539,790}{537,857} \\text{ vs } \\frac{588,111}{539,790} \\text{ vs } \\frac{680,711}{588,111}",
+        "answer": "\\frac{680,711}{588,111}"
+      },
+      {
+        "id": 172,
+        "problem": "\\frac{8,387}{414,826} \\text{ vs } \\frac{48,245}{504,780} \\text{ vs } \\frac{6,925}{268,396} \\text{ vs } \\frac{26}{167}",
+        "answer": "\\frac{26}{167}"
+      },
+      {
+        "id": 174,
+        "problem": "|\\frac{5,687}{5,534}-1| \\text{ vs } |\\frac{53,643}{56,536}-1| \\text{ vs } |\\frac{12,700}{15,911}-1| \\text{ vs } |\\frac{16}{14}-1|",
+        "answer": "|\\frac{12,700}{15,911}-1|"
+      },
+      {
+        "id": 175,
+        "problem": "\\frac{605\\text{m}}{3.2\\text{m/초}} \\text{ vs } \\frac{988\\text{m}}{2.5\\text{m/초}} \\text{ vs } \\frac{795\\text{m}}{3.5\\text{m/초}} \\text{ vs } \\frac{1,793\\text{m}}{5.0\\text{m/초}}",
+        "answer": "\\frac{988\\text{m}}{2.5\\text{m/초}}"
+      },
+      {
+        "id": 178,
+        "problem": "\\frac{188}{1,901} \\text{ vs } \\frac{439}{842} \\text{ vs } \\frac{601}{1,701} \\text{ vs } \\frac{803}{1,998} \\text{ vs } \\frac{461}{1,459} \\text{ vs } \\frac{271}{2,494}",
+        "answer": "\\frac{439}{842}"
+      }
+    ]
+  },
+  "증감 추이 (A → B → C ...)": {
+    "count": 5,
+    "problems": [
+      {
+        "id": 10,
+        "problem": "\\frac{84.3}{377.9} \\rightarrow \\frac{90.5}{384.0} \\rightarrow \\frac{102.0}{387.5} \\rightarrow \\frac{112.8}{456.9}",
+        "answer": "++-"
+      },
+      {
+        "id": 21,
+        "problem": "\\frac{1,039}{43} \\rightarrow \\frac{936}{42} \\rightarrow \\frac{702}{36} \\rightarrow \\frac{560}{38} \\rightarrow \\frac{520}{35}",
+        "answer": "---+"
+      },
+      {
+        "id": 25,
+        "problem": "\\frac{27-19}{19} \\rightarrow \\frac{30-27}{27} \\rightarrow \\frac{33-30}{30} \\rightarrow \\frac{35-33}{33}",
+        "answer": "---"
+      },
+      {
+        "id": 28,
+        "problem": "\\frac{65.9-52.9}{52.9} \\rightarrow \\frac{70.1-65.9}{65.9} \\rightarrow \\frac{73.8-70.1}{70.1} \\rightarrow \\frac{76.9-73.8}{73.8}",
+        "answer": "---"
+      }, {
+        "id": 179,
+        "problem": "\\frac{16,300}{14,431} \\rightarrow \\frac{18,282}{15,605} \\rightarrow \\frac{33,984-15,422}{15,422} \\rightarrow \\frac{18,504}{15,094}",
+        "answer": "+++"
+      }
+    ]
+  }
+}

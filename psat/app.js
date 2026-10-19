@@ -16,6 +16,41 @@ const app = {
     timerInterval: null,
     timeLeft: 0,
     orderingSlots: [], // for fraction_ordering
+    trendSlots: [], // for trend_analysis
+  },
+
+  formatMath: (str) => {
+    if (!str) return ""
+    str = String(str).trim()
+
+    // If KaTeX is available
+    if (typeof katex !== "undefined" && katex.renderToString) {
+      try {
+        return katex.renderToString(str, {
+          displayMode: false,
+          throwOnError: false,
+        })
+      } catch (e) {
+        console.warn("KaTeX render error:", e)
+      }
+    }
+
+    // Fallback parser if KaTeX is not yet loaded or offline
+    let rendered = str
+      .replace(/\\text\{([^}]+)\}/g, "$1")
+      .replace(/\\times/g, "×")
+      .replace(/\\rightarrow/g, "➔")
+
+    // Handle nested \frac{a}{b}
+    let prev = ""
+    while (prev !== rendered && rendered.includes("\\frac{")) {
+      prev = rendered
+      rendered = rendered.replace(
+        /\\frac\{([^{}]+)\}\{([^{}]+)\}/g,
+        `<span class="fraction-display"><span class="numerator">$1</span><span class="fraction-line"></span><span class="denominator">$2</span></span>`,
+      )
+    }
+    return rendered
   },
 
   init: async () => {
@@ -179,9 +214,24 @@ const app = {
     const category = catSelect.value
     setSelect.innerHTML = ""
 
-    const catName = category === "div" ? "나눗셈" : category === "mul" ? "곱셈" : "덧뺄셈"
+    let catName = "10_19 기출/연습"
+    let maxSets = 17
 
-    for (let i = 1; i <= 50; i++) {
+    if (category === "prob_1019") {
+      catName = "10_19 기출/연습"
+      maxSets = 17
+    } else if (category === "div") {
+      catName = "나눗셈"
+      maxSets = 50
+    } else if (category === "mul") {
+      catName = "곱셈"
+      maxSets = 50
+    } else if (category === "add_sub") {
+      catName = "덧뺄셈"
+      maxSets = 50
+    }
+
+    for (let i = 1; i <= maxSets; i++) {
       const opt = document.createElement("option")
       opt.value = i
       opt.textContent = `Set ${i} (${catName})`
@@ -206,7 +256,12 @@ const app = {
       const selected = allQ.slice(0, 25)
       app.setupQuizState(selected, "random", "무작위 모의고사")
     } else {
-      let allQ = [...CALC_DATA.div, ...CALC_DATA.mul, ...(CALC_DATA.add_sub || [])]
+      let allQ = [
+        ...CALC_DATA.div,
+        ...CALC_DATA.mul,
+        ...(CALC_DATA.add_sub || []),
+        ...(CALC_DATA.prob_1019 || []),
+      ]
       app.shuffle(allQ)
       const selected = allQ.slice(0, 20)
       app.setupQuizState(selected, "random", "무작위 모의고사 (20문제)")
@@ -215,11 +270,17 @@ const app = {
 
   startCalcTypeQuiz: (type) => {
     let questions = []
-    const all = [...CALC_DATA.div, ...CALC_DATA.mul, ...(CALC_DATA.add_sub || [])]
+    const all = [
+      ...CALC_DATA.div,
+      ...CALC_DATA.mul,
+      ...(CALC_DATA.add_sub || []),
+      ...(CALC_DATA.prob_1019 || []),
+    ]
+
     if (type === "all") {
       questions = [...all]
     } else if (type === "matrix_addition") {
-      questions = all.filter((item) => item.type.includes("matrix_addition"))
+      questions = all.filter((item) => item.type && item.type.includes("matrix_addition"))
     } else {
       questions = all.filter((item) => item.type === type)
     }
@@ -228,6 +289,9 @@ const app = {
     const selected = questions.slice(0, 20)
 
     const typeNames = {
+      inequality_comparison: "부등호 비교 (>, =, <)",
+      max_selection: "최댓값 선택",
+      trend_analysis: "증감 추이 (+, =, -)",
       division_comparison: "분수 대소 비교",
       fraction_ordering: "분수 순서 정렬",
       multiplication_comparison: "곱셈 대소 비교",
@@ -243,9 +307,22 @@ const app = {
     const category = document.getElementById("calc-category-select").value
     const setNum = parseInt(document.getElementById("calc-set-select").value, 10)
 
-    let pool = CALC_DATA.div
-    if (category === "mul") pool = CALC_DATA.mul
-    else if (category === "add_sub") pool = CALC_DATA.add_sub || []
+    let pool = CALC_DATA.prob_1019 || []
+    let catName = "10_19 기출/연습"
+
+    if (category === "prob_1019") {
+      pool = CALC_DATA.prob_1019 || []
+      catName = "10_19 기출/연습"
+    } else if (category === "div") {
+      pool = CALC_DATA.div
+      catName = "나눗셈"
+    } else if (category === "mul") {
+      pool = CALC_DATA.mul
+      catName = "곱셈"
+    } else if (category === "add_sub") {
+      pool = CALC_DATA.add_sub || []
+      catName = "덧뺄셈"
+    }
 
     const questions = pool.filter((item) => item.set_id === setNum)
 
@@ -254,7 +331,6 @@ const app = {
       return
     }
 
-    const catName = category === "div" ? "나눗셈" : category === "mul" ? "곱셈" : "덧뺄셈"
     const info = `Set ${setNum} (${catName})`
     app.setupQuizState(questions, "calc_set", info)
   },
@@ -273,10 +349,15 @@ const app = {
 
       const filtered = records.filter((rec) => {
         if (rec.subject) return rec.subject === currentSubject
-        // Fallback for older records
         return currentSubject === "constitution"
-          ? !rec.id.startsWith("div-") && !rec.id.startsWith("mul-") && !rec.id.startsWith("add_sub-")
-          : rec.id.startsWith("div-") || rec.id.startsWith("mul-") || rec.id.startsWith("add_sub-")
+          ? !rec.id.startsWith("div-") &&
+              !rec.id.startsWith("mul-") &&
+              !rec.id.startsWith("add_sub-") &&
+              !rec.id.startsWith("prob1019-")
+          : rec.id.startsWith("div-") ||
+              rec.id.startsWith("mul-") ||
+              rec.id.startsWith("add_sub-") ||
+              rec.id.startsWith("prob1019-")
       })
 
       if (filtered.length === 0) {
@@ -294,7 +375,12 @@ const app = {
           }
         })
       } else {
-        const allCalc = [...CALC_DATA.div, ...CALC_DATA.mul, ...(CALC_DATA.add_sub || [])]
+        const allCalc = [
+          ...CALC_DATA.div,
+          ...CALC_DATA.mul,
+          ...(CALC_DATA.add_sub || []),
+          ...(CALC_DATA.prob_1019 || []),
+        ]
         filtered.forEach((rec) => {
           if (rec.problemData) {
             questions.push(rec.problemData)
@@ -333,6 +419,7 @@ const app = {
   renderQuestion: () => {
     app.stopTimer()
     app.state.orderingSlots = []
+    app.state.trendSlots = []
 
     const q = app.state.questions[app.state.currentIndex]
     const total = app.state.questions.length
@@ -356,6 +443,12 @@ const app = {
     // Render Question based on type
     if (!q.type || app.state.subject === "constitution") {
       app.renderConstitutionQuestion(q, qArea)
+    } else if (q.type === "inequality_comparison") {
+      app.renderInequalityComparisonQuestion(q, qArea)
+    } else if (q.type === "max_selection") {
+      app.renderMaxSelectionQuestion(q, qArea)
+    } else if (q.type === "trend_analysis") {
+      app.renderTrendAnalysisQuestion(q, qArea)
     } else if (q.type === "division_comparison" || q.type === "multiplication_comparison") {
       app.renderComparisonQuestion(q, qArea)
     } else if (q.type === "growth_matrix_comparison") {
@@ -425,14 +518,36 @@ const app = {
     }
 
     const html = `
-      <div class="q-title">두 수식의 크기를 비교하세요.</div>
+      <div class="q-title">두 수식의 크기를 비교하여 <strong>&gt;, =, &lt;</strong> 중 알맞은 부등호를 선택하세요.</div>
       <div class="comp-container">
         <div class="comp-card">${leftHtml}</div>
         <div class="comp-vs">VS</div>
         <div class="comp-card">${rightHtml}</div>
       </div>
-      <div class="comp-actions">
+      <div class="comp-actions three-way">
         <button id="comp-btn-gt" class="comp-btn" onclick="app.checkComparisonAnswer('>')">&gt;</button>
+        <button id="comp-btn-eq" class="comp-btn" onclick="app.checkComparisonAnswer('=')">=</button>
+        <button id="comp-btn-lt" class="comp-btn" onclick="app.checkComparisonAnswer('<')">&lt;</button>
+      </div>
+    `
+    container.innerHTML = html
+  },
+
+  // 2-2. Inequality Comparison Question Render (10_19_prob.json LaTeX)
+  renderInequalityComparisonQuestion: (q, container) => {
+    const leftHtml = app.formatMath(q.detail.left_expr)
+    const rightHtml = app.formatMath(q.detail.right_expr)
+
+    const html = `
+      <div class="q-title">두 수식의 크기를 비교하여 <strong>&gt;, =, &lt;</strong> 중 알맞은 부등호를 선택하세요.</div>
+      <div class="comp-container">
+        <div class="comp-card"><div class="math-card-inner">${leftHtml}</div></div>
+        <div class="comp-vs">VS</div>
+        <div class="comp-card"><div class="math-card-inner">${rightHtml}</div></div>
+      </div>
+      <div class="comp-actions three-way">
+        <button id="comp-btn-gt" class="comp-btn" onclick="app.checkComparisonAnswer('>')">&gt;</button>
+        <button id="comp-btn-eq" class="comp-btn" onclick="app.checkComparisonAnswer('=')">=</button>
         <button id="comp-btn-lt" class="comp-btn" onclick="app.checkComparisonAnswer('<')">&lt;</button>
       </div>
     `
@@ -472,8 +587,9 @@ const app = {
       <div class="sub-text" style="text-align: center; font-weight: 600;">
         비교: (${q.detail.left_fraction}) VS (${q.detail.right_fraction})
       </div>
-      <div class="comp-actions">
+      <div class="comp-actions three-way">
         <button id="comp-btn-gt" class="comp-btn" onclick="app.checkComparisonAnswer('>')">&gt;</button>
+        <button id="comp-btn-eq" class="comp-btn" onclick="app.checkComparisonAnswer('=')">=</button>
         <button id="comp-btn-lt" class="comp-btn" onclick="app.checkComparisonAnswer('<')">&lt;</button>
       </div>
     `
@@ -529,7 +645,6 @@ const app = {
     const grid = q.detail.grid || []
     const blanks = q.detail.blanks || []
 
-    // Build lookup map for blanks: "row_idx,col_idx" -> blankObj
     const blankMap = {}
     blanks.forEach((b) => {
       blankMap[`${b.row_idx},${b.col_idx}`] = b
@@ -578,6 +693,228 @@ const app = {
       </div>
     `
     container.innerHTML = html
+  },
+
+  // 6. Max Selection Question Render (10_19_prob.json)
+  renderMaxSelectionQuestion: (q, container) => {
+    const choices = q.detail.choices || []
+    const html = `
+      <div class="q-title">다음 항목 중 <strong>가장 큰 값(최댓값)</strong>을 선택하세요.</div>
+      <div class="max-select-grid">
+        ${choices
+          .map(
+            (choice, idx) => `
+          <div class="max-select-card" id="max-card-${idx}" onclick="app.checkMaxSelectionAnswer(${idx})">
+            <span class="max-card-num">${idx + 1}번</span>
+            <div class="max-card-math">${app.formatMath(choice)}</div>
+          </div>
+        `,
+          )
+          .join("")}
+      </div>
+    `
+    container.innerHTML = html
+  },
+
+  // 7. Trend Analysis Question Render (10_19_prob.json)
+  renderTrendAnalysisQuestion: (q, container) => {
+    const sequence = q.detail.sequence || []
+    const expectedLen = sequence.length - 1
+    app.state.trendSlots = new Array(expectedLen).fill(null)
+
+    const html = `
+      <div class="q-title">시계열에 따른 수식의 <strong>증감 추이 (+, =, -)</strong>를 순서대로 입력하세요.</div>
+      <div class="trend-sequence-container">
+        ${sequence
+          .map(
+            (item, idx) => `
+          <div class="trend-item-card">${app.formatMath(item)}</div>
+          ${
+            idx < sequence.length - 1
+              ? `
+            <div class="trend-step-arrow">
+              <span class="trend-step-num">${idx + 1}단계</span>
+              <span>➔</span>
+            </div>
+          `
+              : ""
+          }
+        `,
+          )
+          .join("")}
+      </div>
+
+      <div class="slots-header" style="text-align: center; margin-top: 1rem;">입력된 증감 추이 (${expectedLen}단계):</div>
+      <div class="trend-slots-area" id="trend-slots-area">
+        ${Array.from({ length: expectedLen })
+          .map(
+            (_, i) => `
+          <div class="trend-slot" id="trend-slot-${i}">
+            <span class="trend-slot-label">${i + 1}단계</span>
+            <span class="trend-slot-val" id="trend-slot-val-${i}">?</span>
+          </div>
+        `,
+          )
+          .join("")}
+      </div>
+
+      <div class="trend-keypad">
+        <button class="trend-btn btn-plus" onclick="app.addTrendStep('+')">
+          <span class="trend-btn-sym">+</span>
+          <span class="trend-btn-desc">증가 (+)</span>
+        </button>
+        <button class="trend-btn btn-equal" onclick="app.addTrendStep('=')">
+          <span class="trend-btn-sym">=</span>
+          <span class="trend-btn-desc">유지 (=)</span>
+        </button>
+        <button class="trend-btn btn-minus" onclick="app.addTrendStep('-')">
+          <span class="trend-btn-sym">-</span>
+          <span class="trend-btn-desc">감소 (-)</span>
+        </button>
+      </div>
+
+      <div class="ordering-actions">
+        <button class="btn-reset" onclick="app.resetTrendInput()">입력 초기화</button>
+        <button id="btn-submit-trend" class="btn-submit" onclick="app.checkTrendAnswer()" disabled>정답 제출</button>
+      </div>
+    `
+    container.innerHTML = html
+  },
+
+  // Trend Interactions
+  addTrendStep: (sym) => {
+    if (app.state.userAnswers[app.state.currentIndex] !== null) return
+
+    const slots = app.state.trendSlots
+    const emptyIdx = slots.indexOf(null)
+    if (emptyIdx === -1) return
+
+    slots[emptyIdx] = sym
+    const slotEl = document.getElementById(`trend-slot-${emptyIdx}`)
+    const valEl = document.getElementById(`trend-slot-val-${emptyIdx}`)
+    if (slotEl) slotEl.classList.add("filled")
+    if (valEl) valEl.textContent = sym
+
+    const btnSubmit = document.getElementById("btn-submit-trend")
+    if (btnSubmit) {
+      btnSubmit.disabled = slots.some((s) => s === null)
+    }
+  },
+
+  resetTrendInput: () => {
+    if (app.state.userAnswers[app.state.currentIndex] !== null) return
+
+    const slots = app.state.trendSlots
+    for (let i = 0; i < slots.length; i++) {
+      slots[i] = null
+      const slotEl = document.getElementById(`trend-slot-${i}`)
+      const valEl = document.getElementById(`trend-slot-val-${i}`)
+      if (slotEl) slotEl.classList.remove("filled")
+      if (valEl) valEl.textContent = "?"
+    }
+
+    const btnSubmit = document.getElementById("btn-submit-trend")
+    if (btnSubmit) btnSubmit.disabled = true
+  },
+
+  checkTrendAnswer: () => {
+    if (app.state.userAnswers[app.state.currentIndex] !== null) return
+    app.stopTimer()
+
+    const q = app.state.questions[app.state.currentIndex]
+    const userStr = app.state.trendSlots.join("")
+    const correctStr = q.answer.trim()
+    const isCorrect = userStr === correctStr
+
+    app.state.userAnswers[app.state.currentIndex] = userStr
+    app.state.results[app.state.currentIndex] = isCorrect
+
+    app.showTrendFeedback(q, userStr, correctStr, isCorrect)
+    document.getElementById("btn-next").disabled = false
+  },
+
+  showTrendFeedback: (q, userStr, correctStr, isCorrect) => {
+    document.querySelectorAll(".trend-btn, .btn-reset, #btn-submit-trend").forEach((el) => {
+      el.style.pointerEvents = "none"
+    })
+
+    const len = correctStr.length
+    for (let i = 0; i < len; i++) {
+      const slotEl = document.getElementById(`trend-slot-${i}`)
+      const valEl = document.getElementById(`trend-slot-val-${i}`)
+      const uChar = userStr[i] || ""
+      const cChar = correctStr[i]
+
+      if (valEl) valEl.textContent = uChar || "-"
+
+      if (slotEl) {
+        if (uChar === cChar) {
+          slotEl.classList.remove("filled", "wrong")
+          slotEl.classList.add("correct")
+        } else {
+          slotEl.classList.remove("filled", "correct")
+          slotEl.classList.add("wrong")
+          if (!slotEl.querySelector(".trend-slot-hint")) {
+            const hint = document.createElement("span")
+            hint.className = "trend-slot-hint"
+            hint.textContent = `(정답:${cChar})`
+            slotEl.appendChild(hint)
+          }
+        }
+      }
+    }
+
+    const feedbackArea = document.getElementById("feedback-area")
+    feedbackArea.innerHTML = `
+      <div class="calc-feedback-card ${isCorrect ? "correct" : "wrong"}">
+        <div><strong>${isCorrect ? "🎉 정답입니다!" : "❌ 오답입니다."}</strong></div>
+        <div style="margin-top: 6px;"><strong>제출 추이:</strong> ${userStr || "(미입력)"}</div>
+        <div><strong>실제 정답:</strong> ${correctStr}</div>
+      </div>
+    `
+    feedbackArea.classList.remove("hidden")
+  },
+
+  // Max Selection Interactions
+  checkMaxSelectionAnswer: (selectedIdx) => {
+    if (app.state.userAnswers[app.state.currentIndex] !== null) return
+    app.stopTimer()
+
+    const q = app.state.questions[app.state.currentIndex]
+    const choices = q.detail.choices || []
+    const selectedChoice = choices[selectedIdx]
+    const correctIdx = choices.findIndex((c) => c.trim() === q.answer.trim())
+    const isCorrect = selectedChoice.trim() === q.answer.trim()
+
+    app.state.userAnswers[app.state.currentIndex] = selectedIdx
+    app.state.results[app.state.currentIndex] = isCorrect
+
+    app.showMaxSelectionFeedback(q, selectedIdx, correctIdx, isCorrect)
+    document.getElementById("btn-next").disabled = false
+  },
+
+  showMaxSelectionFeedback: (q, selectedIdx, correctIdx, isCorrect) => {
+    const cards = document.querySelectorAll(".max-select-card")
+    cards.forEach((c) => (c.style.pointerEvents = "none"))
+
+    const selectedEl = document.getElementById(`max-card-${selectedIdx}`)
+    const correctEl = document.getElementById(`max-card-${correctIdx}`)
+
+    if (isCorrect) {
+      if (selectedEl) selectedEl.classList.add("correct")
+    } else {
+      if (selectedEl) selectedEl.classList.add("selected-wrong")
+      if (correctEl) correctEl.classList.add("correct")
+    }
+
+    const feedbackArea = document.getElementById("feedback-area")
+    feedbackArea.innerHTML = `
+      <div class="calc-feedback-card ${isCorrect ? "correct" : "wrong"}">
+        <div><strong>${isCorrect ? "🎉 정답입니다!" : "❌ 오답입니다."}</strong></div>
+        <div style="margin-top: 6px;"><strong>정답 최댓값:</strong> ${app.formatMath(q.answer)} (${correctIdx + 1}번)</div>
+      </div>
+    `
+    feedbackArea.classList.remove("hidden")
   },
 
   // Reset Matrix Inputs
@@ -656,7 +993,7 @@ const app = {
     app.stopTimer()
 
     const q = app.state.questions[app.state.currentIndex]
-    const correctSymbol = q.answer
+    const correctSymbol = q.answer.trim()
     const isCorrect = selectedSymbol === correctSymbol
 
     app.state.userAnswers[app.state.currentIndex] = selectedSymbol
@@ -757,12 +1094,15 @@ const app = {
 
   showComparisonFeedback: (q, selectedSymbol, correctSymbol, isCorrect) => {
     const btnGt = document.getElementById("comp-btn-gt")
+    const btnEq = document.getElementById("comp-btn-eq")
     const btnLt = document.getElementById("comp-btn-lt")
     if (btnGt) btnGt.style.pointerEvents = "none"
+    if (btnEq) btnEq.style.pointerEvents = "none"
     if (btnLt) btnLt.style.pointerEvents = "none"
 
-    const selectedBtn = selectedSymbol === ">" ? btnGt : btnLt
-    const correctBtn = correctSymbol === ">" ? btnGt : btnLt
+    const getBtn = (sym) => (sym === ">" ? btnGt : sym === "=" ? btnEq : btnLt)
+    const selectedBtn = getBtn(selectedSymbol)
+    const correctBtn = getBtn(correctSymbol)
 
     if (isCorrect) {
       if (selectedBtn) selectedBtn.classList.add("correct")
@@ -788,6 +1128,11 @@ const app = {
       detailText = `
         <li><strong>좌측 비율 (${q.detail.left_fraction})</strong> ≈ ${q.detail.left_val} (Row 1 증가율: ${q.detail.row1_growth_pct})</li>
         <li><strong>우측 비율 (${q.detail.right_fraction})</strong> ≈ ${q.detail.right_val} (Row 2 증가율: ${q.detail.row2_growth_pct})</li>
+      `
+    } else if (q.type === "inequality_comparison") {
+      detailText = `
+        <li><strong>좌측:</strong> ${app.formatMath(q.detail.left_expr)}</li>
+        <li><strong>우측:</strong> ${app.formatMath(q.detail.right_expr)}</li>
       `
     }
 
@@ -859,7 +1204,6 @@ const app = {
       }
     })
 
-    // Breakdown list
     const blanks = q.detail.blanks || []
     let listHtml = ""
     blanks.forEach((b) => {
@@ -886,6 +1230,12 @@ const app = {
       app.showConstitutionFeedback(prevAns, q.answer - 1, isCorrect)
     } else if (q.type === "fraction_ordering") {
       app.showOrderingFeedback(q, prevAns, q.detail.sorted_order.join(" > "), isCorrect)
+    } else if (q.type === "max_selection") {
+      const choices = q.detail.choices || []
+      const correctIdx = choices.findIndex((c) => c.trim() === q.answer.trim())
+      app.showMaxSelectionFeedback(q, prevAns, correctIdx, isCorrect)
+    } else if (q.type === "trend_analysis") {
+      app.showTrendFeedback(q, prevAns, q.answer.trim(), isCorrect)
     } else if (q.type && q.type.includes("matrix_addition")) {
       const blanks = q.detail.blanks || []
       app.showMatrixAdditionFeedback(q, prevAns || {}, isCorrect ? blanks.length : 0, blanks.length, isCorrect)
@@ -1027,7 +1377,10 @@ const app = {
       const allData = request.result || []
       const currentSubject = app.state.subject
 
-      const data = allData.filter((item) => item.subject === currentSubject || (!item.subject && currentSubject === "constitution"))
+      const data = allData.filter(
+        (item) =>
+          item.subject === currentSubject || (!item.subject && currentSubject === "constitution"),
+      )
 
       const grouped = data.reduce((acc, item) => {
         const d = new Date(item.id)
@@ -1061,7 +1414,10 @@ const app = {
         bar.style.height = `${item.score}%`
         bar.dataset.score = item.score
 
-        const tooltipText = item.count > 1 ? `평균 ${item.score}점 (${item.count}회 응시, ${item.date})` : `${item.score}점 (${item.date})`
+        const tooltipText =
+          item.count > 1
+            ? `평균 ${item.score}점 (${item.count}회 응시, ${item.date})`
+            : `${item.score}점 (${item.date})`
         bar.title = tooltipText
 
         if (item.score >= 80) bar.style.background = "#10b981"

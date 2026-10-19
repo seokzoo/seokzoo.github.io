@@ -1,4 +1,4 @@
-const CACHE_NAME = "psat-v2"
+const CACHE_NAME = "psat-v3"
 const ASSETS = [
   "./",
   "./index.html",

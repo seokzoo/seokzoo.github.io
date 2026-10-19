@@ -918,6 +918,239 @@ button, input, select {
   display: none !important;
 }
 
+/* 3-Way Comparison Actions */
+.comp-actions.three-way {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.comp-actions.three-way .comp-btn {
+  padding: 1rem 0.5rem;
+  font-size: 1.6rem;
+}
+
+/* Max Selection UI */
+.max-select-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.75rem;
+  margin: 1.25rem 0;
+}
+
+.max-select-card {
+  background: white;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 0.6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-height: 84px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.max-select-card:hover {
+  border-color: var(--accent);
+  background: #eff6ff;
+  transform: translateY(-2px);
+}
+
+.max-select-card.selected {
+  border-color: var(--accent);
+  background: #dbeafe;
+}
+
+.max-select-card.correct {
+  background-color: var(--highlight-correct) !important;
+  border-color: var(--success) !important;
+  color: #065f46 !important;
+}
+
+.max-select-card.selected-wrong {
+  background-color: var(--highlight-wrong) !important;
+  border-color: var(--error) !important;
+  color: #991b1b !important;
+  font-weight: 800;
+}
+
+.max-card-num {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-light);
+  margin-bottom: 4px;
+}
+
+.max-card-math {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-align: center;
+  word-break: break-all;
+}
+
+/* Trend Analysis UI */
+.trend-sequence-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin: 1.25rem 0;
+  padding: 1rem;
+  background: #f8fafc;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.trend-item-card {
+  padding: 0.6rem 0.8rem;
+  background: white;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trend-step-arrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--accent);
+  padding: 0 0.25rem;
+}
+
+.trend-step-num {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-light);
+  margin-bottom: -2px;
+}
+
+.trend-slots-area {
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+  margin: 1.25rem 0;
+  flex-wrap: wrap;
+}
+
+.trend-slot {
+  min-width: 60px;
+  height: 64px;
+  border: 2px dashed var(--border);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  transition: all 0.2s;
+  padding: 0.25rem;
+}
+
+.trend-slot.filled {
+  border-style: solid;
+  border-color: var(--accent);
+  background: #eff6ff;
+}
+
+.trend-slot-label {
+  font-size: 0.72rem;
+  color: var(--text-light);
+  font-weight: 700;
+}
+
+.trend-slot-val {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--accent);
+  margin-top: 2px;
+}
+
+.trend-slot.correct {
+  border-color: var(--success) !important;
+  background: var(--highlight-correct) !important;
+}
+
+.trend-slot.correct .trend-slot-val {
+  color: #065f46 !important;
+}
+
+.trend-slot.wrong {
+  border-color: var(--error) !important;
+  background: var(--highlight-wrong) !important;
+}
+
+.trend-slot.wrong .trend-slot-val {
+  color: #991b1b !important;
+}
+
+.trend-slot-hint {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--error);
+}
+
+.trend-keypad {
+  display: flex;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.trend-btn {
+  flex: 1;
+  padding: 0.9rem 0.5rem;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.trend-btn:hover {
+  border-color: var(--accent);
+  background: #eff6ff;
+}
+
+.trend-btn-sym {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--primary);
+  line-height: 1;
+}
+
+.trend-btn-desc {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-light);
+}
+
+.trend-btn.btn-plus:hover .trend-btn-sym {
+  color: #2563eb;
+}
+
+.trend-btn.btn-minus:hover .trend-btn-sym {
+  color: #ef4444;
+}
+
+.trend-btn.btn-equal:hover .trend-btn-sym {
+  color: #10b981;
+}
+
 @media (min-width: 600px) {
   .app-layout {
     margin: 20px auto;
