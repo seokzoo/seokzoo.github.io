@@ -9,6 +9,7 @@ const app = {
     results: [],
     quizMode: "",
     quizInfo: "",
+    answerMode: "exam",
     startTime: null,
     settings: {
       timeLimit: 0, // 0 = unlimited, else seconds per question
@@ -186,6 +187,7 @@ const app = {
 
     if (app.state.subject === "constitution") {
       app.showView("view-home-constitution")
+      app.updateAnswerModeButtons()
       const grid = document.getElementById("year-buttons")
       if (grid && typeof PSAT_DATA !== "undefined") {
         const years = Object.keys(PSAT_DATA).sort((a, b) => b - a)
@@ -204,6 +206,21 @@ const app = {
 
     document.getElementById("nav-solve").classList.add("active")
     document.getElementById("nav-stats").classList.remove("active")
+  },
+
+  setAnswerMode: (mode) => {
+    app.state.answerMode = mode === "learning" ? "learning" : "exam"
+    app.updateAnswerModeButtons()
+  },
+
+  updateAnswerModeButtons: () => {
+    const examBtn = document.getElementById("answer-mode-exam")
+    const learningBtn = document.getElementById("answer-mode-learning")
+    if (!examBtn || !learningBtn) return
+    examBtn.classList.toggle("active", app.state.answerMode === "exam")
+    learningBtn.classList.toggle("active", app.state.answerMode === "learning")
+    examBtn.setAttribute("aria-pressed", String(app.state.answerMode === "exam"))
+    learningBtn.setAttribute("aria-pressed", String(app.state.answerMode === "learning"))
   },
 
   updateSetOptions: () => {
@@ -425,7 +442,10 @@ const app = {
     const total = app.state.questions.length
 
     let displayInfo = app.state.quizInfo
-    document.getElementById("quiz-info").textContent = `${displayInfo} (${app.state.currentIndex + 1}/${total})`
+    const modeLabel = app.state.subject === "constitution"
+      ? (app.state.answerMode === "learning" ? "학습" : "모의고사")
+      : ""
+    document.getElementById("quiz-info").textContent = `${displayInfo}${modeLabel ? ` · ${modeLabel}` : ""} (${app.state.currentIndex + 1}/${total})`
 
     const pct = (app.state.currentIndex / total) * 100
     document.getElementById("progress-fill").style.width = `${pct}%`
@@ -984,7 +1004,14 @@ const app = {
     const isCorrect = selectedIdx === correctIdx
     app.state.results[app.state.currentIndex] = isCorrect
 
-    app.showConstitutionFeedback(selectedIdx, correctIdx, isCorrect)
+    if (app.state.answerMode === "learning") {
+      app.showConstitutionFeedback(selectedIdx, correctIdx, isCorrect)
+    } else {
+      document.querySelectorAll(".choice-item").forEach((choice) => {
+        choice.style.pointerEvents = "none"
+      })
+      document.getElementById(`choice-${selectedIdx}`).classList.add("selected")
+    }
     document.getElementById("btn-next").disabled = false
   },
 
@@ -1067,12 +1094,14 @@ const app = {
     app.state.results[app.state.currentIndex] = false
 
     const feedbackArea = document.getElementById("feedback-area")
-    feedbackArea.innerHTML = `
-      <div class="calc-feedback-card wrong">
-        ⏰ <strong>제한 시간이 초과되었습니다!</strong> 오답 처리 후 다음 문제로 이동합니다.
-      </div>
-    `
-    feedbackArea.classList.remove("hidden")
+    if (app.state.subject !== "constitution" || app.state.answerMode === "learning") {
+      feedbackArea.innerHTML = `
+        <div class="calc-feedback-card wrong">
+          ⏰ <strong>제한 시간이 초과되었습니다!</strong> 오답 처리 후 다음 문제로 이동합니다.
+        </div>
+      `
+      feedbackArea.classList.remove("hidden")
+    }
 
     setTimeout(() => {
       app.nextQuestion()
@@ -1088,7 +1117,7 @@ const app = {
       document.getElementById(`choice-${selectedIdx}`).classList.add("correct")
     } else {
       document.getElementById(`choice-${selectedIdx}`).classList.add("selected-wrong")
-      document.getElementById(`choice-${correctIdx}`).classList.add("actual-answer-red")
+      document.getElementById(`choice-${correctIdx}`).classList.add("correct")
     }
   },
 
@@ -1227,7 +1256,14 @@ const app = {
     const isCorrect = app.state.results[app.state.currentIndex]
 
     if (!q.type || app.state.subject === "constitution") {
-      app.showConstitutionFeedback(prevAns, q.answer - 1, isCorrect)
+      if (app.state.answerMode === "learning") {
+        app.showConstitutionFeedback(prevAns, q.answer - 1, isCorrect)
+      } else {
+        document.querySelectorAll(".choice-item").forEach((choice) => {
+          choice.style.pointerEvents = "none"
+        })
+        document.getElementById(`choice-${prevAns}`).classList.add("selected")
+      }
     } else if (q.type === "fraction_ordering") {
       app.showOrderingFeedback(q, prevAns, q.detail.sorted_order.join(" > "), isCorrect)
     } else if (q.type === "max_selection") {
@@ -1319,6 +1355,7 @@ const app = {
       date: new Date().toLocaleString(),
       score: score,
       mode: app.state.quizMode,
+      answerMode: currentSubject === "constitution" ? app.state.answerMode : null,
       subject: currentSubject,
       details: app.state.results,
     })

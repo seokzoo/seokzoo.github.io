@@ -11,6 +11,7 @@ const files = [
   "2023_헌법.json",
   "2024_헌법.json",
   "2025_헌법.json",
+  "2026_헌법.json",
 ]
 
 const allData = {}
